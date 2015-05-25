@@ -59,7 +59,7 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
                             action:@selector(addPhotoButton:)
                   forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.addPhotoButton];
-    self.addPhotoButton.backgroundColor = [UIColor redColor];
+    self.addPhotoButton.backgroundColor = mDelegate_.appThemeColor;
     self.addPhotoButton.alpha = 0.7;
     [self.addPhotoButton setTitle:@"Add Photo" forState:UIControlStateNormal];
     [self.addPhotoButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -181,17 +181,6 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 
 
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-   
-    RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
-    rpdtvc.displayPhotoNum = displayPhotoNum_;
-
-}
-
-
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -239,7 +228,15 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 
 }
 
+#pragma mark - Navigation
 
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
+    rpdtvc.displayPhotoNum = displayPhotoNum_;
+    rpdtvc.descriptionTextViewEditable = YES;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

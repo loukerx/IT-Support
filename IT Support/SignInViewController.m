@@ -14,7 +14,7 @@
 @interface SignInViewController ()
 {
     AppDelegate *mDelegate_;
-    MBProgressHUD *hud_;
+    MBProgressHUD *HUD_;
 }
 
 
@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordConfirmTextField;
 @property (weak, nonatomic) IBOutlet UITextField *companyPhoneTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mobileNumberTextField;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
+
 
 @end
 
@@ -32,21 +34,38 @@
     [super viewDidLoad];
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    
-    
+    [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    //test
+    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
+    self.passwordTextField.text = @"qwe";
+    self.passwordConfirmTextField.text = @"qwe";
+    self.companyPhoneTextField.text = @"022234";
+    self.mobileNumberTextField.text =@"123123";
 }
-- (IBAction)cancelAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+
+#pragma mark - mandatory field check
+
+- (BOOL)checkAllField
+{
+    if ([self.emailAddressTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0 && [self.companyPhoneTextField.text length]>0  && [self.mobileNumberTextField.text length]>0) {
+        return true;
+    }else{
+        return false;
+    }
 }
+
+#pragma mark - Button Action
 
 - (IBAction)submitAction:(id)sender {
     //check password
     if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
         
         if ([self checkAllField]) {
+            HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            HUD_.labelText = @"Login...";
             //submit and create an account
-            [self performSegueWithIdentifier:@"To Login View" sender:self];
-//            [self createClientAccount];
+            [self createClientAccount];
             
         }else{
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
@@ -66,39 +85,53 @@
     }
 }
 
-- (BOOL)checkAllField
-{
-    if ([self.emailAddressTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0 && [self.companyPhoneTextField.text length]>0  && [self.mobileNumberTextField.text length]>0) {
-        return true;
-    }else{
-        return false;
-    }
-}
-
 -(void)createClientAccount{
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/api/Client
     
-    NSString *f = @"userRegister";
-    NSString *deviceId = @"";
-    NSString *mobilenum = @"";
     
-    NSDictionary *parameters = @{@"f" : f,
-                                 @"deviceId" : deviceId,
-                                 @"mobilenum": mobilenum
+    NSString *email = self.emailAddressTextField.text;
+    NSString *password = self.passwordTextField.text;
+    NSString *companyName = self.companyName;
+    NSString *contactName = self.contactName;
+    NSString *phone = self.companyPhoneTextField.text;
+    NSString *mobile = self.mobileNumberTextField.text;
+    
+    NSDictionary *parameters = @{@"email" : email,
+                                 @"password" : password,
+                                 @"companyName": companyName,
+                                 @"contactName" : contactName,
+                                 @"phone" : phone,
+                                 @"mobile" : mobile
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager POST:@"" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager POST:@"/ITSupportService/API/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        
-        NSLog(@"create client account");
-
-        [self performSegueWithIdentifier:@"To Login View" sender:self];
+        [HUD_ hide:YES];
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"RequestResultStatus"]];
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+            
+            NSLog(@"Client account is created");
+            [self performSegueWithIdentifier:@"To Login View" sender:self];
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:[responseObject valueForKey:@"Message"]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        [HUD_ hide:YES];
+        
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Client Account"
                                                             message:[error localizedDescription]
                                                            delegate:nil

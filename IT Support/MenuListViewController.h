@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MenuListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface MenuListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 
 
 - (IBAction)hideMuneButtonClick:(id)sender;
@@ -16,6 +16,6 @@
 
 
 
-- (IBAction)logInAction:(id)sender;
+- (IBAction)logOutAction:(id)sender;
 
 @end

@@ -10,11 +10,17 @@
 #import <CoreData/CoreData.h>
 
 
-
-static NSString *const AWSLinkURL = @"http://admin.netcube.tv";
+static NSString *const AWSLinkURL = @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";
 static float const cellHeightRatio = 0.625f;
 
+#define clientMode @"Client Mode"
+#define supportMode @"Support Mode"
 
+#define clientLogIn @"Client Log In"
+#define supportLogIn @"Support Log In"
+
+#define userTypeClient @"0"
+#define userTypeSupport @"1"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -28,23 +34,41 @@ static float const cellHeightRatio = 0.625f;
 - (NSURL *)applicationDocumentsDirectory;
 
 
+//user
+@property (strong, nonatomic) NSString *userToken;
+@property (strong, nonatomic) NSDictionary *userDictionary;
+@property (strong, nonatomic) NSString *userEmail;//username
+@property (strong, nonatomic) NSString *userPassword;//password
 
-//setting local variables
-@property (strong, nonatomic) NSString *requestCategory;
-@property (strong, nonatomic) NSString *requestSubCategory;
+
+//client user
+@property (strong, nonatomic) NSString *clientID;
+//support user
+@property (strong, nonatomic) NSString *supportID;
+
+
+//setting request variables
+@property (strong, nonatomic) NSString *requestCategoryID;
 @property (strong, nonatomic) NSString *requestSubject;
 @property (strong, nonatomic) NSString *requestDescription;
 
+//category list
+@property (strong, nonatomic) NSMutableArray *categoryListArray;
+@property (strong, nonatomic) NSMutableDictionary *subcategoryListDictionary;
+@property (strong, nonatomic) NSString *requestCategory;
+@property (strong, nonatomic) NSString *requestSubCategory;
 
 
-//photo data
+
+//photos data
 @property (strong, nonatomic) NSMutableArray *mRequestImages;
 @property (strong, nonatomic) NSMutableArray *mRequestImageDescriptions;
 
 //color
--(UIColor*)colorWithHexString:(NSString*)hex;
+//-(UIColor*)colorWithHexString:(NSString*)hex;
 @property (strong, nonatomic) UIColor *clientThemeColor;
 @property (strong, nonatomic) UIColor *supportThemeColor;
+@property (strong, nonatomic) UIColor *appThemeColor;
 @property (strong, nonatomic) UIColor *textFieldColor;
 @property (strong, nonatomic) UIColor *textViewBoardColor;
 

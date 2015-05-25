@@ -11,6 +11,15 @@
 @interface RequestListTableViewController : UITableViewController
 
 
+//typedef NS_ENUM(NSInteger, RequestStatus){
+//    Active = 0,
+//    Processing,
+//    Processed,
+//    Finished,
+// 
+//};
+
+
 - (IBAction)MenuAction:(id)sender;
 
 - (void)hideMenuListViewController:(NSString *)displayMode;

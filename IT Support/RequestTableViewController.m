@@ -36,6 +36,7 @@
 
     
 //    [self preparePhotosForScrollView];
+    
     [self prepareImageView];
     [self populateTableViewHeader];
     
@@ -50,21 +51,31 @@
     [self.tableView addGestureRecognizer:tap];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+
+    if (mDelegate_.mRequestImages.count>0) {
+        self.imageView.image = mDelegate_.mRequestImages[0];
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+    }
+}
+
 -(void)prepareImageView{
     
     //test
     //    [mDelegate_.mRequestImages removeAllObjects];
-    for (int num=1;num<6; num++) {
-        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-        
-        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    }
+//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+//        
+//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+//    }
     
     self.imageView = [[UIImageView alloc] initWithImage:nil];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
     if (mDelegate_.mRequestImages.count>0) {
         self.imageView.image = mDelegate_.mRequestImages[0];
-        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     }
     
@@ -171,11 +182,11 @@
     
     //test
 //    [mDelegate_.mRequestImages removeAllObjects];
-    for (int num=1;num<6; num++) {
-        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-        
-        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    }
+//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+//        
+//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+//    }
     
     
     for (int i = 0; i<[mDelegate_.mRequestImages count]; i++) {

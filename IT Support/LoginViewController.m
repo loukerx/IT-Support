@@ -17,14 +17,16 @@
     MBProgressHUD *hud_;
 }
 
-@property (weak, nonatomic) IBOutlet UITextField *mobileTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *switchUserButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
-
+@property (weak, nonatomic) IBOutlet UIButton *signInButton;
 
 @end
+
+
 
 @implementation LoginViewController
 
@@ -42,12 +44,21 @@
     [self.iconImageView setFrame:newFrame];
     [self.iconImageView layoutIfNeeded];
     
-    //color
-    [self.switchUserButton setTitleColor:mDelegate_.clientThemeColor forState:UIControlStateNormal];
-    self.loginButton.backgroundColor = mDelegate_.clientThemeColor;
+    //setting color & loginButton info & user mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
+        [self.signInButton setHidden:NO];
+        
+    }else{
+        [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
+        [self.signInButton setHidden:YES];
+    }
+    [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    self.loginButton.backgroundColor = mDelegate_.appThemeColor;
+    [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     
-    //setting
-    self.mobileTextField.delegate = self;
+    //setting guesture & textfield delegate
+    self.emailTextField.delegate = self;
     self.passwordTextField.delegate = self;
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -57,6 +68,27 @@
     
     //add observer for keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
+    
+    //test
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"ms.benson@itexpresspro.com.au";
+        self.passwordTextField.text = @"qwe";
+    }else{
+        self.emailTextField.text = @"wuyao840610@163.com";
+        self.passwordTextField.text = @"831022";
+    }
+}
+
+#pragma mark - mandatory field check
+
+- (BOOL)checkAllField
+{
+    if ([self.emailTextField.text length]>0  && [self.passwordTextField.text length]>0) {
+        return true;
+    }else{
+        return false;
+    }
 }
 
 
@@ -64,17 +96,12 @@
 
 - (IBAction)loginAction:(id)sender {
     if ([self checkAllField]) {
+        
         //submit and create an account
-        
         hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud_.labelText = @"登录中...";
-        [hud_ hide:YES];
+        hud_.labelText = @"Login...";
+        [self userLogin];
         
-        //test
-//            [self dismissViewControllerAnimated:YES completion:nil];
-        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-        
-        //        [self userLogin];
     }else{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please complete all fields"
                                                             message:@"Username & Password required"
@@ -86,86 +113,134 @@
     
 }
 
-- (BOOL)checkAllField
-{
-    if ([self.mobileTextField.text length]>0  && [self.passwordTextField.text length]>0) {
-        return true;
-    }else{
-        return false;
-    }
-}
 
 
 - (IBAction)switchUserAction:(id)sender {
-    if ([self.loginButton.titleLabel.text isEqualToString:@"Client Log In"]){
-        self.loginButton.backgroundColor = mDelegate_.supportThemeColor;
-        [self.switchUserButton setTitleColor:mDelegate_.supportThemeColor forState:UIControlStateNormal];
-        [self.loginButton setTitle:@"Support Log In" forState:UIControlStateNormal];
+    
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        //switch to support theme color
+        mDelegate_.appThemeColor = mDelegate_.supportThemeColor;
+        [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
+        [self.signInButton setHidden:YES];
+        
     }else{
-        self.loginButton.backgroundColor = mDelegate_.clientThemeColor;
-        [self.loginButton setTitle:@"Client Log In" forState:UIControlStateNormal];
-        [self.switchUserButton setTitleColor:mDelegate_.clientThemeColor forState:UIControlStateNormal];
+        //switch to client theme color
+        mDelegate_.appThemeColor = mDelegate_.clientThemeColor;
+        [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
+        [self.signInButton setHidden:NO];
     }
-
-//    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    self.loginButton.backgroundColor = mDelegate_.appThemeColor;
+    [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    
+    
+    //test
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"ms.benson@itexpresspro.com.au";
+        self.passwordTextField.text = @"qwe";
+    }else{
+        self.emailTextField.text = @"wuyao840610@163.com";
+        self.passwordTextField.text = @"831022";
+    }
 }
 
 
 - (void) userLogin
 {
-    //save username and password
-    NSLog(@"retrieving data");
+
+    NSLog(@"User Login...");
+
+    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/api/Login
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
-    NSString *mobile = self.mobileTextField.text;
+    NSString *email = self.emailTextField.text;
     NSString *password = self.passwordTextField.text;
-    NSString *functionName = @"UserLogin";
-    NSDictionary *parameters = @{@"mobile": mobile,
+    NSString *userType = userTypeClient;
+    //set user type
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        userType = userTypeClient;
+    }else{
+        userType = userTypeSupport;
+    }
+
+    NSDictionary *parameters = @{@"email": email,
                                  @"password":password,
-                                 @"functionName":functionName
+                                 @"userType":userType
                                  };
     
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    //http://admin.netcube.tv/membership.php?
-    
-    [manager GET:@"/membership.php" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+       
         [hud_ hide:YES];
 
-        NSDictionary *parsedObject = responseObject;
-        
-        NSString *status = [[NSString alloc]initWithString:[parsedObject objectForKey:@"status"]];
-        
-        if([status isEqualToString:@"fail"])
-        {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Invalid Email or Password"
-                                                                message:@"Please check your email or password"
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"0"]) {
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:errorMessage
                                                                delegate:nil
-                                                      cancelButtonTitle:@"Ok"
+                                                      cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
-        }else if ([status isEqualToString:@"success"])
-        {
+        }else if ([requestResultStatus isEqualToString:@"1"]) {
             
-            //save user infomation in .plist
-            NSString *displayName = [NSString stringWithFormat:@"%@ %@",[parsedObject objectForKey:@"lastname"], [parsedObject objectForKey:@"firstname"]];
             
-//            [mDelegate_ setMMobileNumber:self.mobileTextField.text];
-//            [mDelegate_ setMPassword:self.passwordTextField.text];
-//            [mDelegate_ setMDisplayName:displayName];
-//            
-//            
-//            [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mMobileNumber] forKey:@"mMobileNumber"];
-//            [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mPassword] forKey:@"mPassword"];
-//            [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mDisplayName] forKey:@"mDisplayName"];
-//            [[NSUserDefaults standardUserDefaults] synchronize];
+           mDelegate_.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
+
+            //Client Mode Example
+//            ClientID = 4;
+//            CompanyName = "IT Express Pro";
+//            ContactName = "Benson Shi";
+//            CreateDate = "2015-05-25T05:19:22.393";
+//            Email = "ms.benson@itexpresspro.com.au";
+//            Mobile = 123123;
+//            ModifyDate = "<null>";
+//            Password = qwe;
+//            Phone = 022234;
+//            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
+
             
-            //go to main view
-//            [mDelegate_ setMGuestModeOn:NO];
-//            [self dismissViewControllerAnimated:YES completion:nil];
+            
+            //Support Mode Example
+//            CreateDate = "2015-05-25T01:21:39.91";
+//            Email = "wuyao840610@163.com";
+//            FirstName = yao;
+//            LastName = wu;
+//            Mobile = 01111;
+//            ModifyDate = "<null>";
+//            Password = 831022;
+//            SupportID = 1;
+//            SupportType = 1;
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
+
+            //user mode
+            if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+                mDelegate_.clientID = [mDelegate_.userDictionary valueForKey:@"ClientID"];
+            }else{
+                mDelegate_.supportID = [mDelegate_.userDictionary valueForKey:@"SupportID"];
+            }
+
+            
+            //NSUserDefaults local variables
+            mDelegate_.userEmail = self.emailTextField.text;
+            mDelegate_.userPassword = self.passwordTextField.text;
+            [[NSUserDefaults standardUserDefaults] setObject:self.emailTextField.text
+                                                      forKey:@"userEmail"];
+            [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text
+                                                      forKey:@"userPassword"];
+            //save uicolor
+            NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
+            [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
+
             [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         }
         
@@ -187,7 +262,7 @@
     [self.view endEditing:YES];
 }
 
-#pragma mark - textfield delegate
+#pragma mark - textfield animation
 -(void)keyboardFrameDidChange:(NSNotification *)notification
 {
     CGRect keyboardEndFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -224,6 +299,7 @@
     }
 }
 
+#pragma mark - textfield delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
         [self.switchUserButton setHidden:YES];
 }

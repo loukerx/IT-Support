@@ -11,6 +11,6 @@
 @interface SelectSubCategoryTableViewController : UITableViewController
 
 @property (nonatomic) int catNum;
-
+@property (strong, nonatomic) NSString *parentID;
 
 @end

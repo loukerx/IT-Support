@@ -12,11 +12,13 @@
 #import "AFNetworking.h"
 #import "MenuListViewController.h"
 #import "RequestDetailTableViewController.h"
-#import "MainTableViewCell.h"
+#import "RequestListTableViewCell.h"
+#import "AppHelper.h"
 
 @interface RequestListTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
     
     //data
@@ -25,8 +27,12 @@
     //menu
     UIView *menu_;
     MenuListViewController *menuListView_;
+    NSString *searchType_;
+
 }
 
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *menuBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButtonItem;
 
 
 @end
@@ -41,6 +47,8 @@
     [super viewDidLoad];
     
     mDelegate_ = [[UIApplication sharedApplication] delegate];
+    appHelper_ = [[AppHelper alloc]init];
+    
     
     //refreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -51,48 +59,93 @@
     self.tableView.dataSource = self;
     
     //loading HUD
-    HUD_ =  [[MBProgressHUD alloc] init];
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUD_.labelText = @"Progressing...";
-    [HUD_ hide:YES];
-    [self.view addSubview:HUD_];
     
-//    [self prepareRequestList];
+    searchType_ = @"";
+    [self prepareRequestList:searchType_];
     
     //menu_ list
     menu_ = [[UIView alloc]init];
     menuListView_ = [[MenuListViewController alloc]init];
     menuListView_.superController = self;
     
+    //setting color
+    self.menuBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+
+        self.addBarButtonItem.enabled = YES;
+    }else{
+
+        self.addBarButtonItem.enabled = NO;
+        self.addBarButtonItem.tintColor = [UIColor whiteColor];
+    }
+    
 }
 #pragma mark - refreshControl
 - (void)refresh:(UIRefreshControl *)refreshControl {
-    [self prepareRequestList];
+    [self prepareRequestList:searchType_];
     [refreshControl endRefreshing];
 }
 
 #pragma mark - retrieving data
--(void) prepareRequestList
+-(void) prepareRequestList:(NSString *)searchType
 {
     
     NSLog(@"retrieving request list data");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    NSDictionary *parameters = @{};
+    
+    //URL:Client http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?ClientID=ClientID&curID=CurID&direction=Direction&searchCondition=SearchCondition
+    
+    //URL:Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?curID=CurID&direction=Direction&searchCondition=SearchCondition
+    
+    NSString *empty =@"";
+    
+    
+    //default "curID" is "requestID" = 0
+    NSString *curID = @"0";
+    NSString *direction = @"1";
+    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
+    
+
+    NSString *getMethod = @"";
+    NSDictionary *parameters;
+    //user mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        NSString *clientID = mDelegate_.clientID;
+        parameters = @{@"clientID" : clientID,
+                                     @"CurID" : curID,
+                                     @"Direction": direction,
+                                     @"SearchCondition" : searchCondition
+                                     };
+        getMethod = @"/ITSupportService/API/Request/Client";
+    }else{
+        parameters = @{@"CurID" : curID,
+                       @"Direction": direction,
+                       @"SearchCondition" : searchCondition
+                       };
+        getMethod = @"/ITSupportService/API/Request/Support";
+    }
+
+    
+
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    //http://ec2-52-64-98-132.ap-southeast-2.compute.amazonaws.com/NewsManagement/API/newsinfo
-    //request 10 records
+    //clientID 放在parameters中
+    [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
     
-    [manager GET:@"/NewsManagement/API/newsinfo" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-        
         tableData_ = [[NSMutableArray alloc]init];
         tableData_ = responseObject;
         [self.tableView reloadData];
         
         [HUD_ hide:YES];
-        
+        NSLog(@"Retreved Request List Data");
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -105,12 +158,6 @@
         [alertView show];
     }];
 }
-
-
-
-
-
-
 
 #pragma mark - Menu List
 - (IBAction)MenuAction:(id)sender {
@@ -162,17 +209,19 @@
                                                          inSection:THE_SECTION];
             [self.tableView scrollToRowAtIndexPath:selection atScrollPosition:UITableViewScrollPositionTop animated:NO];
         }
-    }else if ([displayMode isEqualToString:@"Active"]) {
-        [self prepareRequestList];
     }else if ([displayMode isEqualToString:@"Log Out"]){
         [self performSegueWithIdentifier:@"To Login View" sender:self];
+    }else{
+        searchType_ = displayMode;
+        [self prepareRequestList:searchType_];
     }
 }
 
-#pragma mark - Table view data source
+#pragma mark - TableView Datasource
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return self.view.frame.size.width * cellHeightRatio + 60;
+//    return self.view.frame.size.width * cellHeightRatio + 60;
+    return 100;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -188,37 +237,69 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"RequestListCell" ];
+    NSString *cellidentify = @"RequestListCell";
     
-    if (tableData_.count>0) {
-        if (cell == nil)
-        {
-            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"MainTableViewCell" owner:self options:nil];
-            cell = [nib objectAtIndex:0];
-        }
-        
-        //populate a cell
-        NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
-        cell.subjectLabel.text = [NSString stringWithFormat:@"Subject: %@",[requestObject valueForKey:@"Subject"]];
-        cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",[requestObject valueForKey:@"Status"]];
-        
-        //populate image
-        NSString *myURL =[NSString stringWithFormat:@"%@%@",AWSLinkURL,[requestObject valueForKey:@"PictureURL"]];
-        
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-            
-            UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]]];
-            
-            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-                
-                [cell.imageView setImage:image];
-            });
-        });
+    RequestListTableViewCell *cell = (RequestListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellidentify ];
+    
+    if (cell == nil)
+    {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RequestListTableViewCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
     }
+
+
+    //populate a cell
+    NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
+    //title
+    NSString *title = [NSString stringWithFormat:@"Subject: %@",[requestObject valueForKey:@"Title"]];
+    cell.subjectLabel.text = title;
+    
+    //枚举request状态
+//    NSString *statusString;
+//    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
+//    switch (rs) {
+//        case Active:
+//            statusString = @"Active";
+//            break;
+//        case Processing:
+//            statusString = @"Processing";
+//            break;
+//        case Processed:
+//            statusString = @"Processed";
+//            break;
+//        case Finished:
+//            statusString = @"Finished";
+//            break;
+//            
+//        default:
+//            break;
+//    }
+//    
+//    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
+
+    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
+    NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:rs];
+    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
+    
+        //populate image
+//        NSString *myURL =[NSString stringWithFormat:@"%@%@",AWSLinkURL,[requestObject valueForKey:@"PictureURL"]];
+//        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+//            
+//            UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]]];
+//            
+//            dispatch_sync(dispatch_get_main_queue(), ^(void) {
+//                
+//                [cell.imageView setImage:image];
+//            });
+//        });
 
     return cell;
 }
 
+
+
+#pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 //    roomObject_ = [tableData_ objectAtIndex:indexPath.row];

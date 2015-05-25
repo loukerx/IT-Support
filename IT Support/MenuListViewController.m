@@ -25,7 +25,7 @@
 @property(nonatomic, strong) NSMutableArray *tableViewData;
 
 //button
-@property (weak, nonatomic) IBOutlet UIButton *logInButton;
+@property (weak, nonatomic) IBOutlet UIButton *logOutButton;
 //layout
 @property (weak, nonatomic) IBOutlet UIView *TopView;
 
@@ -42,11 +42,19 @@
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     
     //setting
-    //DF0021
-    self.logInButton.backgroundColor = [mDelegate_.clientThemeColor colorWithAlphaComponent:1.0f];
-    self.TopView.backgroundColor = mDelegate_.clientThemeColor;
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+    }else{
+        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+    }
+    
+    //appThemeColor
+    self.logOutButton.backgroundColor = [mDelegate_.appThemeColor colorWithAlphaComponent:1.0f];
+    self.TopView.backgroundColor = mDelegate_.appThemeColor;
 
-    titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+
 //    iconName_ = @[@"Rent-25",@"Buy-25",@"Sold-25",@"Shortlist-25"];
     iconName_ = @[@"Rent-50",@"Buy-50",@"Sold-50",@"Shortlist-50"];
     self.tableView.delegate = self;
@@ -77,7 +85,7 @@
 {
     self.tableView.tableHeaderView =({
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 64.0f)];
-        view.backgroundColor = [mDelegate_.clientThemeColor colorWithAlphaComponent:1.0f];;
+        view.backgroundColor = [mDelegate_.appThemeColor colorWithAlphaComponent:1.0f];;
         view;
         
     });
@@ -129,7 +137,7 @@
         [bgColorView setBackgroundColor:[UIColor whiteColor]];
         [cell setSelectedBackgroundView:bgColorView];
         
-        [cell.textLabel setTextColor:mDelegate_.clientThemeColor];
+        [cell.textLabel setTextColor:mDelegate_.appThemeColor];
     }
     cell.imageView.image = [UIImage imageNamed:iconName_[indexPath.row]];
     return cell;
@@ -157,7 +165,7 @@
     [bgColorView setBackgroundColor:[UIColor whiteColor]];
     [cell setSelectedBackgroundView:bgColorView];
     
-    [cell.textLabel setTextColor:mDelegate_.clientThemeColor];
+    [cell.textLabel setTextColor:mDelegate_.appThemeColor];
     
     //get navigation controller
     
@@ -215,30 +223,28 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)logInAction:(id)sender {
-        [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
-//    [self dismissViewControllerAnimated:YES completion:nil];
-    
-//    if ([self.logInButton.titleLabel.text isEqualToString:@"Log In"]) {
-//       
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewStoryboardID"];
-//  
-//        [self.view.window.rootViewController presentViewController:loginViewController animated:YES completion:nil];
-//    }else
-//    {
-//        [self.logInButton setTitle:@"Log In" forState:UIControlStateNormal];
-    
-        //clear
-//        [mDelegate_ setMMobileNumber:@""];
-//        [mDelegate_ setMPassword:@""];
-//        [mDelegate_ setMDisplayName:@""];
-//        
-//        
-//        [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mMobileNumber] forKey:@"mMobileNumber"];
-//        [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mPassword] forKey:@"mPassword"];
-//        [[NSUserDefaults standardUserDefaults] setObject:[mDelegate_ mDisplayName] forKey:@"mDisplayName"];
-//        [[NSUserDefaults standardUserDefaults] synchronize];
-//    }
+#pragma mark - Log Out
+- (IBAction)logOutAction:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Log Out"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
 }
+
+#pragma mark - actionSheet
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            //hide menu list view controller
+            [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
+            break;
+        default:
+            break;
+    }
+    
+}
+
 @end

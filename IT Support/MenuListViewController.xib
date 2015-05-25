@@ -8,7 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuListViewController">
             <connections>
                 <outlet property="TopView" destination="asB-NL-AQu" id="NrE-be-lbe"/>
-                <outlet property="logInButton" destination="SLQ-08-Y5D" id="DdV-rA-mwL"/>
+                <outlet property="logOutButton" destination="SLQ-08-Y5D" id="kYU-0Q-3hD"/>
                 <outlet property="tableView" destination="vc6-Sh-DQD" id="mMy-6p-KRC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -42,7 +42,7 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="logInAction:" destination="-1" eventType="touchUpInside" id="608-0d-DGv"/>
+                                <action selector="logOutAction:" destination="-1" eventType="touchUpInside" id="AD6-GO-siT"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="asB-NL-AQu" userLabel="Top Bar View">

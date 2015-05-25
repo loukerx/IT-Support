@@ -14,6 +14,8 @@
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
+    NSString *requestID_;
+    
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -112,7 +114,7 @@
         {
             
             UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
-            imageview.contentMode = UIViewContentModeScaleAspectFill;
+            imageview.contentMode = UIViewContentModeScaleAspectFit;
             imageview.frame = CGRectMake(width * count, 0, width, height);
             [self.scrollView addSubview:imageview];
             count++;
@@ -258,31 +260,39 @@
 #pragma mark - Send Request
 - (IBAction)sendAction:(UIBarButtonItem *)sender {
     
-//    [self createRequest];
+    [self createRequest];
 }
 
 -(void)createRequest{
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //URL： http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client
+    NSString *clientID = mDelegate_.clientID;
+    NSString *categoryID = mDelegate_.requestCategoryID;
+    NSString *title = mDelegate_.requestSubject;
+    NSString *description = mDelegate_.requestDescription;
+    NSString *priority = @"1";
     
-    NSString *f = @"userRegister";
-    NSString *deviceId = @"";
-    NSString *mobilenum = @"";
-    
-    NSDictionary *parameters = @{@"f" : f,
-                                 @"deviceId" : deviceId,
-                                 @"mobilenum": mobilenum
+    NSDictionary *parameters = @{@"clientID" : clientID,
+                                 @"categoryID" : categoryID,
+                                 @"title": title,
+                                 @"description" : description,
+                                 @"priority" : priority
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
 
-    [manager POST:@"" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-
+    [manager POST:@"/ITSupportService/API/Request/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+       
+        NSLog(@"%@",responseObject);
         
+        //需要requestID值
+        requestID_ = [responseObject valueForKey:@"requestID"];
         NSLog(@"uploading photos");
-        [self uploadingRequestPhotos];
+//        [self uploadingRequestPhotos];
 
+//        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
@@ -295,27 +305,59 @@
  
 }
 
+
+//waiting for test
 -(void)uploadingRequestPhotos
 {
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Image?RequestID=RequestID&Description=Description
 
-    NSDictionary *parameters = @{};
+    
+    NSDictionary *parameters = @{@"RequestID" : requestID_,
+                                 @"Description" : mDelegate_.mRequestImageDescriptions
+                                 };
+
     //upload images
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:@"http://10.0.0.142/ApiTest/api/upload" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    AFHTTPRequestOperationManager *manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];// [AFHTTPRequestOperationManager manager];
+    [manager POST:@"/ITSupportService/API/Image" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+ 
         
-        for (int num = 1; num<3; num++) {
-            
-            NSString *filePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"room%d",num]
-                                                                 ofType:@"jpg"];
-            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-            
-            [formData appendPartWithFileURL:fileURL name:@"room3" error:nil];
-            
-            //            [formData appendPartWithFileData:data1
-            //                                        name:@"image1"
-            //                                    fileName:@"image1.jpg"
-            //                                    mimeType:@"image/jpeg"];
+        if (mDelegate_.mRequestImages.count>0) {
+            for (UIImage *image in mDelegate_.mRequestImages) {
+               
+                NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
+                NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
+                NSString *tempPhotoDescriptionName = [NSString stringWithFormat: @"%@%@", UUIDStr,@"Description"];
+                NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
+                
+                //send Photo Data
+                [formData appendPartWithFileData:bestImageData
+                                            name:tempPhotoDescriptionName//description tag
+                                        fileName:tempPhotoFileName
+                                        mimeType:@"image/jpeg"];
+                
+            }
         }
+
+        
+        
+        
+        
+        
+        
+        
+        
+//        for (int num = 1; num<3; num++) {
+//            
+//            NSString *filePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"room%d",num]
+//                                                                 ofType:@"jpg"];
+//            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+//            
+//            [formData appendPartWithFileURL:fileURL name:@"room3" error:nil];
+//            
+//
+//        }
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

@@ -72,15 +72,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="DM5-q8-TmI" style="IBUITableViewCellStyleDefault" id="fcT-4b-bls">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="RDZ-dw-bLI" detailTextLabel="NYg-m8-HWq" style="IBUITableViewCellStyleValue1" id="fcT-4b-bls">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fcT-4b-bls" id="Hwu-J9-aL2">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="DM5-q8-TmI">
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RDZ-dw-bLI">
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NYg-m8-HWq">
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -128,6 +134,9 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <segue destination="Ebh-Gi-FtM" kind="showDetail" identifier="To RequestList TableView" id="8cA-pr-8rm"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jOf-gS-IfG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -256,12 +265,12 @@
         <scene sceneID="DYG-U0-iuE">
             <objects>
                 <tableViewController id="hHD-LB-tF4" customClass="RequestListTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Hx-1k-Rgw">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Hx-1k-Rgw">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RequestListCell" id="8p1-0i-U4U">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="8p1-0i-U4U">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8p1-0i-U4U" id="N8u-Ee-rL5">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -286,6 +295,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="addBarButtonItem" destination="Ra3-I9-sbR" id="Wq2-M3-0qz"/>
+                        <outlet property="menuBarButtonItem" destination="sO5-Jy-gTy" id="RLs-JW-l2b"/>
                         <segue destination="F1K-7s-C9L" kind="show" identifier="To RequestDetail TableView" id="5IB-XF-7FZ"/>
                         <segue destination="wOq-zL-PLH" kind="showDetail" identifier="To Login View" id="etY-Wn-OG3"/>
                     </connections>
@@ -297,7 +308,7 @@
         <!--Navigation Controller-->
         <scene sceneID="5Pt-1D-weX">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ebh-Gi-FtM" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainRequestListStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="Ebh-Gi-FtM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="H7I-1w-2VF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -325,18 +336,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYp-PR-roL">
-                                <rect key="frame" x="277" y="550" width="46" height="30"/>
+                                <rect key="frame" x="265" y="550" width="70" height="30"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="JpC-pd-oXG"/>
-                                    <constraint firstAttribute="width" constant="46" id="UPz-Wm-2Ey"/>
+                                    <constraint firstAttribute="width" constant="70" id="UPz-Wm-2Ey"/>
                                 </constraints>
-                                <state key="normal" title="注册">
+                                <state key="normal" title="Sign In">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="B0n-xz-dy7" kind="presentation" identifier="To Sgin In View" id="xDk-MP-z7a"/>
+                                    <segue destination="B0n-xz-dy7" kind="presentation" identifier="To AddUserInfo View" id="xDk-MP-z7a"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bAr-zK-MC7">
@@ -354,13 +365,13 @@
                                     <action selector="loginAction:" destination="wOq-zL-PLH" eventType="touchUpInside" id="3hI-Xa-7Is"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AEk-i2-Fka">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username [Email]" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="AEk-i2-Fka">
                                 <rect key="frame" x="20" y="223" width="560" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="TMf-lL-hXb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="cJK-p2-Qmo">
                                 <rect key="frame" x="20" y="278" width="560" height="45"/>
@@ -428,10 +439,11 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="emailTextField" destination="AEk-i2-Fka" id="i4t-k6-0KD"/>
                         <outlet property="iconImageView" destination="OSI-Ru-dng" id="blb-ac-O2d"/>
                         <outlet property="loginButton" destination="bAr-zK-MC7" id="mV3-kb-WHx"/>
-                        <outlet property="mobileTextField" destination="AEk-i2-Fka" id="kGV-yx-aHV"/>
                         <outlet property="passwordTextField" destination="cJK-p2-Qmo" id="IwL-x7-XNd"/>
+                        <outlet property="signInButton" destination="mYp-PR-roL" id="4SG-e3-RD4"/>
                         <outlet property="switchUserButton" destination="zlj-wO-b2U" id="zbB-UG-nlS"/>
                         <segue destination="Ebh-Gi-FtM" kind="showDetail" identifier="To RequestList TableView" id="9T8-Lp-MLu"/>
                     </connections>
@@ -444,12 +456,12 @@
         <scene sceneID="3Ha-W3-rV8">
             <objects>
                 <tableViewController id="F1K-7s-C9L" customClass="RequestDetailTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Nwy-QE-t4c">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Nwy-QE-t4c">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Zu5-CJ-UOi">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Zu5-CJ-UOi">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zu5-CJ-UOi" id="xxH-Jp-7qF">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -461,6 +473,18 @@
                             <outlet property="delegate" destination="F1K-7s-C9L" id="7BN-gS-3QH"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="hGW-hc-W0p">
+                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="ke2-PH-J99">
+                            <connections>
+                                <action selector="confirmAction:" destination="F1K-7s-C9L" id="J05-2L-yUQ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="switchStatusBarButtonItem" destination="ke2-PH-J99" id="21w-ks-u00"/>
+                        <segue destination="Ebh-Gi-FtM" kind="showDetail" identifier="To RequestList TableView" id="0hi-ak-5Cd"/>
+                        <segue destination="3j4-Vr-dj2" kind="show" identifier="To RequestPhotoDescription TableView" id="cxg-oB-n2Z"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UbY-3m-pN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -494,7 +518,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Phone" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jar-PO-Lye">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jar-PO-Lye">
                                 <rect key="frame" x="15" y="227" width="280" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="nL6-eC-Uba"/>
@@ -502,7 +526,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mobile Number" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8ra-2d-aK3">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mobile" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8ra-2d-aK3">
                                 <rect key="frame" x="305" y="227" width="280" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="v4L-kt-awg"/>
@@ -518,6 +542,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="Submit">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
@@ -555,25 +580,83 @@
                             <constraint firstItem="Jar-PO-Lye" firstAttribute="leading" secondItem="hqw-jC-oBf" secondAttribute="leading" constant="15" id="wSK-GU-IbB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1WO-QT-aWh">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="hcb-A7-T5W">
-                            <connections>
-                                <action selector="cancelAction:" destination="g7O-J3-OLf" id="fTL-Eh-WVd"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="1WO-QT-aWh"/>
                     <connections>
                         <outlet property="companyPhoneTextField" destination="Jar-PO-Lye" id="SjH-a0-g9J"/>
                         <outlet property="emailAddressTextField" destination="RI5-sL-58w" id="jzX-H2-sCx"/>
                         <outlet property="mobileNumberTextField" destination="8ra-2d-aK3" id="zFz-zM-OEE"/>
                         <outlet property="passwordConfirmTextField" destination="nw4-b1-o5D" id="iZ9-XU-ynz"/>
                         <outlet property="passwordTextField" destination="ipw-3b-nB3" id="dwr-on-qC6"/>
+                        <outlet property="submitButton" destination="MmH-Bh-aqK" id="luk-kz-QvW"/>
                         <segue destination="wOq-zL-PLH" kind="showDetail" identifier="To Login View" id="EEI-Sq-Ium"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="37A-E8-Ygl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2032" y="1404"/>
+            <point key="canvasLocation" x="2723" y="1444"/>
+        </scene>
+        <!--Add User Info View Controller-->
+        <scene sceneID="2VF-77-TPV">
+            <objects>
+                <viewController id="C0W-vx-bEZ" customClass="AddUserInfoViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="MEO-v9-oyO"/>
+                        <viewControllerLayoutGuide type="bottom" id="6gP-nb-bCd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uEJ-mX-Fda">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GNB-UQ-PyZ">
+                                <rect key="frame" x="15" y="74" width="570" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Yxm-pX-YHj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contatct Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ym0-lh-0jE">
+                                <rect key="frame" x="15" y="127" width="570" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="YdC-bY-c1J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="GNB-UQ-PyZ" firstAttribute="leading" secondItem="uEJ-mX-Fda" secondAttribute="leading" constant="15" id="QTe-Wp-T9x"/>
+                            <constraint firstItem="ym0-lh-0jE" firstAttribute="leading" secondItem="uEJ-mX-Fda" secondAttribute="leading" constant="15" id="Qte-i0-h0S"/>
+                            <constraint firstAttribute="trailing" secondItem="GNB-UQ-PyZ" secondAttribute="trailing" constant="15" id="Tig-O3-lOF"/>
+                            <constraint firstItem="GNB-UQ-PyZ" firstAttribute="top" secondItem="MEO-v9-oyO" secondAttribute="bottom" constant="10" id="Znb-EH-BxP"/>
+                            <constraint firstItem="ym0-lh-0jE" firstAttribute="top" secondItem="GNB-UQ-PyZ" secondAttribute="bottom" constant="10" id="g1f-U8-Wd3"/>
+                            <constraint firstAttribute="trailing" secondItem="ym0-lh-0jE" secondAttribute="trailing" constant="15" id="mYa-VD-Cog"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="IAD-LU-R3y">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Q0m-lg-ZCr">
+                            <connections>
+                                <action selector="cancelAction:" destination="C0W-vx-bEZ" id="LGF-j4-0yd"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="NjU-NJ-nm9">
+                            <connections>
+                                <action selector="nextAction:" destination="C0W-vx-bEZ" id="l0W-k8-FGb"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cancelBarButtonItem" destination="Q0m-lg-ZCr" id="eZr-qk-Zgp"/>
+                        <outlet property="companyNameTextField" destination="GNB-UQ-PyZ" id="8Ez-HA-n1R"/>
+                        <outlet property="contactNameTextField" destination="ym0-lh-0jE" id="lNr-FO-ci6"/>
+                        <outlet property="nextBarButtonItem" destination="NjU-NJ-nm9" id="0Kt-cR-zqF"/>
+                        <segue destination="g7O-J3-OLf" kind="show" identifier="To SignIn View" id="TvD-zm-mVO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BqP-nF-uLk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2033" y="1444"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="m7o-rs-mu4">
@@ -586,12 +669,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="g7O-J3-OLf" kind="relationship" relationship="rootViewController" id="5yg-YE-CMz"/>
+                        <segue destination="C0W-vx-bEZ" kind="relationship" relationship="rootViewController" id="ES6-Ea-hbb"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QRi-YB-fVa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1308" y="1404"/>
+            <point key="canvasLocation" x="1332" y="1444"/>
         </scene>
     </scenes>
     <resources>
@@ -599,5 +682,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="EEI-Sq-Ium"/>
+        <segue reference="9T8-Lp-MLu"/>
+        <segue reference="cxg-oB-n2Z"/>
     </inferredMetricsTieBreakers>
 </document>

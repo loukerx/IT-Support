@@ -10,6 +10,7 @@
 
 @interface RequestDetailTableViewController : UITableViewController
 
+- (IBAction)confirmAction:(id)sender;
 
 @property (strong, nonatomic) NSDictionary *requestObject;
 @end

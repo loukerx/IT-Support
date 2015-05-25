@@ -1,16 +1,14 @@
 //
-//  MainTableViewCell.m
-//  ez4rent
+//  RequestListTableViewCell.m
+//  IT Support
 //
-//  Created by Yin Hua on 31/01/2015.
-//  Copyright (c) 2015 Yin Hua. All rights reserved.
+//  Created by Yin Hua on 20/05/2015.
+//  Copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
 //
 
-#import "MainTableViewCell.h"
+#import "RequestListTableViewCell.h"
 
-@implementation MainTableViewCell
-@synthesize imageView = _imageView;
-
+@implementation RequestListTableViewCell
 
 - (void)awakeFromNib {
     // Initialization code

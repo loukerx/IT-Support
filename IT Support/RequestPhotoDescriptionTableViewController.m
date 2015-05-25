@@ -67,7 +67,9 @@
     self.descriptionTextView.text = @"For additional question, please leave your message.";
     self.descriptionTextView.textColor = [UIColor lightGrayColor];
     self.descriptionTextView.delegate = self;
-    
+   
+    //depends on different push
+    self.descriptionTextView.editable = self.descriptionTextViewEditable;
     
 }
 

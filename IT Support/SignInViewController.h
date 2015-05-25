@@ -10,9 +10,8 @@
 
 @interface SignInViewController : UIViewController
 
-- (IBAction)cancelAction:(id)sender;
-
 - (IBAction)submitAction:(id)sender;
 
-
+@property (strong, nonatomic) NSString *companyName;
+@property (strong, nonatomic) NSString *contactName;
 @end

@@ -49,9 +49,11 @@
 		AEBA920D1B0B258D00447AA1 /* MenuListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA920C1B0B258D00447AA1 /* MenuListViewController.m */; };
 		AEBA92111B0B28CE00447AA1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92101B0B28CE00447AA1 /* LoginViewController.m */; };
 		AEBA92151B0B2C8E00447AA1 /* RequestDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */; };
-		AED1AD171B0C025D0020B054 /* MainTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD161B0C025D0020B054 /* MainTableViewCell.xib */; };
-		AED1AD1A1B0C02760020B054 /* MainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD191B0C02760020B054 /* MainTableViewCell.m */; };
 		AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD201B0C28EB0020B054 /* SignInViewController.m */; };
+		AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */; };
+		AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */; };
+		AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */; };
+		AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */; };
 		AEDA27311B02E3D90007DE11 /* room2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AEDA27301B02E3D90007DE11 /* room2.jpg */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
 		AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */; };
@@ -146,11 +148,15 @@
 		AEBA92101B0B28CE00447AA1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		AEBA92131B0B2C8E00447AA1 /* RequestDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailTableViewController.h; sourceTree = "<group>"; };
 		AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestDetailTableViewController.m; sourceTree = "<group>"; };
-		AED1AD161B0C025D0020B054 /* MainTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainTableViewCell.xib; sourceTree = "<group>"; };
-		AED1AD181B0C02760020B054 /* MainTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewCell.h; sourceTree = "<group>"; };
-		AED1AD191B0C02760020B054 /* MainTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewCell.m; sourceTree = "<group>"; };
 		AED1AD1F1B0C28EB0020B054 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		AED1AD201B0C28EB0020B054 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
+		AED1AD251B0C64990020B054 /* RequestListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestListTableViewCell.h; sourceTree = "<group>"; };
+		AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestListTableViewCell.m; sourceTree = "<group>"; };
+		AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestListTableViewCell.xib; sourceTree = "<group>"; };
+		AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
+		AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
+		AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserInfoViewController.h; sourceTree = "<group>"; };
+		AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUserInfoViewController.m; sourceTree = "<group>"; };
 		AEDA27301B02E3D90007DE11 /* room2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = room2.jpg; sourceTree = "<group>"; };
 		AEDA27331B0309420007DE11 /* SelectCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCategoryTableViewController.m; sourceTree = "<group>"; };
@@ -184,10 +190,10 @@
 			isa = PBXGroup;
 			children = (
 				AE5CDBC11B019ED30035C366 /* Main.storyboard */,
-				AED1AD161B0C025D0020B054 /* MainTableViewCell.xib */,
 				AEBA92091B0B257C00447AA1 /* MenuListViewController.xib */,
 				AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */,
 				AE5CDBC61B019ED30035C366 /* LaunchScreen.xib */,
+				AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -237,6 +243,7 @@
 				AE5CDC171B01DC270035C366 /* 3rd Party */,
 				AE5CDBB81B019ED30035C366 /* AppDelegate.h */,
 				AE5CDBB91B019ED30035C366 /* AppDelegate.m */,
+				AED4CF2D1B0D80B400C8F9A7 /* Helper */,
 				AE5CDC1A1B01DF1B0035C366 /* Image */,
 				AEDA27361B0309460007DE11 /* Controller */,
 				AEDA27321B0309150007DE11 /* Test */,
@@ -390,6 +397,8 @@
 			children = (
 				AEBA920F1B0B28CE00447AA1 /* LoginViewController.h */,
 				AEBA92101B0B28CE00447AA1 /* LoginViewController.m */,
+				AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */,
+				AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */,
 				AED1AD1F1B0C28EB0020B054 /* SignInViewController.h */,
 				AED1AD201B0C28EB0020B054 /* SignInViewController.m */,
 			);
@@ -399,10 +408,19 @@
 		AED1AD1B1B0C027A0020B054 /* RequestListCell */ = {
 			isa = PBXGroup;
 			children = (
-				AED1AD181B0C02760020B054 /* MainTableViewCell.h */,
-				AED1AD191B0C02760020B054 /* MainTableViewCell.m */,
+				AED1AD251B0C64990020B054 /* RequestListTableViewCell.h */,
+				AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */,
 			);
 			name = RequestListCell;
+			sourceTree = "<group>";
+		};
+		AED4CF2D1B0D80B400C8F9A7 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */,
+				AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		AEDA27321B0309150007DE11 /* Test */ = {
@@ -512,6 +530,7 @@
 				AE5CDC191B01DF180035C366 /* room1.jpg in Resources */,
 				AE58EF251B05BBC600372A5F /* image5.jpg in Resources */,
 				AE5CDBC31B019ED30035C366 /* Main.storyboard in Resources */,
+				AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */,
 				AEDA27311B02E3D90007DE11 /* room2.jpg in Resources */,
 				AE5CDBC81B019ED30035C366 /* LaunchScreen.xib in Resources */,
 				AE5CDBC51B019ED30035C366 /* Images.xcassets in Resources */,
@@ -519,7 +538,6 @@
 				AE58EF211B05BBC600372A5F /* image1.jpg in Resources */,
 				AE58EF221B05BBC600372A5F /* image2.jpg in Resources */,
 				AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */,
-				AED1AD171B0C025D0020B054 /* MainTableViewCell.xib in Resources */,
 				AE58EF231B05BBC600372A5F /* image3.jpg in Resources */,
 				AEBA920A1B0B257C00447AA1 /* MenuListViewController.xib in Resources */,
 			);
@@ -548,7 +566,6 @@
 				AE5CDBBD1B019ED30035C366 /* IT_Support.xcdatamodeld in Sources */,
 				AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */,
 				AE5CDC071B01DC1A0035C366 /* AFSecurityPolicy.m in Sources */,
-				AED1AD1A1B0C02760020B054 /* MainTableViewCell.m in Sources */,
 				AE5CDBBA1B019ED30035C366 /* AppDelegate.m in Sources */,
 				AE5CDC041B01DC1A0035C366 /* AFHTTPRequestOperationManager.m in Sources */,
 				AE5CDC081B01DC1A0035C366 /* AFURLConnectionOperation.m in Sources */,
@@ -557,6 +574,8 @@
 				AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */,
 				AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */,
 				AE5CDC0D1B01DC1A0035C366 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */,
+				AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */,
 				AE58EF181B0585D400372A5F /* RequestPhotoCollectionViewController.m in Sources */,
 				AE5CDBC01B019ED30035C366 /* ViewController.m in Sources */,
 				AEBA92071B0B24A400447AA1 /* RequestListTableViewController.m in Sources */,
@@ -568,6 +587,7 @@
 				AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */,
 				AE5CDC161B01DC210035C366 /* MBProgressHUD.m in Sources */,
 				AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */,
+				AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */,
 				AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */,
 				AE5CDC061B01DC1A0035C366 /* AFNetworkReachabilityManager.m in Sources */,
 				AE5CDC0A1B01DC1A0035C366 /* AFURLResponseSerialization.m in Sources */,

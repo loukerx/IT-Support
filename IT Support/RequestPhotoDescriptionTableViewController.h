@@ -10,7 +10,7 @@
 
 @interface RequestPhotoDescriptionTableViewController : UITableViewController
 
-
+@property (nonatomic) BOOL descriptionTextViewEditable;
 @property (nonatomic) NSInteger displayPhotoNum;
 
 @end
