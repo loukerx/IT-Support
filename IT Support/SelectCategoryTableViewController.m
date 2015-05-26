@@ -52,6 +52,10 @@
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     self.title = @"Select Category";
 
+    //clear image & image description
+    //because this is the start point to create a new request
+    [mDelegate_.mRequestImages removeAllObjects];
+    [mDelegate_.mRequestImageDescriptions removeAllObjects];
     
 }
 

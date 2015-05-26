@@ -62,6 +62,7 @@ static float const cellHeightRatio = 0.625f;
 
 //photos data
 @property (strong, nonatomic) NSMutableArray *mRequestImages;
+@property (strong, nonatomic) NSMutableArray *mRequestImagesURL;
 @property (strong, nonatomic) NSMutableArray *mRequestImageDescriptions;
 
 //color

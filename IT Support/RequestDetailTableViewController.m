@@ -36,20 +36,43 @@
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
     
+    //clear arrays
+    [mDelegate_.mRequestImagesURL removeAllObjects];
+    [mDelegate_.mRequestImageDescriptions removeAllObjects];
     
+    //tableView
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
-    self.switchStatusBarButtonItem.title = @"game";
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     
     [self initialCustomView];
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
-//    [self downloadPhotoData];
+    [self downloadPhotoData];
 
+    //user mode & requestStatus switch button
+    NSString *requestStatus =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestStatus"]];
 
+    //Client Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        //ONLY Status Processed(2) ON
+        if(![requestStatus isEqualToString:@"2"]){
+            self.switchStatusBarButtonItem.tintColor = [UIColor whiteColor];
+            self.switchStatusBarButtonItem.enabled = NO;
+        }
+    }else{//Support Mode
+        //ONLY
+        //status Active(0) ON
+        //status Processing(1) ON
+        if (![requestStatus isEqualToString:@"0"]&&![requestStatus isEqualToString:@"1"]) {
+            self.switchStatusBarButtonItem.tintColor = [UIColor whiteColor];
+            self.switchStatusBarButtonItem.enabled = NO;
+        }
+    }
+    
 }
 
 
@@ -69,14 +92,21 @@
     [manager GET:@"/ITSupportService/API/Image" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
         
         //convert to NSDictionary
-        NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSMutableArray *dicArray = responseObject;
+//        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[dicArray valueForKey:@"RequestResultStatus"]];
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"1"]) {
+//        if ([requestResultStatus isEqualToString:@"1"]) {
+        
+
+        
+        for (NSDictionary *dic in dicArray) {
             
-            //???????
-            mDelegate_.mRequestImages = [responseDictionary valueForKey:@"RequestResult"];
+            NSString *imageURL = [NSString stringWithFormat:@"%@", [dic valueForKey:@"PicFileURL"]];
+            NSString *imageDescription = [NSString stringWithFormat:@"%@", [dic valueForKey:@"Description"]];
             
+            [mDelegate_.mRequestImagesURL addObject:imageURL];
+            [mDelegate_.mRequestImageDescriptions addObject:imageDescription];
+        }
             
             //reload data for scrollview
             [self.scrollView removeFromSuperview];
@@ -86,14 +116,14 @@
             NSLog(@"Retreved Request Photos");
             
             
-        }else if ([requestResultStatus isEqualToString:@"0"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:[responseObject valueForKey:@"Message"]
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        }
+//        }else if ([requestResultStatus isEqualToString:@"0"]) {
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+//                                                                message:[responseObject valueForKey:@"Message"]
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+//        }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -188,39 +218,50 @@
 //    }
     
     
-    
-    
-    NSMutableArray *photos = [[NSMutableArray alloc]init];
+    NSMutableArray *photosURL = [[NSMutableArray alloc]init];
 
-    for (int i = 0; i<[mDelegate_.mRequestImages count]; i++) {
+    for (int i = 0; i<[mDelegate_.mRequestImagesURL count]; i++) {
         
-        id myObject = mDelegate_.mRequestImages[i];
-        if ([myObject isKindOfClass:[UIImage class]]) {
+        id myObject = mDelegate_.mRequestImagesURL[i];
+        if ([myObject isKindOfClass:[NSString class]]) {
             
             //check if it is working
-            [photos addObject:mDelegate_.mRequestImages[i]];
+            [photosURL addObject:mDelegate_.mRequestImagesURL[i]];
         }
     }
     
-    if (photos.count>0) {
+    if (photosURL.count>0) {
         //setting frame
         CGRect tmpFrame = self.view.bounds;
         CGFloat width = tmpFrame.size.width;
         CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
         
-        self.scrollView.contentSize =  CGSizeMake( width * photos.count,0);
+        self.scrollView.contentSize =  CGSizeMake( width * photosURL.count,0);
         
         int count = 0;
         
-        for(UIImage *image in photos)
+        for(NSString *url in photosURL)
         {
+      
+            //populate image
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
+    
+                NSString *imageFullsizeURL = [NSString stringWithFormat:@"%@%@",AWSLinkURL,url];
+                UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageFullsizeURL]]];
+    
+                dispatch_sync(dispatch_get_main_queue(), ^(void) {
+    
+                    UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
+                    imageview.contentMode = UIViewContentModeScaleAspectFill;
+                    imageview.frame = CGRectMake(width * count, 0, width, height);
+                    [self.scrollView addSubview:imageview];
+
+          
+                });
+            });
             
-            UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
-            imageview.contentMode = UIViewContentModeScaleAspectFill;
-            imageview.frame = CGRectMake(width * count, 0, width, height);
-            [self.scrollView addSubview:imageview];
+            
             count++;
-            
         }
     }
     
@@ -267,8 +308,8 @@
     int page = roundf(x/width) + 1;
     
     
-    if (mDelegate_.mRequestImages.count>0) {
-        self.pageLabel.text = [NSString stringWithFormat:@"%d/%lu",page,(unsigned long)[mDelegate_.mRequestImages count]];
+    if (mDelegate_.mRequestImagesURL.count>0) {
+        self.pageLabel.text = [NSString stringWithFormat:@"%d/%lu",page,(unsigned long)[mDelegate_.mRequestImagesURL count]];
     }else{
         [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
     }
@@ -379,25 +420,60 @@
     //URL：http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?clientID=1&requestID=2&status=1
     
     
-    //Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/ClientID?requestID=RequestID&status=Status
+    //Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?clientID=1requestID=RequestID&status=Status
+    
     NSString *clientID = mDelegate_.clientID;
     NSString *requestID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestID"]];
     NSString *status = [appHelper_ nextRequestStatusInt:[[self.requestObject valueForKey:@"RequestStatus"] integerValue]];
-
     
-    NSDictionary *parameters = @{@"clientID" : clientID,
-                                 @"requestID" : requestID,
-                                 @"status": status
-                                 };
+    NSString *URLString;
+    NSDictionary *parameters;
+    
+    //Client Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Client"];
+        
+        parameters = @{@"clientID" : clientID,
+                                     @"requestID" : requestID,
+                                     @"status": status
+                                     };
+    }else{//Support Mode
+        
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Support"];
+        parameters = @{@"requestID" : requestID,
+                                     @"status": status
+                                     };
+    }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager GET:@"/ITSupportService/API/Request/Support" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         NSLog(@"%@",responseObject);
-        
-        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"RequestResultStatus"]];
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+ 
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                message:@"Request Updated."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            
+            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:[responseObject valueForKey:@"Message"]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"

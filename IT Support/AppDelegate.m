@@ -48,6 +48,7 @@
 
     
     self.mRequestImages = [[NSMutableArray alloc]init];
+    self.mRequestImagesURL = [[NSMutableArray alloc]init];
     self.mRequestImageDescriptions = [[NSMutableArray alloc]init];
     
     
