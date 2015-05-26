@@ -61,16 +61,23 @@
         
     }
 }
-
+#pragma mark - prepare ImageView
 -(void)prepareImageView{
     
     //test
-    //    [mDelegate_.mRequestImages removeAllObjects];
-//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages removeAllObjects];
+//    for (int num=1;num<3; num++) {
 //        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
 //        
 //        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
 //    }
+//    NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
+//    mDelegate_.requestDescription =[NSString stringWithFormat:@"test description, %@", UUIDString];
+//    mDelegate_.requestSubject = [NSString stringWithFormat:@"Subject,%@", UUIDString];
+//;
+//    
+    
+    //test end
     
     self.imageView = [[UIImageView alloc] initWithImage:nil];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
@@ -170,7 +177,11 @@
 
 -(void)preparePhotosForScrollView
 {
-    
+    //////////////////
+    //////////////////
+    ////NOT USING/////
+    //////////////////
+    //////////////////
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
@@ -182,12 +193,12 @@
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
     //test
-    [mDelegate_.mRequestImages removeAllObjects];
-    for (int num=1;num<6; num++) {
-        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-        
-        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    }
+//    [mDelegate_.mRequestImages removeAllObjects];
+//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+//        
+//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+//    }
     
     
     for (int i = 0; i<[mDelegate_.mRequestImages count]; i++) {

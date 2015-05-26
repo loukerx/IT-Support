@@ -15,7 +15,7 @@
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
     NSString *requestID_;
-    
+    NSMutableArray *imageDescriptionArray_;
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -290,11 +290,28 @@
     [manager POST:@"/ITSupportService/API/Request/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
        
         NSLog(@"%@",responseObject);
-        
-        //需要requestID值
-        requestID_ = [responseObject valueForKey:@"requestID"];
-        NSLog(@"uploading photos");
-        [self uploadingRequestPhotos];
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+
+            NSDictionary *newRequest = [responseDictionary valueForKey:@"ResultRequest"];
+            
+            //需要requestID值
+            requestID_ = [NSString stringWithFormat:@"%@",[newRequest valueForKey:@"RequestID"]];
+            [self uploadingRequestPhotos];
+
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:[responseObject valueForKey:@"Message"]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+
 
 //        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         
@@ -313,72 +330,93 @@
 //waiting for test
 -(void)uploadingRequestPhotos
 {
+    NSLog(@"uploading photos");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Image?RequestID=RequestID&Description=Description
+    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Image?RequestID=RequestID&picDescriptions=picDescriptions
 
+    //clear array
+    imageDescriptionArray_ = [[NSMutableArray alloc]init];
+    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+    
+    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
+        //add object in description array
+        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
+        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
+                                           @"Description":descriptionContent
+                                           };
+      
+        //create array
+        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
+        [imageDescriptionArray_ addObject:descriptionDic];
+    }
+    
+    //json to NSString
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:imageDescriptionArray_
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     NSDictionary *parameters = @{@"RequestID" : requestID_,
-                                 @"Description" : mDelegate_.mRequestImageDescriptions
+                                 @"picDescriptions" :descriptionJsonString
                                  };
 
     //upload images
     AFHTTPRequestOperationManager *manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];// [AFHTTPRequestOperationManager manager];
     [manager POST:@"/ITSupportService/API/Image" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
  
-        
+        int index =0;
         if (mDelegate_.mRequestImages.count>0) {
             for (UIImage *image in mDelegate_.mRequestImages) {
                
                 NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
                 NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
                 NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
-                NSString *tempPhotoDescriptionName = [NSString stringWithFormat: @"%@%@", UUIDStr,@"Description"];
+//                NSString *tempPhotoDescriptionName = [NSString stringWithFormat: @"%@%@", UUIDStr,@"Description"];
                 NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
-                
+                NSString *name = [NSString stringWithFormat:@"%@",nameArray[index]];
                 //send Photo Data
                 [formData appendPartWithFileData:bestImageData
-                                            name:tempPhotoDescriptionName//description tag
+                                            name:name//description tag
                                         fileName:tempPhotoFileName
                                         mimeType:@"image/jpeg"];
-                
+
+                index++;
             }
         }
-
-        
-        
-        
-        
-        
-        
-        
-        
-//        for (int num = 1; num<3; num++) {
-//            
-//            NSString *filePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"room%d",num]
-//                                                                 ofType:@"jpg"];
-//            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-//            
-//            [formData appendPartWithFileURL:fileURL name:@"room3" error:nil];
-//            
-//
-//        }
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
+  
         
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
         
-        //        self.tableViewData = [[NSMutableArray alloc]init];
-        //        self.tableViewData = responseObject;
-        //        [self.tableView reloadData];
-        //
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                message:@"Uploading Photos."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:@"Please try later"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+
         
-        
-        NSString *message = [responseObject objectForKey:@"message"];
-        NSString *status = [responseObject objectForKey:@"status"];
-        NSString *name =[responseObject objectForKey:@"name"];
-        
-        NSLog(@"%@: %@",status, message);
-        NSLog(@"Name: %@",name);
+
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"

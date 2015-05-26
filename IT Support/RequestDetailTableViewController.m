@@ -36,18 +36,75 @@
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
     
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     self.switchStatusBarButtonItem.title = @"game";
     
     [self initialCustomView];
-    
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+//    [self downloadPhotoData];
+
+
 }
 
+
+-(void)downloadPhotoData
+{
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Image
+    
+    NSString *requestID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestID"]];
+    
+    NSDictionary *parameters = @{@"RequestID" : requestID};
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    //clientID 放在parameters中
+    [manager GET:@"/ITSupportService/API/Image" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+            
+            //???????
+            mDelegate_.mRequestImages = [responseDictionary valueForKey:@"RequestResult"];
+            
+            
+            //reload data for scrollview
+            [self.scrollView removeFromSuperview];
+            [self preparePhotosForScrollView];
+            [self populateTableViewHeader];
+            
+            NSLog(@"Retreved Request Photos");
+            
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:[responseObject valueForKey:@"Message"]
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
+                                                            message:[error localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }];
+}
 
 -(void)initialCustomView{
     
@@ -124,11 +181,11 @@
  
     
     //test image data
-    for (int num=1;num<6; num++) {
-        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-
-        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    }
+//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+//
+//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+//    }
     
     
     

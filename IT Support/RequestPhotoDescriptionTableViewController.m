@@ -155,7 +155,7 @@
         {
             
             UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
-            imageview.contentMode = UIViewContentModeScaleAspectFill;
+            imageview.contentMode = UIViewContentModeScaleAspectFit;
             imageview.frame = CGRectMake(width * count, 0, width, height);
             [self.scrollView addSubview:imageview];
             count++;
