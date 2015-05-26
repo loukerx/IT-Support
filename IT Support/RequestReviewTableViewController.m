@@ -22,6 +22,7 @@
 
 @property (strong, nonatomic) UITextField *subjectTextField;
 @property (strong, nonatomic) UITextView *descriptionTextView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *sendBarButtonItem;
 
 @end
 
@@ -35,7 +36,10 @@
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     [self initialCustomView];
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.sendBarButtonItem.tintColor = mDelegate_.appThemeColor;
     
+    //populate values
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
     self.tableView.delegate = self;
@@ -290,7 +294,7 @@
         //需要requestID值
         requestID_ = [responseObject valueForKey:@"requestID"];
         NSLog(@"uploading photos");
-//        [self uploadingRequestPhotos];
+        [self uploadingRequestPhotos];
 
 //        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         

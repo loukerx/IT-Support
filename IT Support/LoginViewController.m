@@ -72,7 +72,7 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"ms.benson@itexpresspro.com.au";
+        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
         self.passwordTextField.text = @"qwe";
     }else{
         self.emailTextField.text = @"wuyao840610@163.com";
@@ -137,7 +137,7 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"ms.benson@itexpresspro.com.au";
+        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
         self.passwordTextField.text = @"qwe";
     }else{
         self.emailTextField.text = @"wuyao840610@163.com";

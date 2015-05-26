@@ -23,9 +23,6 @@
     //data
     NSArray *categoryArray_;
     NSMutableArray *tableData_;
-    
-    
-    NSArray *titles_;
 
 }
 
@@ -51,12 +48,10 @@
     
     [self prepareRequestList];
     
-    
-    
-    
+    //setting color
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     self.title = @"Select Category";
-    //setting
-      titles_ = @[@"Website",@"Server",@"Hardware",@"Software",@"Others"];
+
     
 }
 
@@ -131,11 +126,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:cellidentify];
     }
-    
-//    cell.textLabel.text = titles_[indexPath.row];
 
-    
-    
     
     NSDictionary *dic = tableData_[indexPath.row];
     cell.textLabel.text =[NSString stringWithFormat:@"%@",[dic objectForKey:@"Name"]];
@@ -164,8 +155,6 @@
     SelectSubCategoryTableViewController *ssctvc = [segue destinationViewController];
     //RequestCategoryID is the parentID for next page.
     ssctvc.parentID = [NSString stringWithFormat:@"%@",[dic objectForKey:@"RequestCategoryID"]];;
-    
-    
 }
 
 

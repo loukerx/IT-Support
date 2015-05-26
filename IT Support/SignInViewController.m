@@ -63,7 +63,7 @@
         
         if ([self checkAllField]) {
             HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            HUD_.labelText = @"Login...";
+            HUD_.labelText = @"Processing...";
             //submit and create an account
             [self createClientAccount];
             
@@ -115,6 +115,14 @@
         NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"RequestResultStatus"]];
         // 1 == success, 0 == fail
         if ([requestResultStatus isEqualToString:@"1"]) {
+            
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                message:@"Account Created."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
             
             NSLog(@"Client account is created");
             [self performSegueWithIdentifier:@"To Login View" sender:self];

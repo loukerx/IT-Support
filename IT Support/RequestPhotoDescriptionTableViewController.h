@@ -11,6 +11,11 @@
 @interface RequestPhotoDescriptionTableViewController : UITableViewController
 
 @property (nonatomic) BOOL descriptionTextViewEditable;
-@property (nonatomic) NSInteger displayPhotoNum;
+@property (nonatomic) NSInteger displayPhotoIndex;
+
+
+- (IBAction)deletePhotoAction:(id)sender;
+
+
 
 @end

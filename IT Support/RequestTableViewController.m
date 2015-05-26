@@ -20,6 +20,7 @@
 @property (strong, nonatomic) UILabel *pageLabel;
 @property (strong, nonatomic) UITextField *subjectTextField;
 @property (strong, nonatomic) UITextView *descriptionTextView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *reviewBarButtonItem;
 
 
 @end
@@ -33,8 +34,8 @@
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     [self initialCustomView];
-
-    
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.reviewBarButtonItem.tintColor = mDelegate_.appThemeColor;
 //    [self preparePhotosForScrollView];
     
     [self prepareImageView];
@@ -181,12 +182,12 @@
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
     //test
-//    [mDelegate_.mRequestImages removeAllObjects];
-//    for (int num=1;num<6; num++) {
-//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-//        
-//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-//    }
+    [mDelegate_.mRequestImages removeAllObjects];
+    for (int num=1;num<6; num++) {
+        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+        
+        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+    }
     
     
     for (int i = 0; i<[mDelegate_.mRequestImages count]; i++) {

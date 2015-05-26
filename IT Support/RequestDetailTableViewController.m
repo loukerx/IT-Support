@@ -99,12 +99,12 @@
     
  if ([segue.identifier isEqualToString:@"To RequestPhotoDescription TableView"])
  {
+     //calculate start position on scrollview
      CGFloat x =  self.scrollView.contentOffset.x;
      CGFloat width = self.scrollView.frame.size.width;
-     int page = roundf(x/width);
      
      RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
-     rpdtvc.displayPhotoNum = page;
+     rpdtvc.displayPhotoIndex = roundf(x/width);
      rpdtvc.descriptionTextViewEditable = NO;
  }
     

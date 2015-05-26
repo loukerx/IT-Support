@@ -135,6 +135,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="sendBarButtonItem" destination="Kt5-Py-T5V" id="Lvf-PF-cda"/>
                         <segue destination="Ebh-Gi-FtM" kind="showDetail" identifier="To RequestList TableView" id="8cA-pr-8rm"/>
                     </connections>
                 </tableViewController>
@@ -172,6 +173,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="reviewBarButtonItem" destination="QMT-tq-0FC" id="Av9-rm-0KE"/>
                         <segue destination="dmb-Wl-eIC" kind="show" identifier="To RequestPhoto View" id="fQa-aU-Rhc"/>
                     </connections>
                 </tableViewController>
@@ -256,6 +258,16 @@
                             <outlet property="delegate" destination="3j4-Vr-dj2" id="Voh-a2-khw"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="c41-vW-b1q">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="Ipf-gN-Ma5">
+                            <connections>
+                                <action selector="deletePhotoAction:" destination="3j4-Vr-dj2" id="n6q-4D-7j9"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="deleteBarButtonItem" destination="Ipf-gN-Ma5" id="hRW-2c-pql"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bYA-gW-FNT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -681,8 +693,8 @@
         <image name="elders-logo" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="kpd-hp-qL0"/>
+        <segue reference="8cA-pr-8rm"/>
         <segue reference="EEI-Sq-Ium"/>
-        <segue reference="9T8-Lp-MLu"/>
-        <segue reference="cxg-oB-n2Z"/>
     </inferredMetricsTieBreakers>
 </document>

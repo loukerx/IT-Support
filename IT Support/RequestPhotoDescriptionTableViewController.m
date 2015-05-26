@@ -11,11 +11,11 @@
 
 
 
-@interface RequestPhotoDescriptionTableViewController ()<UIScrollViewDelegate,UITextViewDelegate>
+@interface RequestPhotoDescriptionTableViewController ()<UIActionSheetDelegate,UIScrollViewDelegate,UITextViewDelegate>
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
-    NSInteger displayPhotoNum_;
+    NSInteger displayPhotoIndex_;
     BOOL firstDisplay_;
 }
 
@@ -23,6 +23,8 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UITextView *descriptionTextView;
 @property (strong, nonatomic) UILabel *pageLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *deleteBarButtonItem;
+
 
 @end
 
@@ -32,9 +34,12 @@
     [super viewDidLoad];
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //setting
-    displayPhotoNum_ = self.displayPhotoNum;
+    displayPhotoIndex_ = self.displayPhotoIndex;
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     firstDisplay_ = YES;
+    //setting color
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+//    self.deleteBarButtonItem.tintColor = mDelegate_.appThemeColor;
     
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
@@ -46,9 +51,7 @@
                                    action:@selector(dismissKeyboard)];
     
     [self.scrollView addGestureRecognizer:tap];
-    
-    
-    
+
 }
 
 -(void)initialCustomView{
@@ -95,7 +98,7 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     
-    [mDelegate_.mRequestImageDescriptions replaceObjectAtIndex:displayPhotoNum_ withObject:textView.text];
+    [mDelegate_.mRequestImageDescriptions replaceObjectAtIndex:displayPhotoIndex_ withObject:textView.text];
 }
 
 #pragma mark - gesture
@@ -199,12 +202,13 @@
 //进入这个界面时必然执行这个方法
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView{
     if (firstDisplay_) {
-
-        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width *displayPhotoNum_, 0) animated:YES];
-        [self.pageLabel setText:[NSString stringWithFormat:@"%ld/%lu",(long)displayPhotoNum_+1,(unsigned long)[mDelegate_.mRequestImages count]]];
+        
+        //第一次显示需要指定显示内容，图片位置，说明信息
+        [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width *displayPhotoIndex_, 0) animated:YES];
+        [self.pageLabel setText:[NSString stringWithFormat:@"%ld/%lu",(long)displayPhotoIndex_+1,(unsigned long)[mDelegate_.mRequestImages count]]];
         
         //correct description position
-        self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoNum_];
+        self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
      
     }
     
@@ -222,8 +226,8 @@
     if (mDelegate_.mRequestImages.count>0) {
         self.pageLabel.text = [NSString stringWithFormat:@"%d/%lu",page,(unsigned long)[mDelegate_.mRequestImages count]];
 
-        displayPhotoNum_ = page - 1;
-        self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoNum_];
+        displayPhotoIndex_ = page - 1;
+        self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
 
     }else{
         [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
@@ -270,5 +274,70 @@
     //description textview
     return cell;
 }
+#pragma mark - Button Action
+- (IBAction)deletePhotoAction:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Delete"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
+    
+}
+
+#pragma mark - actionSheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+
+            //delete photo & description from their arrays
+            [mDelegate_.mRequestImageDescriptions removeObjectAtIndex:displayPhotoIndex_];
+            [mDelegate_.mRequestImages removeObjectAtIndex:displayPhotoIndex_];
+            
+            //if next photo exists, display it
+            if (mDelegate_.mRequestImages.count > displayPhotoIndex_) {
+                [self reloadPhotoAndDescriptionData];
+                
+            }else if (mDelegate_.mRequestImages.count != 0 && mDelegate_.mRequestImages.count == displayPhotoIndex_) {
+                //if there is no next photo, display previous one.
+                displayPhotoIndex_ --;
+            
+                [self reloadPhotoAndDescriptionData];
+
+            
+            }else{
+                //if array is empty, back to uicollectionView
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            }
+            break;
+        default:
+            break;
+    }
+    
+}
+
+
+-(void)reloadPhotoAndDescriptionData
+{
+    
+    [self.scrollView removeFromSuperview];
+    [self preparePhotosForScrollView];
+    [self populateTableViewHeader];//add scrollview
+    
+    //指定显示内容，图片位置，说明信息
+    [self.scrollView setContentOffset:CGPointMake(self.view.bounds.size.width *displayPhotoIndex_, 0) animated:YES];
+    [self.pageLabel setText:[NSString stringWithFormat:@"%ld/%lu",(long)displayPhotoIndex_+1,(unsigned long)[mDelegate_.mRequestImages count]]];
+    
+    //correct description position
+    self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
+    
+    
+}
+
+
+
 
 @end
+

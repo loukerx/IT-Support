@@ -234,7 +234,7 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     [actionSheet showInView:self.view];
 }
 
-#pragma mark - actionSheet
+#pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     switch (buttonIndex) {
         case 0:

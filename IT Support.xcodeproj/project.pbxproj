@@ -192,8 +192,8 @@
 				AE5CDBC11B019ED30035C366 /* Main.storyboard */,
 				AEBA92091B0B257C00447AA1 /* MenuListViewController.xib */,
 				AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */,
-				AE5CDBC61B019ED30035C366 /* LaunchScreen.xib */,
 				AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */,
+				AE5CDBC61B019ED30035C366 /* LaunchScreen.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";

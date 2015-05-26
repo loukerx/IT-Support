@@ -16,7 +16,7 @@
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
-    NSInteger displayPhotoNum_;
+    NSInteger displayPhotoIndex_;
 }
 
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -49,6 +49,9 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     // Register cell classes
     UINib *cellNib = [UINib nibWithNibName:@"PhotoCollectionViewCell" bundle:nil];
     [self.collectionView registerNib:cellNib forCellWithReuseIdentifier:reuseIdentifier];
+    
+    
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Add Photo Button
@@ -223,7 +226,7 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    displayPhotoNum_ = indexPath.row;
+    displayPhotoIndex_ = indexPath.row;
     [self performSegueWithIdentifier:@"To RequestPhotoDescription TableView" sender:self];
 
 }
@@ -234,7 +237,7 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
-    rpdtvc.displayPhotoNum = displayPhotoNum_;
+    rpdtvc.displayPhotoIndex = displayPhotoIndex_;
     rpdtvc.descriptionTextViewEditable = YES;
 }
 
