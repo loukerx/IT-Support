@@ -45,18 +45,19 @@
     //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         
-        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+//        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
     }else{
-        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+
     }
+    titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+    iconName_ = @[@"Active-25",@"Processing-25",@"Processed-25",@"Finished-25"];
+    
+    
     
     //appThemeColor
     self.logOutButton.backgroundColor = [mDelegate_.appThemeColor colorWithAlphaComponent:1.0f];
     self.TopView.backgroundColor = mDelegate_.appThemeColor;
 
-
-//    iconName_ = @[@"Rent-25",@"Buy-25",@"Sold-25",@"Shortlist-25"];
-    iconName_ = @[@"Rent-50",@"Buy-50",@"Sold-50",@"Shortlist-50"];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.opaque = NO;
@@ -127,8 +128,8 @@
     
     //setting color
     cell.backgroundColor = [UIColor clearColor];
-    cell.textLabel.textColor = [UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:23];
+    cell.textLabel.textColor = mDelegate_.menuTextColor;//[UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f];
+    cell.textLabel.font = mDelegate_.menuTextFont;//[UIFont fontWithName:@"HelveticaNeue" size:23];
 
     //populate values
     cell.textLabel.text = titles_[indexPath.row];
@@ -136,7 +137,7 @@
         UIView *bgColorView = [[UIView alloc] init];
         [bgColorView setBackgroundColor:[UIColor whiteColor]];
         [cell setSelectedBackgroundView:bgColorView];
-        
+
         [cell.textLabel setTextColor:mDelegate_.appThemeColor];
     }
     cell.imageView.image = [UIImage imageNamed:iconName_[indexPath.row]];
@@ -213,9 +214,6 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
  }
  */
 
-- (IBAction)hideMuneButtonClick:(id)sender {
-    [((RequestListTableViewController *)self.superController)hideMenuListViewController:nil];
-}
 
 
 - (void)didReceiveMemoryWarning {
@@ -223,7 +221,7 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Log Out
+#pragma mark - Button Action
 - (IBAction)logOutAction:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                              delegate:self
@@ -234,10 +232,27 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     [actionSheet showInView:self.view];
 }
 
+
+- (IBAction)hideMuneButtonClick:(id)sender {
+    [((RequestListTableViewController *)self.superController)hideMenuListViewController:nil];
+}
+
+
 #pragma mark - actionSheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     switch (buttonIndex) {
         case 0:
+            //CLEAR NSUserDefaults local variables
+//            mDelegate_.userEmail = self.emailTextField.text;
+//            mDelegate_.userPassword = self.passwordTextField.text;
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userEmail"];
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userPassword"];
+            //save uicolor
+//            NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
+            
             //hide menu list view controller
             [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
             break;

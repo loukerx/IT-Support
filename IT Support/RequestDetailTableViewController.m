@@ -11,12 +11,14 @@
 #import "AFNetworking.h"
 #import "AppHelper.h"
 #import "RequestPhotoDescriptionTableViewController.h"
+#import "MBProgressHUD.h"
 
-@interface RequestDetailTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
+@interface RequestDetailTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIActionSheetDelegate>
 {
     AppDelegate *mDelegate_;
     AppHelper *appHelper_;
     CGFloat scrollViewHeight_;
+    MBProgressHUD *hud_;
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -39,6 +41,7 @@
     //clear arrays
     [mDelegate_.mRequestImagesURL removeAllObjects];
     [mDelegate_.mRequestImageDescriptions removeAllObjects];
+    [mDelegate_.mRequestImages removeAllObjects];
     
     //tableView
     self.tableView.delegate = self;
@@ -192,7 +195,7 @@
      
      RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
      rpdtvc.displayPhotoIndex = roundf(x/width);
-     rpdtvc.descriptionTextViewEditable = NO;
+     rpdtvc.enableEditMode = NO;
  }
     
 }
@@ -248,14 +251,17 @@
     
                 NSString *imageFullsizeURL = [NSString stringWithFormat:@"%@%@",AWSLinkURL,url];
                 UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageFullsizeURL]]];
-    
+                
+                //save image array
+                [mDelegate_.mRequestImages addObject:image];
+                
                 dispatch_sync(dispatch_get_main_queue(), ^(void) {
     
                     UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
-                    imageview.contentMode = UIViewContentModeScaleAspectFill;
+                    imageview.contentMode = UIViewContentModeScaleAspectFit;
                     imageview.frame = CGRectMake(width * count, 0, width, height);
                     [self.scrollView addSubview:imageview];
-
+                    
           
                 });
             });
@@ -344,7 +350,7 @@
     if (section != 0) {
         return 1;
     }
-    return 2;
+    return 1;
 }
 
 
@@ -352,7 +358,6 @@
     
     // Configure the cell...
     //-------------section 0
-    //- Category
     //- Subcategory
     //-------------section 1
     //- Subject
@@ -363,20 +368,19 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
-        NSString *str = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategotyID"]];
-        
+        NSString *categoryID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategotyID"]];
+        NSString *categoryName = [appHelper_ categoryNameFromCategoryID:categoryID];
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Category:";
-                //                 [cell.textLabel setFont:[UIFont systemFontOfSize:20]];
-                //                 [cell.textLabel adjustsFontSizeToFitWidth];
-                cell.detailTextLabel.text = @"";
+                cell.detailTextLabel.text = categoryName;
                 break;
-            case 1:
-                cell.textLabel.text = @"Subcategory:";
-
-                cell.detailTextLabel.text = str;
-                break;
+//            case 1:
+//                cell.textLabel.text = @"Subcategory:";
+//                 [cell.textLabel setFont:[UIFont systemFontOfSize:20]];
+//                 [cell.textLabel adjustsFontSizeToFitWidth];
+//                cell.detailTextLabel.text = str;
+//                break;
                 
             default:
                 break;
@@ -407,10 +411,30 @@
     return cell;
 }
 
+#pragma mark - actionSheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud_.labelText = @"Processing...";
+            [self updateRequest];
+            break;
+        default:
+            break;
+    }
+    
+}
 
 #pragma mark - confirm action
 - (IBAction)confirmAction:(id)sender {
-    [self updateRequest];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Confirm"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
 }
 //test测试阶段，更新状态功能完全开启
 //之后再做功能禁用机制

@@ -238,7 +238,7 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     
     RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
     rpdtvc.displayPhotoIndex = displayPhotoIndex_;
-    rpdtvc.descriptionTextViewEditable = YES;
+    rpdtvc.enableEditMode = YES;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -9,13 +9,15 @@
 #import "RequestReviewTableViewController.h"
 #import "AppDelegate.h"
 #import "AFNetworking.h"
+#import "MBProgressHUD.h"
 
-@interface RequestReviewTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate>
+@interface RequestReviewTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIActionSheetDelegate>
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
     NSString *requestID_;
     NSMutableArray *imageDescriptionArray_;
+    MBProgressHUD *hud_;
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -261,10 +263,31 @@
     return cell;
 }
 
+#pragma mark - actionSheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud_.labelText = @"Processing...";
+            [self createRequest];
+            break;
+        default:
+            break;
+    }
+    
+}
+
 #pragma mark - Send Request
 - (IBAction)sendAction:(UIBarButtonItem *)sender {
     
-    [self createRequest];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Send Request"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
+
 }
 
 -(void)createRequest{
@@ -316,6 +339,7 @@
 //        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
+       [hud_ hide:YES];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -387,7 +411,7 @@
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-  
+        [hud_ hide:YES];
         
         NSDictionary *responseDictionary = responseObject;
         NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
@@ -418,7 +442,7 @@
         
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
+        [hud_ hide:YES];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -428,6 +452,9 @@
     }];
     
 }
+
+
+
 
 
 /*

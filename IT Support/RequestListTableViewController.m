@@ -58,11 +58,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    //loading HUD
-    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD_.labelText = @"Progressing...";
-    
-    searchType_ = @"";
+    searchType_ = @"Active";
     [self prepareRequestList:searchType_];
     
     //menu_ list
@@ -85,6 +81,7 @@
     }
     
 }
+
 #pragma mark - refreshControl
 - (void)refresh:(UIRefreshControl *)refreshControl {
     [self prepareRequestList:searchType_];
@@ -94,6 +91,9 @@
 #pragma mark - retrieving data
 -(void) prepareRequestList:(NSString *)searchType
 {
+    //loading HUD
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Progressing...";
     
     NSLog(@"retrieving request list data");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
@@ -118,10 +118,10 @@
         
         NSString *clientID = mDelegate_.clientID;
         parameters = @{@"clientID" : clientID,
-                                     @"CurID" : curID,
-                                     @"Direction": direction,
-                                     @"SearchCondition" : searchCondition
-                                     };
+                       @"CurID" : curID,
+                       @"Direction": direction,
+                       @"SearchCondition" : searchCondition
+                       };
         getMethod = @"/ITSupportService/API/Request/Client";
     }else{
         parameters = @{@"CurID" : curID,
@@ -198,22 +198,23 @@
     
     
     //sell
-    if ([displayMode isEqualToString:@"Shortlist"]) {
+    if ([displayMode isEqualToString:@"Log Out"]){
         
-        tableData_ = [[NSMutableArray alloc] init];
-//        [tableData_ addObjectsFromArray:mDelegate_.propertyShortlist];
-        
-        [self.tableView reloadData];
-        if ([tableData_ count]>0) {
-            NSIndexPath *selection = [NSIndexPath indexPathForItem:THE_ITEM_TO_SELECT
-                                                         inSection:THE_SECTION];
-            [self.tableView scrollToRowAtIndexPath:selection atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    }else if ([displayMode isEqualToString:@"Log Out"]){
         [self performSegueWithIdentifier:@"To Login View" sender:self];
-    }else{
+    }else if (displayMode != nil) {
         searchType_ = displayMode;
         [self prepareRequestList:searchType_];
+//        tableData_ = [[NSMutableArray alloc] init];
+//        [tableData_ addObjectsFromArray:mDelegate_.propertyShortlist];
+//        
+//        [self.tableView reloadData];
+//        if ([tableData_ count]>0) {
+//            NSIndexPath *selection = [NSIndexPath indexPathForItem:THE_ITEM_TO_SELECT
+//                                                         inSection:THE_SECTION];
+//            [self.tableView scrollToRowAtIndexPath:selection atScrollPosition:UITableViewScrollPositionTop animated:NO];
+//        }
+    }else{
+
     }
 }
 

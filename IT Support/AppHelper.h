@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, RequestStatus){
 
 //Request Category 整理
 -(NSMutableArray*)convertCategoryArray:(NSArray *)categoryArray;
-
+-(NSString*)categoryNameFromCategoryID:(NSString *)categoryID;
 
 //Color HexString
 -(UIColor*)colorWithHexString:(NSString*)hex;

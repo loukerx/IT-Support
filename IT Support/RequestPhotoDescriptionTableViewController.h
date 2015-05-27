@@ -10,7 +10,7 @@
 
 @interface RequestPhotoDescriptionTableViewController : UITableViewController
 
-@property (nonatomic) BOOL descriptionTextViewEditable;
+@property (nonatomic) BOOL enableEditMode;
 @property (nonatomic) NSInteger displayPhotoIndex;
 
 

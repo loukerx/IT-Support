@@ -28,8 +28,8 @@
     
     //setting user
     self.userToken = @"";
-    self.userEmail = @"";
-    self.userPassword = @"";
+    self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
+    self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
     
     //setting client
     //test number
@@ -55,22 +55,31 @@
     //setting color
     self.clientThemeColor = [appHelper_ colorWithHexString:@"FF3B30"];
     self.supportThemeColor = [appHelper_ colorWithHexString:@"1D77EF"];
-    self.appThemeColor = self.clientThemeColor;
+    
+    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"appThemeColor"]?:nil;
+    UIColor *appThemeColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    self.appThemeColor = appThemeColor?:self.clientThemeColor;
     self.textFieldColor = [appHelper_ colorWithHexString:@"F7F7F7"];
     self.textViewBoardColor = [UIColor colorWithRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1];
+    self.menuTextColor =  [appHelper_ colorWithHexString:@"3E444B"]; //[UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f]; //3E444B
+    
+    
+    //setting font
+    self.menuTextFont = [UIFont fontWithName:@"HelveticaNeue" size:23];
     
     
     
-    //check username & password
+    
+    //Auto Login check username & password
     //initialise a view controller
     if (self.userEmail.length>0 && self.userPassword.length >0) {
         
 //        [self initialViewController:@"TabMainStoryboard"];
 //        //check user mobile and password
-//        [self userLogin];
+        [self userLogin];
         
     }else{
-//        [self initialViewController:@"LoginMainStoryboard"];
+        [self initialViewController:@"LoginViewStoryboardID"];
     }
 
     
@@ -96,7 +105,6 @@
     NSLog(@"User Login...");
     
     //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/api/Login
-    
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
     NSString *email = self.userEmail;
@@ -134,12 +142,18 @@
             
             NSLog(@"success");
             self.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
             
+            //user mode
+            if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+                mDelegate_.clientID = [mDelegate_.userDictionary valueForKey:@"ClientID"];
+            }else{
+                mDelegate_.supportID = [mDelegate_.userDictionary valueForKey:@"SupportID"];
+            }
             //To RequestList TableView
             [self initialViewController:@"MainRequestListStoryboardID"];
             
         }
-        
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
 
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Loging In"
@@ -149,8 +163,6 @@
                                                   otherButtonTitles:nil];
         [alertView show];
     }];
-    
-    
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

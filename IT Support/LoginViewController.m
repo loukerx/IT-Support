@@ -229,7 +229,6 @@
                 mDelegate_.supportID = [mDelegate_.userDictionary valueForKey:@"SupportID"];
             }
 
-            
             //NSUserDefaults local variables
             mDelegate_.userEmail = self.emailTextField.text;
             mDelegate_.userPassword = self.passwordTextField.text;
@@ -240,7 +239,6 @@
             //save uicolor
             NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
             [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
-
             [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         }
         

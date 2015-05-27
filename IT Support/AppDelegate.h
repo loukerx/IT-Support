@@ -54,7 +54,8 @@ static float const cellHeightRatio = 0.625f;
 
 //category list
 @property (strong, nonatomic) NSMutableArray *categoryListArray;
-@property (strong, nonatomic) NSMutableDictionary *subcategoryListDictionary;
+@property (strong, nonatomic) NSMutableArray *subcategoryListArray;
+@property (strong, nonatomic) NSMutableDictionary *subcategoryListDictionary;//ordered by 5 Key categories.
 @property (strong, nonatomic) NSString *requestCategory;
 @property (strong, nonatomic) NSString *requestSubCategory;
 
@@ -72,8 +73,11 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) UIColor *appThemeColor;
 @property (strong, nonatomic) UIColor *textFieldColor;
 @property (strong, nonatomic) UIColor *textViewBoardColor;
+@property (strong, nonatomic) UIColor *menuTextColor;
 
 
+//font
+@property (strong, nonatomic) UIFont *menuTextFont;
 
 
 

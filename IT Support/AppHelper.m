@@ -44,7 +44,6 @@
                                                        options:NSJSONWritingPrettyPrinted
                                                          error:&error];
     NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-
     
     return jsonString;
 }
@@ -102,6 +101,7 @@
 }
 
 #pragma mark - category list
+//conver category to categoryArray & subcategoryArray
 -(NSMutableArray*)convertCategoryArray:(NSArray *)categoryArray
 {
     AppDelegate *mDelegate_ = [[UIApplication sharedApplication] delegate];
@@ -125,8 +125,12 @@
     }
     NSLog(@"All level 1 categories have been collected");
     
+    //populate values
+    mDelegate_.categoryListArray = [[NSMutableArray alloc]initWithArray:returnLevelOneCategoryArray];
+    mDelegate_.subcategoryListArray = [[NSMutableArray alloc]initWithArray:originalCategoryArray];
+    
+    
     NSMutableDictionary *levelTwoCategoryDictionary = [[NSMutableDictionary alloc]init];
-    NSMutableDictionary *subCategoryList = [[NSMutableDictionary alloc]init];
     NSMutableArray *backupCategoryArray = [[NSMutableArray alloc]initWithArray:originalCategoryArray];
     
     
@@ -157,7 +161,7 @@
     
     NSLog(@"All level 2 categories have been collected");
     
-    mDelegate_.categoryListArray = [[NSMutableArray alloc]initWithArray:returnLevelOneCategoryArray];
+    //populate values
     mDelegate_.subcategoryListDictionary = [[NSMutableDictionary alloc]initWithDictionary:levelTwoCategoryDictionary];
     
     
@@ -175,13 +179,35 @@
     
     
     return returnLevelOneCategoryArray;
+
+}
+
+-(NSString*)categoryNameFromCategoryID:(NSString *)categoryID
+{
+    AppDelegate *mDelegate_ = [[UIApplication sharedApplication] delegate];
+    
+    NSString *returnCategoryName = @"Others";
+    if ([categoryID isEqualToString:@"5"]) {
+        return returnCategoryName;
+    }else{
+        for (NSDictionary *dic in mDelegate_.subcategoryListArray) {
+            
+            NSString *subcategoryID =[NSString stringWithFormat:@"%@",[dic valueForKey:@"RequestCategoryID"]];
+            
+            if ([categoryID isEqualToString:subcategoryID]) {
+                
+                returnCategoryName = [NSString stringWithFormat:@"%@",[dic valueForKey:@"Name"]];
+            }
+        }
+    }
+
+    return returnCategoryName;
     
 }
 
 
-
 #pragma mark - colorWithHexString
--(UIColor*)colorWithHexString:(NSString*)hex
+-(UIColor*)colorWithHexString:(NSString*)hex//#FF3B30
 {
     NSString *cString = [[hex stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] uppercaseString];
     

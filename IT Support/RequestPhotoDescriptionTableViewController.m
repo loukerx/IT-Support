@@ -8,7 +8,7 @@
 
 #import "RequestPhotoDescriptionTableViewController.h"
 #import "AppDelegate.h"
-
+#import "MBProgressHUD.h"
 
 
 @interface RequestPhotoDescriptionTableViewController ()<UIActionSheetDelegate,UIScrollViewDelegate,UITextViewDelegate>
@@ -17,6 +17,7 @@
     CGFloat scrollViewHeight_;
     NSInteger displayPhotoIndex_;
     BOOL firstDisplay_;
+    MBProgressHUD *hud_;
 }
 
 
@@ -39,7 +40,10 @@
     firstDisplay_ = YES;
     //setting color
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-//    self.deleteBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    
+    self.deleteBarButtonItem.tintColor = self.enableEditMode?mDelegate_.appThemeColor:[UIColor whiteColor];
+    self.deleteBarButtonItem.enabled = self.enableEditMode;
+
     
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
@@ -72,7 +76,7 @@
     self.descriptionTextView.delegate = self;
    
     //depends on different push
-    self.descriptionTextView.editable = self.descriptionTextViewEditable;
+    self.descriptionTextView.editable = self.enableEditMode;
     
 }
 
@@ -290,7 +294,9 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     switch (buttonIndex) {
         case 0:
-
+            hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            hud_.labelText = @"Processing...";
+            
             //delete photo & description from their arrays
             [mDelegate_.mRequestImageDescriptions removeObjectAtIndex:displayPhotoIndex_];
             [mDelegate_.mRequestImages removeObjectAtIndex:displayPhotoIndex_];
@@ -333,7 +339,7 @@
     //correct description position
     self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
     
-    
+    [hud_ hide:YES];
 }
 
 
