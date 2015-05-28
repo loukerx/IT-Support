@@ -224,9 +224,9 @@
 
             //user mode
             if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-                mDelegate_.clientID = [mDelegate_.userDictionary valueForKey:@"ClientID"];
+                mDelegate_.clientID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ClientID"]];
             }else{
-                mDelegate_.supportID = [mDelegate_.userDictionary valueForKey:@"SupportID"];
+                mDelegate_.supportID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"SupportID"]];
             }
 
             //NSUserDefaults local variables

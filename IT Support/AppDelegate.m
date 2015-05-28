@@ -13,7 +13,6 @@
 @interface AppDelegate ()
 {
     AppHelper *appHelper_;
-    AppDelegate *mDelegate_;
 }
 @end
 
@@ -33,8 +32,8 @@
     
     //setting client
     //test number
-    self.clientID = @"11";
-    self.supportID = @"12";
+    self.clientID = @"0";
+    self.supportID = @"0";
     
     //setting categorylists
     self.categoryListArray = [[NSMutableArray alloc]init];
@@ -65,7 +64,7 @@
     
     
     //setting font
-    self.menuTextFont = [UIFont fontWithName:@"HelveticaNeue" size:23];
+    self.menuTextFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:20.0];//[UIFont fontWithName:@"HelveticaNeue" size:20.0];
     
     
     
@@ -142,13 +141,13 @@
             
             NSLog(@"success");
             self.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
-            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
+            self.userDictionary = [responseDictionary valueForKey:@"User"];
             
             //user mode
-            if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-                mDelegate_.clientID = [mDelegate_.userDictionary valueForKey:@"ClientID"];
+            if ([self.appThemeColor isEqual:self.clientThemeColor]) {
+                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"ClientID"]];
             }else{
-                mDelegate_.supportID = [mDelegate_.userDictionary valueForKey:@"SupportID"];
+                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"SupportID"]];
             }
             //To RequestList TableView
             [self initialViewController:@"MainRequestListStoryboardID"];

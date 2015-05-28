@@ -9,6 +9,7 @@
 #import "RequestListTableViewCell.h"
 
 @implementation RequestListTableViewCell
+@synthesize imageView = _imageView;
 
 - (void)awakeFromNib {
     // Initialization code

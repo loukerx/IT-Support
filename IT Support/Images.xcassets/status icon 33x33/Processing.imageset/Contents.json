@@ -7,12 +7,12 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "ACTIVE-50-50.png"
+      "filename" : "Processing @2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "active-75-75.png"
+      "filename" : "Processing @3x.png"
     }
   ],
   "info" : {

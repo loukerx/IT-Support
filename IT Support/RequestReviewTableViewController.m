@@ -65,7 +65,7 @@
 //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentLeft;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=[NSString stringWithFormat:@"Subject:  %@",mDelegate_.requestSubject];
+    self.subjectTextField.text=[NSString stringWithFormat:@"%@",mDelegate_.requestSubject];
     self.subjectTextField.enabled = NO;
 
     
@@ -323,9 +323,10 @@
             
             //需要requestID值
             requestID_ = [NSString stringWithFormat:@"%@",[newRequest valueForKey:@"RequestID"]];
-            [self uploadingRequestPhotos];
+            if (mDelegate_.mRequestImages.count>0) {
+                [self uploadingRequestPhotos];
+            }
 
-            
         }else if ([requestResultStatus isEqualToString:@"0"]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
                                                                 message:[responseObject valueForKey:@"Message"]

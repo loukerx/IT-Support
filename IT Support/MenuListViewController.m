@@ -50,7 +50,7 @@
 
     }
     titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
-    iconName_ = @[@"Active-25",@"Processing-25",@"Processed-25",@"Finished-25"];
+    iconName_ =[[NSArray alloc]initWithArray:titles_];
     
     
     
@@ -98,7 +98,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 83;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -141,6 +141,12 @@
         [cell.textLabel setTextColor:mDelegate_.appThemeColor];
     }
     cell.imageView.image = [UIImage imageNamed:iconName_[indexPath.row]];
+    
+    //draw line on Cell
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 84, self.view.bounds.size.width, 1)];
+    lineView.backgroundColor = mDelegate_.textViewBoardColor;
+    [cell addSubview:lineView];
+    
     return cell;
 
 }

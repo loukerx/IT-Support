@@ -78,7 +78,6 @@
 //    
     
     //test end
-    
     self.imageView = [[UIImageView alloc] initWithImage:nil];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
     if (mDelegate_.mRequestImages.count>0) {
@@ -113,7 +112,8 @@
 //    self.subjectTextField.tag = 101;
 //    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.subjectTextField];
-
+    self.subjectTextField.delegate = self;
+    
     //textview
     CGRect textViewFrame = CGRectMake(10.0f, 0.0f, self.view.frame.size.width - 20, 160.0f);
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
@@ -158,6 +158,19 @@
 - (void)textFieldDidChange:(NSNotification *)notification {
     
     mDelegate_.requestSubject = self.subjectTextField.text;
+}
+
+
+#pragma mark - textFiled Delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    // Prevent crashing undo bug – see note below.
+    if(range.length + range.location > textField.text.length)
+    {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return newLength <= 30;
 }
 
 #pragma mark - gesture

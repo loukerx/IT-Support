@@ -91,6 +91,9 @@
 #pragma mark - retrieving data
 -(void) prepareRequestList:(NSString *)searchType
 {
+    //navigationbar title
+    self.title = searchType;
+    
     //loading HUD
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUD_.labelText = @"Progressing...";
@@ -130,9 +133,6 @@
                        };
         getMethod = @"/ITSupportService/API/Request/Support";
     }
-
-    
-
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -140,15 +140,32 @@
     //clientID 放在parameters中
     [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
     
-        tableData_ = [[NSMutableArray alloc]init];
-        tableData_ = responseObject;
-        [self.tableView reloadData];
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
         
-        [HUD_ hide:YES];
-        NSLog(@"Retreved Request List Data");
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"0"]) {
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:errorMessage
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }else if ([requestResultStatus isEqualToString:@"1"]) {
         
+            tableData_ = [[NSMutableArray alloc]init];
+            tableData_ = [responseDictionary valueForKey:@"Result"];
+            [self.tableView reloadData];
+
+            
+            
+            [HUD_ hide:YES];
+            NSLog(@"Retreved Request List Data");
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
         [HUD_ hide:YES];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
                                                             message:[error localizedDescription]
@@ -222,7 +239,7 @@
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
 //    return self.view.frame.size.width * cellHeightRatio + 60;
-    return 100;
+    return 85;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -251,36 +268,43 @@
 
     //populate a cell
     NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
-    //title
-    NSString *title = [NSString stringWithFormat:@"Subject: %@",[requestObject valueForKey:@"Title"]];
-    cell.subjectLabel.text = title;
     
-    //枚举request状态
-//    NSString *statusString;
-//    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
-//    switch (rs) {
-//        case Active:
-//            statusString = @"Active";
-//            break;
-//        case Processing:
-//            statusString = @"Processing";
-//            break;
-//        case Processed:
-//            statusString = @"Processed";
-//            break;
-//        case Finished:
-//            statusString = @"Finished";
-//            break;
-//            
-//        default:
-//            break;
-//    }
-//    
-//    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
+    //--title ----------
+    //--contact name ---
+    //--company name ---
+    //--created date ---
+    //--image ----------
+    
+    NSString *title = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"Title"]];
+    NSString *companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CompanyName"]];
+    NSString *contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ContactName"]];
+    NSString *createDate = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
+    
+    
+    cell.titleLabel.text = title;
+    cell.contactNameLabel.text = contactName;
+    cell.companyNameLabel.text = companyName;
+    cell.createdDateLabel.text = createDate;
+    cell.createdDateLabel.textColor = mDelegate_.appThemeColor;
+    
+    //image
+    NSString *parentID = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"RequestCategoryParentID"]];
+    UIImage *image = [appHelper_ imageFromCategoryParentID:parentID];
+    cell.imageView.image = image;
+  
+    //draw line on Cell
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 84, self.view.bounds.size.width, 1)];
+    lineView.backgroundColor = mDelegate_.textViewBoardColor;
+    [cell addSubview:lineView];
 
-    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
-    NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:rs];
-    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
+    
+    
+    
+    
+    
+//    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
+//    NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:rs];
+//    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
     
         //populate image
 //        NSString *myURL =[NSString stringWithFormat:@"%@%@",AWSLinkURL,[requestObject valueForKey:@"PictureURL"]];

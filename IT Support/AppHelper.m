@@ -11,6 +11,8 @@
 
 @implementation AppHelper
 
+
+#pragma mark - convert dictionary to Json String
 -(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType
 {
     NSString *requestStatusValue;
@@ -100,6 +102,8 @@
     return nextStatus;
 }
 
+
+
 #pragma mark - category list
 //conver category to categoryArray & subcategoryArray
 -(NSMutableArray*)convertCategoryArray:(NSArray *)categoryArray
@@ -182,6 +186,36 @@
 
 }
 
+-(UIImage*)imageFromCategoryParentID:(NSString *)parentID
+{
+    UIImage *image;
+    
+    int categoryID = [parentID intValue];
+    
+    switch (categoryID) {
+        case 0:
+            image = [UIImage imageNamed:@"Others"];
+            break;
+        case 1:
+            image = [UIImage imageNamed:@"Web"];
+            break;
+        case 2:
+            image = [UIImage imageNamed:@"Server"];
+            break;
+        case 3:
+            image = [UIImage imageNamed:@"Computer"];
+            break;
+        case 4:
+            image = [UIImage imageNamed:@"Software"];
+            break;
+        default:
+            image = [UIImage imageWithData:nil];
+            break;
+    }
+    return image;
+}
+
+/*
 -(NSString*)categoryNameFromCategoryID:(NSString *)categoryID
 {
     AppDelegate *mDelegate_ = [[UIApplication sharedApplication] delegate];
@@ -204,7 +238,7 @@
     return returnCategoryName;
     
 }
-
+*/
 
 #pragma mark - colorWithHexString
 -(UIColor*)colorWithHexString:(NSString*)hex//#FF3B30

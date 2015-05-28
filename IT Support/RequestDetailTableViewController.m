@@ -1,3 +1,4 @@
+
 //
 //  RequestDetailTableViewController.m
 //  IT Support
@@ -95,21 +96,22 @@
     [manager GET:@"/ITSupportService/API/Image" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
         
         //convert to NSDictionary
-        NSMutableArray *dicArray = responseObject;
-//        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[dicArray valueForKey:@"RequestResultStatus"]];
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
         // 1 == success, 0 == fail
-//        if ([requestResultStatus isEqualToString:@"1"]) {
-        
-
-        
-        for (NSDictionary *dic in dicArray) {
+        if ([requestResultStatus isEqualToString:@"1"]) {
             
-            NSString *imageURL = [NSString stringWithFormat:@"%@", [dic valueForKey:@"PicFileURL"]];
-            NSString *imageDescription = [NSString stringWithFormat:@"%@", [dic valueForKey:@"Description"]];
+            NSMutableArray *dicArray = [[NSMutableArray alloc]init];
+            dicArray = [responseDictionary valueForKey:@"Result"];
             
-            [mDelegate_.mRequestImagesURL addObject:imageURL];
-            [mDelegate_.mRequestImageDescriptions addObject:imageDescription];
-        }
+            for (NSDictionary *dic in dicArray) {
+                
+                NSString *imageURL = [NSString stringWithFormat:@"%@", [dic valueForKey:@"PicFileURL"]];
+                NSString *imageDescription = [NSString stringWithFormat:@"%@", [dic valueForKey:@"Description"]];
+                
+                [mDelegate_.mRequestImagesURL addObject:imageURL];
+                [mDelegate_.mRequestImageDescriptions addObject:imageDescription];
+            }
             
             //reload data for scrollview
             [self.scrollView removeFromSuperview];
@@ -118,15 +120,15 @@
             
             NSLog(@"Retreved Request Photos");
             
-            
-//        }else if ([requestResultStatus isEqualToString:@"0"]) {
-//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-//                                                                message:[responseObject valueForKey:@"Message"]
-//                                                               delegate:nil
-//                                                      cancelButtonTitle:@"OK"
-//                                                      otherButtonTitles:nil];
-//            [alertView show];
-//        }
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:errorMessage
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -154,7 +156,7 @@
     //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentLeft;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=[NSString stringWithFormat:@"Subject: %@",[self.requestObject valueForKey:@"Title"]];
+    self.subjectTextField.text=[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"Title"]];
     self.subjectTextField.enabled = NO;
     
     
@@ -262,6 +264,8 @@
                     imageview.frame = CGRectMake(width * count, 0, width, height);
                     [self.scrollView addSubview:imageview];
                     
+                    //fresh page label
+                    [self displayPageLabel];
           
                 });
             });
@@ -308,9 +312,14 @@
 
 -(void) scrollViewDidScroll:(UIScrollView *)scrollView{
     
+    [self displayPageLabel];
+}
+
+-(void)displayPageLabel
+{
     //display scrollview page number
-    CGFloat x =  scrollView.contentOffset.x;
-    CGFloat width = scrollView.frame.size.width;
+    CGFloat x =  self.scrollView.contentOffset.x;
+    CGFloat width = self.scrollView.frame.size.width;
     int page = roundf(x/width) + 1;
     
     
@@ -368,10 +377,17 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
-        NSString *categoryID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategotyID"]];
-        NSString *categoryName = [appHelper_ categoryNameFromCategoryID:categoryID];
+
+        NSString *categoryName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryName"]];
+        NSString *parentID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryParentID"]];
+        UIImage *image = [appHelper_ imageFromCategoryParentID:parentID];
+        
         switch (indexPath.row) {
             case 0:
+                //image
+                cell.imageView.image = image;
+                
+                //other info
                 cell.textLabel.text = @"Category:";
                 cell.detailTextLabel.text = categoryName;
                 break;
@@ -389,9 +405,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
         cell.textLabel.text = @"Status:";
- 
         NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:[[self.requestObject valueForKey:@"RequestStatus"]integerValue]];
         cell.detailTextLabel.text =  [NSString stringWithFormat:@"%@",statusString];
+        //image
+        cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
+        
     }else{
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -446,7 +464,7 @@
     
     //Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?clientID=1requestID=RequestID&status=Status
     
-    NSString *clientID = mDelegate_.clientID;
+
     NSString *requestID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestID"]];
     NSString *status = [appHelper_ nextRequestStatusInt:[[self.requestObject valueForKey:@"RequestStatus"] integerValue]];
     
@@ -455,19 +473,20 @@
     
     //Client Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        
+        NSString *clientID = mDelegate_.clientID;
         URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Client"];
         
         parameters = @{@"clientID" : clientID,
-                                     @"requestID" : requestID,
-                                     @"status": status
-                                     };
+                       @"requestID" : requestID,
+                       @"status": status
+                       };
     }else{//Support Mode
-        
+        NSString *supportID = mDelegate_.supportID;
         URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Support"];
-        parameters = @{@"requestID" : requestID,
-                                     @"status": status
-                                     };
+        parameters = @{@"supportID" : supportID,
+                       @"requestID" : requestID,
+                       @"status": status
+                       };
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];

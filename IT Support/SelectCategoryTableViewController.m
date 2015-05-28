@@ -80,17 +80,34 @@
     
     //clientID 放在parameters中
     [manager GET:@"/ITSupportService/API/Requestcategory" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+      
         
-
-        categoryArray_ =[[NSArray alloc]initWithArray:responseObject];
         
-        tableData_ = [[NSMutableArray alloc]init];
-        tableData_ = [appHelper_ convertCategoryArray:categoryArray_];
-        
-        [self.tableView reloadData];
-        [HUD_ hide:YES];
-        NSLog(@"Retreved category List Data");
-        
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+            
+            categoryArray_ =[[NSArray alloc]initWithArray:[responseDictionary valueForKey:@"Result"]];
+            
+            tableData_ = [[NSMutableArray alloc]init];
+            tableData_ = [appHelper_ convertCategoryArray:categoryArray_];
+            
+            [self.tableView reloadData];
+            [HUD_ hide:YES];
+            NSLog(@"Retreved category List Data");
+            
+            
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:errorMessage
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [HUD_ hide:YES];

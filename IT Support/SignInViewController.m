@@ -11,7 +11,7 @@
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 
-@interface SignInViewController ()
+@interface SignInViewController ()<UIActionSheetDelegate>
 {
     AppDelegate *mDelegate_;
     MBProgressHUD *HUD_;
@@ -55,34 +55,51 @@
     }
 }
 
-#pragma mark - Button Action
-
-- (IBAction)submitAction:(id)sender {
-    //check password
-    if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
-        
-        if ([self checkAllField]) {
-            HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            HUD_.labelText = @"Processing...";
-            //submit and create an account
-            [self createClientAccount];
-            
-        }else{
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                message:@"Please Fill All Blank."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        }
-    }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password Error"
-                                                            message:@"Please Confirm Your Password."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+#pragma mark - actionSheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+    switch (buttonIndex) {
+        case 0:
+            //check password
+            if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
+                
+                if ([self checkAllField]) {
+                    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                    HUD_.labelText = @"Processing...";
+                    //submit and create an account
+                    [self createClientAccount];
+                    
+                }else{
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                        message:@"Please Fill All Blank."
+                                                                       delegate:nil
+                                                              cancelButtonTitle:@"OK"
+                                                              otherButtonTitles:nil];
+                    [alertView show];
+                }
+            }else{
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Password Error"
+                                                                    message:@"Please Confirm Your Password."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+            }
+            break;
+        default:
+            break;
     }
+    
+}
+
+#pragma mark - Button Action
+- (IBAction)submitAction:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Submit"
+                                                    otherButtonTitles:nil];
+    actionSheet.tag = 1;
+    [actionSheet showInView:self.view];
 }
 
 -(void)createClientAccount{
