@@ -13,5 +13,6 @@
 - (IBAction)MenuAction:(id)sender;
 
 - (void)hideMenuListViewController:(NSString *)displayMode;
+@property (nonatomic) BOOL reloadTableView;
 
 @end

@@ -16,11 +16,11 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QKY-QD-aUp" userLabel="Left View">
                         <rect key="frame" x="0.0" y="0.0" width="65" height="80"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Others 2nd" translatesAutoresizingMaskIntoConstraints="NO" id="SKr-MS-8SG">
-                                <rect key="frame" x="16" y="23" width="33" height="33"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Others" translatesAutoresizingMaskIntoConstraints="NO" id="SKr-MS-8SG">
+                                <rect key="frame" x="12.5" y="19.5" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="33" id="7yh-cP-Msm"/>
-                                    <constraint firstAttribute="height" constant="33" id="AkM-Y3-azy"/>
+                                    <constraint firstAttribute="width" constant="40" id="7yh-cP-Msm"/>
+                                    <constraint firstAttribute="height" constant="40" id="AkM-Y3-azy"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -145,6 +145,6 @@
     <resources>
         <image name="Company Name " width="21" height="21"/>
         <image name="Contact Name " width="21" height="21"/>
-        <image name="Others 2nd" width="33" height="33"/>
+        <image name="Others" width="33" height="33"/>
     </resources>
 </document>

@@ -186,18 +186,18 @@
 
 }
 
--(UIImage*)imageFromCategoryParentID:(NSString *)parentID
+-(UIImage*)imageFromCategoryID:(NSString *)categoryIDString
 {
     UIImage *image;
     
-    int categoryID = [parentID intValue];
+    int categoryID = [categoryIDString intValue];
     
     switch (categoryID) {
         case 0:
             image = [UIImage imageNamed:@"Others"];
             break;
         case 1:
-            image = [UIImage imageNamed:@"Web"];
+            image = [UIImage imageNamed:@"Website"];
             break;
         case 2:
             image = [UIImage imageNamed:@"Server"];
@@ -209,9 +209,30 @@
             image = [UIImage imageNamed:@"Software"];
             break;
         default:
-            image = [UIImage imageWithData:nil];
+            image = [UIImage imageNamed:@"Others"];
             break;
     }
+    
+//    switch (categoryID) {
+//        case 0:
+//            image = [UIImage imageNamed:@"Others2"];
+//            break;
+//        case 1:
+//            image = [UIImage imageNamed:@"Website2"];
+//            break;
+//        case 2:
+//            image = [UIImage imageNamed:@"Server2"];
+//            break;
+//        case 3:
+//            image = [UIImage imageNamed:@"Computer2"];
+//            break;
+//        case 4:
+//            image = [UIImage imageNamed:@"Software2"];
+//            break;
+//        default:
+//            image = [UIImage imageNamed:@"Others2"];
+//            break;
+//    }
     return image;
 }
 

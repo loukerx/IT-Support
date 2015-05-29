@@ -267,6 +267,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="deleteBarButtonItem" destination="Ipf-gN-Ma5" id="hRW-2c-pql"/>
+                        <segue destination="37X-g5-3Cl" kind="presentation" identifier="To Image View" id="YNm-Bk-MWm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bYA-gW-FNT" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -393,24 +394,11 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                 <textInputTraits key="textInputTraits" spellCheckingType="no" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="elders-logo" translatesAutoresizingMaskIntoConstraints="NO" id="OSI-Ru-dng">
-                                <rect key="frame" x="287" y="138" width="25" height="25"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zlj-wO-b2U">
+                                <rect key="frame" x="531" y="40" width="39" height="39"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="bN7-Tb-i8x"/>
-                                    <constraint firstAttribute="height" constant="87" id="otJ-3v-UL8"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="bN7-Tb-i8x"/>
-                                        <exclude reference="otJ-3v-UL8"/>
-                                    </mask>
-                                </variation>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zlj-wO-b2U">
-                                <rect key="frame" x="524" y="28" width="50" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="5Hk-gf-tXh"/>
-                                    <constraint firstAttribute="width" constant="50" id="RoM-tJ-Ns2"/>
+                                    <constraint firstAttribute="height" constant="39" id="5Hk-gf-tXh"/>
+                                    <constraint firstAttribute="width" constant="39" id="RoM-tJ-Ns2"/>
                                 </constraints>
                                 <state key="normal" image="Switch Button">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -419,6 +407,13 @@
                                     <action selector="switchUserAction:" destination="wOq-zL-PLH" eventType="touchUpInside" id="xUd-u3-GPv"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OSI-Ru-dng">
+                                <rect key="frame" x="270" y="120" width="60" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="bN7-Tb-i8x"/>
+                                    <constraint firstAttribute="height" constant="60" id="otJ-3v-UL8"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -431,7 +426,7 @@
                             <constraint firstAttribute="trailing" secondItem="cJK-p2-Qmo" secondAttribute="trailing" constant="20" id="9yn-3w-dwa"/>
                             <constraint firstItem="zlj-wO-b2U" firstAttribute="centerY" secondItem="bAr-zK-MC7" secondAttribute="centerY" constant="-0.5" id="Bu8-Wr-fmL"/>
                             <constraint firstItem="cJK-p2-Qmo" firstAttribute="leading" secondItem="jEB-c3-NSn" secondAttribute="leading" constant="20" id="GSt-y7-1eh"/>
-                            <constraint firstItem="zlj-wO-b2U" firstAttribute="top" secondItem="XAV-ET-MuV" secondAttribute="bottom" constant="15" id="H5h-Pr-dQi"/>
+                            <constraint firstItem="zlj-wO-b2U" firstAttribute="top" secondItem="XAV-ET-MuV" secondAttribute="bottom" constant="20" id="H5h-Pr-dQi"/>
                             <constraint firstItem="OSI-Ru-dng" firstAttribute="centerY" secondItem="jEB-c3-NSn" secondAttribute="centerY" multiplier="0.5" id="MR1-pv-stv"/>
                             <constraint firstAttribute="trailing" secondItem="zlj-wO-b2U" secondAttribute="trailing" constant="30" id="SmN-Ne-6xo"/>
                             <constraint firstItem="bAr-zK-MC7" firstAttribute="top" secondItem="cJK-p2-Qmo" secondAttribute="bottom" constant="20" id="dlm-cX-6Td"/>
@@ -502,6 +497,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UbY-3m-pN2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1380" y="-183"/>
+        </scene>
+        <!--Image View Controller-->
+        <scene sceneID="fZn-Tm-Jb6">
+            <objects>
+                <viewController id="37X-g5-3Cl" customClass="ImageViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aRi-M9-Iuh"/>
+                        <viewControllerLayoutGuide type="bottom" id="SaL-S6-oAA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="gXt-Xq-agJ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6B-pc-drY">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c6B-pc-drY" firstAttribute="top" secondItem="gXt-Xq-agJ" secondAttribute="top" id="RMx-XN-61M"/>
+                            <constraint firstItem="c6B-pc-drY" firstAttribute="leading" secondItem="gXt-Xq-agJ" secondAttribute="leading" id="emq-6A-4fJ"/>
+                            <constraint firstAttribute="trailing" secondItem="c6B-pc-drY" secondAttribute="trailing" id="lBK-X0-Fjc"/>
+                            <constraint firstAttribute="bottom" secondItem="c6B-pc-drY" secondAttribute="bottom" id="njg-58-2xL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="scrollView" destination="c6B-pc-drY" id="GeN-as-Oyu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jGK-tu-YC8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5725" y="592"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="UdW-2F-UrH">
@@ -692,11 +719,10 @@
     </scenes>
     <resources>
         <image name="Switch Button" width="50" height="50"/>
-        <image name="elders-logo" width="100" height="43"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="etY-Wn-OG3"/>
-        <segue reference="9T8-Lp-MLu"/>
+        <segue reference="EEI-Sq-Ium"/>
+        <segue reference="0hi-ak-5Cd"/>
         <segue reference="cxg-oB-n2Z"/>
     </inferredMetricsTieBreakers>
 </document>

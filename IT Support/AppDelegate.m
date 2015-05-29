@@ -39,6 +39,10 @@
     self.categoryListArray = [[NSMutableArray alloc]init];
     self.subcategoryListDictionary = [[NSMutableDictionary alloc]init];
     
+    
+    //search
+    self.searchType = @"Active";
+    
     //setting request
     self.requestCategory = @"";
     self.requestSubCategory = @"";

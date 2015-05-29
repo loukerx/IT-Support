@@ -58,7 +58,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    searchType_ = @"Active";
+    searchType_ = mDelegate_.searchType;
     [self prepareRequestList:searchType_];
     
     //menu_ list
@@ -80,7 +80,12 @@
         self.addBarButtonItem.tintColor = [UIColor whiteColor];
     }
     
+    self.reloadTableView = NO;
+    
 }
+
+
+
 
 #pragma mark - refreshControl
 - (void)refresh:(UIRefreshControl *)refreshControl {
@@ -93,6 +98,7 @@
 {
     //navigationbar title
     self.title = searchType;
+    mDelegate_.searchType = searchType;
     
     //loading HUD
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -289,7 +295,7 @@
     
     //image
     NSString *parentID = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"RequestCategoryParentID"]];
-    UIImage *image = [appHelper_ imageFromCategoryParentID:parentID];
+    UIImage *image = [appHelper_ imageFromCategoryID:parentID];
     cell.imageView.image = image;
   
     //draw line on Cell

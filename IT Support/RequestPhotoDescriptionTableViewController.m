@@ -11,7 +11,7 @@
 #import "MBProgressHUD.h"
 
 
-@interface RequestPhotoDescriptionTableViewController ()<UIActionSheetDelegate,UIScrollViewDelegate,UITextViewDelegate>
+@interface RequestPhotoDescriptionTableViewController ()<UIActionSheetDelegate,UIScrollViewDelegate,UITextViewDelegate,UIGestureRecognizerDelegate>
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
@@ -116,8 +116,21 @@
 }
 
 -(void)dismissKeyboard{
-    
-    [self.view endEditing:YES];
+    if (self.enableEditMode) {
+        [self.view endEditing:YES];
+    }else{
+       [self performSegueWithIdentifier:@"To Image View" sender:self];
+    }
+ 
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
+        return;
+    }
+
+    [self performSegueWithIdentifier:@"To Image View" sender:self];
 }
 
 #pragma mark - scrollview & tableHeaderView
@@ -128,9 +141,19 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
+//    
+//    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapGesture:)];
+//    [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
+//    
+//    
     
-    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapGesture:)];
-    [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
+    // attach long press gesture to collectionView
+//    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+//       initWithTarget:self action:@selector(handleLongPress:)];
+//    lpgr.minimumPressDuration = .5; //seconds
+//    lpgr.delegate = self;
+//    [self.scrollView addGestureRecognizer:lpgr];
+    
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     

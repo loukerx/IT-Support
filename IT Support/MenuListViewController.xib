@@ -71,6 +71,7 @@
                     </subviews>
                     <constraints>
                         <constraint firstItem="asB-NL-AQu" firstAttribute="leading" secondItem="6kl-Vd-CIK" secondAttribute="leading" id="5WG-DB-TAv"/>
+                        <constraint firstItem="SLQ-08-Y5D" firstAttribute="top" secondItem="vc6-Sh-DQD" secondAttribute="bottom" id="Iug-57-oPB"/>
                         <constraint firstItem="SLQ-08-Y5D" firstAttribute="width" secondItem="vc6-Sh-DQD" secondAttribute="width" id="Rnv-U5-XKO"/>
                         <constraint firstItem="SLQ-08-Y5D" firstAttribute="leading" secondItem="6kl-Vd-CIK" secondAttribute="leading" id="Rwi-gO-Txl"/>
                         <constraint firstAttribute="bottom" secondItem="SLQ-08-Y5D" secondAttribute="bottom" id="Rz3-dX-U6G"/>
@@ -91,6 +92,7 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="ePg-n1-5XY"/>
+                            <exclude reference="hU0-1H-BYP"/>
                         </mask>
                     </variation>
                 </view>

@@ -13,6 +13,7 @@
 #import "AppHelper.h"
 #import "RequestPhotoDescriptionTableViewController.h"
 #import "MBProgressHUD.h"
+#import "RequestListTableViewController.h"
 
 @interface RequestDetailTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIActionSheetDelegate>
 {
@@ -199,7 +200,13 @@
      rpdtvc.displayPhotoIndex = roundf(x/width);
      rpdtvc.enableEditMode = NO;
  }
-    
+// if ([segue.identifier isEqualToString:@"To RequestList TableView"])
+// {
+//     RequestListTableViewController *rltvc = [segue destinationViewController];
+//    //RequestCategoryID is the parentID for next page.
+//    rltvc.reloadTableView = YES;
+// }
+
 }
 
 #pragma mark - scrollview & tableHeaderView
@@ -380,7 +387,7 @@
 
         NSString *categoryName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryName"]];
         NSString *parentID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryParentID"]];
-        UIImage *image = [appHelper_ imageFromCategoryParentID:parentID];
+        UIImage *image = [appHelper_ imageFromCategoryID:parentID];
         
         switch (indexPath.row) {
             case 0:

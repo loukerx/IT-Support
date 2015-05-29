@@ -38,15 +38,21 @@
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
     
-    //loading HUD
-    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD_.labelText = @"Progressing...";
     
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
-    [self prepareRequestList];
+    //判断是否已经下载过最新categoryList
+    if (mDelegate_.categoryListArray.count>0) {
+        tableData_ = [[NSMutableArray alloc]init];
+        tableData_ = mDelegate_.categoryListArray;
+
+    }else{
+
+        [self prepareRequestList];
+    }
+    
     
     //setting color
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
@@ -62,6 +68,10 @@
 #pragma mark - retrieving data
 -(void) prepareRequestList
 {
+    
+    //loading HUD
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Progressing...";
     
     NSLog(@"retrieving category list data");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
@@ -147,14 +157,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:cellidentify];
     }
-
     
     NSDictionary *dic = tableData_[indexPath.row];
     cell.textLabel.text =[NSString stringWithFormat:@"%@",[dic objectForKey:@"Name"]];
     
+    //image
+    NSString *categoryIDString = [NSString stringWithFormat:@"%@",[dic valueForKey:@"RequestCategoryID"]];
+    UIImage *image = [appHelper_ imageFromCategoryID:categoryIDString];
+    cell.imageView.image = image;
+    
+    
+    
     return cell;
-    
-    
+
 }
 
 #pragma mark tableview delegate

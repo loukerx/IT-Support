@@ -319,14 +319,27 @@
         // 1 == success, 0 == fail
         if ([requestResultStatus isEqualToString:@"1"]) {
 
-            NSDictionary *newRequest = [responseDictionary valueForKey:@"ResultRequest"];
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                message:@"Created Request."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+    
+            NSDictionary *newRequest = [responseDictionary valueForKey:@"Result"];
             
             //需要requestID值
             requestID_ = [NSString stringWithFormat:@"%@",[newRequest valueForKey:@"RequestID"]];
+            
             if (mDelegate_.mRequestImages.count>0) {
                 [self uploadingRequestPhotos];
-            }
+            }else{
 
+                hud_.hidden = YES;
+                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            }
+            
         }else if ([requestResultStatus isEqualToString:@"0"]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
                                                                 message:[responseObject valueForKey:@"Message"]
@@ -335,9 +348,6 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }
-
-
-//        [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
        [hud_ hide:YES];
@@ -369,7 +379,6 @@
         NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
                                            @"Description":descriptionContent
                                            };
-      
         //create array
         [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
         [imageDescriptionArray_ addObject:descriptionDic];

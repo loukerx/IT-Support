@@ -46,6 +46,8 @@ static float const cellHeightRatio = 0.625f;
 //support user
 @property (strong, nonatomic) NSString *supportID;
 
+//search
+@property (strong, nonatomic) NSString *searchType;
 
 //setting request variables
 @property (strong, nonatomic) NSString *requestCategoryID;

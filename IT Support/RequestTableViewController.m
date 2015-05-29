@@ -173,6 +173,24 @@
     return newLength <= 30;
 }
 
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+//    if ([self checkAllField]) {
+//        //submit and create an account
+//        [self userLogin];
+//    }else{
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"错误"
+//                                                            message:@"输入框不能为空"
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"确定"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+//    }
+    return NO;
+}
+
+
 #pragma mark - gesture
 
 -(void)dismissKeyboard{

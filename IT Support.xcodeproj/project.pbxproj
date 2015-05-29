@@ -57,6 +57,7 @@
 		AEDA27311B02E3D90007DE11 /* room2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AEDA27301B02E3D90007DE11 /* room2.jpg */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
 		AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */; };
+		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
 		AEE684261B032D36005F9AE7 /* RequestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684251B032D36005F9AE7 /* RequestTableViewController.m */; };
 /* End PBXBuildFile section */
@@ -162,6 +163,8 @@
 		AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCategoryTableViewController.m; sourceTree = "<group>"; };
 		AEDB5EE21B0AE0DC007C3DAD /* RequestReviewTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestReviewTableViewController.h; sourceTree = "<group>"; };
 		AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestReviewTableViewController.m; sourceTree = "<group>"; };
+		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		AEDDA5321B1846BA008213BE /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		AEE684211B03255A005F9AE7 /* SelectSubCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectSubCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectSubCategoryTableViewController.m; sourceTree = "<group>"; };
 		AEE684241B032D36005F9AE7 /* RequestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestTableViewController.h; sourceTree = "<group>"; };
@@ -215,6 +218,8 @@
 				AE58EF171B0585D400372A5F /* RequestPhotoCollectionViewController.m */,
 				AE306A6C1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.h */,
 				AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */,
+				AEDDA5311B1846BA008213BE /* ImageViewController.h */,
+				AEDDA5321B1846BA008213BE /* ImageViewController.m */,
 			);
 			name = "Request Photo";
 			sourceTree = "<group>";
@@ -575,6 +580,7 @@
 				AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */,
 				AE5CDC0D1B01DC1A0035C366 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */,
+				AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */,
 				AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */,
 				AE58EF181B0585D400372A5F /* RequestPhotoCollectionViewController.m in Sources */,
 				AE5CDBC01B019ED30035C366 /* ViewController.m in Sources */,
