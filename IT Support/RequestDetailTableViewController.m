@@ -262,8 +262,14 @@
                 UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageFullsizeURL]]];
                 
                 //save image array
-                [mDelegate_.mRequestImages addObject:image];
+                if (image == nil) {
+                    UIImage *defaultImage = [UIImage imageNamed:@"Default Image"];
+                    image = defaultImage;
+                    [mDelegate_.mRequestImages addObject:defaultImage];
+                }else{
                 
+                    [mDelegate_.mRequestImages addObject:image];
+                }
                 dispatch_sync(dispatch_get_main_queue(), ^(void) {
     
                     UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
@@ -277,11 +283,9 @@
                 });
             });
             
-            
             count++;
         }
     }
-    
 }
 
 

@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, RequestStatus){
 -(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType;
 
 //Request Status
+-(int)getRequestStatusIndex:(NSString *)searType;
 -(NSString*)convertRequestStatusStringWithInt:(NSInteger)requestStatusInt;
 -(NSString*)nextRequestStatusInt:(NSInteger)requestCurrentStatusInt;
 

@@ -83,6 +83,7 @@
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
     
+
 }
 
 #pragma mark - scrollview & tableHeaderView
@@ -435,6 +436,25 @@
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
+            
+//            CGFloat width = self.view.frame.size.width;
+//            CGFloat height = self.view.frame.size.height;
+//            
+//            
+//            //initial countdown advertisement label
+//            UILabel *countdownLabel = [[UILabel alloc]initWithFrame:CGRectMake(width - 50, 30, width, 30)];
+//            NSString *countDownString = @"广告:30";
+//            [countdownLabel setBackgroundColor:[UIColor blackColor]];
+//            [countdownLabel setText:countDownString];
+//            [countdownLabel setTextAlignment:NSTextAlignmentRight];
+//            [countdownLabel setTextColor:[UIColor whiteColor]];
+//            [countdownLabel setFont:[UIFont fontWithName:@"System" size:20.0]];
+//            
+//            
+//            
+//            
+//            
+//            [self.navigationController.view addSubview:countdownLabel];
             [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
             
             

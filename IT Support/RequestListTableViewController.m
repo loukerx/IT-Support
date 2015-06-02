@@ -23,11 +23,17 @@
     
     //data
     NSMutableArray *tableData_;
+    //load more
+    NSString *currentRequestID_;
+    NSString *direction_;//时间查询：0 向前; 1 向后;
+    UILabel *loadMore_;
+    NSUInteger lastLoadingTableDataCount_;
+    
     
     //menu
     UIView *menu_;
     MenuListViewController *menuListView_;
-    NSString *searchType_;
+    NSString *searchType_;//request status type for seaching
 
 }
 
@@ -49,17 +55,40 @@
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
     
+    //loadmore label
+    //loadmore label
+    loadMore_ =[[UILabel alloc]initWithFrame: CGRectMake(0,0,self.tableView.frame.size.width,44)];
+    loadMore_.textColor = [UIColor blackColor];
+    loadMore_.highlightedTextColor = [UIColor darkGrayColor];
+    loadMore_.backgroundColor = [UIColor clearColor];
+    loadMore_.font=[UIFont fontWithName:@"Verdana" size:18];
+    loadMore_.textAlignment=NSTextAlignmentCenter;
+//    loadMore_.font=[UIFont boldSystemFontOfSize:20];
+    loadMore_.text= @"正在加载...";
+    
+    
     
     //refreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
     
+    //tableview delegate
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    
+    //loading HUD
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Progressing...";
+    //table data
+    currentRequestID_ = @"0";
+    direction_ = @"0";
+    lastLoadingTableDataCount_ = 0;
+    tableData_ = [[NSMutableArray alloc]init];
     searchType_ = mDelegate_.searchType;
-    [self prepareRequestList:searchType_];
+    [self prepareMoreRequestList:searchType_];
+    
     
     //menu_ list
     menu_ = [[UIView alloc]init];
@@ -81,45 +110,43 @@
     }
     
     self.reloadTableView = NO;
-    
 }
-
-
 
 
 #pragma mark - refreshControl
 - (void)refresh:(UIRefreshControl *)refreshControl {
-    [self prepareRequestList:searchType_];
+    
+    NSDictionary *dic = tableData_[0];
+    
+    currentRequestID_ = [NSString stringWithFormat:@"%@", [dic valueForKey:@"RequestID"]];
+    direction_ = @"1";
+    lastLoadingTableDataCount_ = 0;
+//    tableData_ = [[NSMutableArray alloc]init];
+    [self prepareMoreRequestList:searchType_];
     [refreshControl endRefreshing];
 }
 
 #pragma mark - retrieving data
--(void) prepareRequestList:(NSString *)searchType
+
+-(void)prepareMoreRequestList:(NSString *)searchType
 {
     //navigationbar title
     self.title = searchType;
     mDelegate_.searchType = searchType;
     
-    //loading HUD
-    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD_.labelText = @"Progressing...";
-    
-    NSLog(@"retrieving request list data");
+    NSLog(@"retrieving requests data...");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
     //URL:Client http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?ClientID=ClientID&curID=CurID&direction=Direction&searchCondition=SearchCondition
     
     //URL:Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?curID=CurID&direction=Direction&searchCondition=SearchCondition
     
-    NSString *empty =@"";
-    
-    
-    //default "curID" is "requestID" = 0
-    NSString *curID = @"0";
-    NSString *direction = @"1";
+    //default "curID" is "currentRequestID" = 0
+    NSString *curID = currentRequestID_;
+    NSString *direction = direction_;
     NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
     
-
+    
     NSString *getMethod = @"";
     NSDictionary *parameters;
     //user mode
@@ -145,7 +172,7 @@
     
     //clientID 放在parameters中
     [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-    
+        [HUD_ hide:YES];
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
         NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
@@ -161,14 +188,26 @@
                                                       otherButtonTitles:nil];
             [alertView show];
         }else if ([requestResultStatus isEqualToString:@"1"]) {
-        
-            tableData_ = [[NSMutableArray alloc]init];
-            tableData_ = [responseDictionary valueForKey:@"Result"];
+    
+            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+            tempArray = [responseDictionary valueForKey:@"Result"];
+            //0 is load earlier data
+            if ([direction_ isEqualToString:@"0"]) {
+                
+                for (NSDictionary *dic in tempArray) {
+                    [tableData_ addObject:dic];
+                }
+
+            }else if ([direction_ isEqualToString:@"1"]){
+                //1 is load next data
+                for (NSDictionary *dic in tempArray) {
+                    [tableData_ insertObject:dic atIndex:0];
+                }
+            }
+            
             [self.tableView reloadData];
 
-            
-            
-            [HUD_ hide:YES];
+            [loadMore_ setText:@"All Loaded."];
             NSLog(@"Retreved Request List Data");
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -222,11 +261,21 @@
     
     //sell
     if ([displayMode isEqualToString:@"Log Out"]){
-        
+
         [self performSegueWithIdentifier:@"To Login View" sender:self];
     }else if (displayMode != nil) {
+        
         searchType_ = displayMode;
-        [self prepareRequestList:searchType_];
+        currentRequestID_ = @"0";
+        direction_ = @"0";
+        lastLoadingTableDataCount_ = 0;
+        tableData_ = [[NSMutableArray alloc]init];
+        
+        //loading HUD
+        HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        HUD_.labelText = @"Progressing...";
+        [self prepareMoreRequestList:searchType_];
+        
 //        tableData_ = [[NSMutableArray alloc] init];
 //        [tableData_ addObjectsFromArray:mDelegate_.propertyShortlist];
 //        
@@ -244,7 +293,9 @@
 #pragma mark - TableView Datasource
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return self.view.frame.size.width * cellHeightRatio + 60;
+    if (indexPath.row == [tableData_ count]) {
+        return 44;
+    }
     return 85;
 }
 
@@ -255,75 +306,80 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-     return [tableData_ count];
+     return [tableData_ count] + 1;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *cellidentify = @"RequestListCell";
-    
-    RequestListTableViewCell *cell = (RequestListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellidentify ];
-    
-    if (cell == nil)
-    {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RequestListTableViewCell" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
+    UITableViewCell *cell = nil;
+
+
+    if (indexPath.row!= tableData_.count) {
+        RequestListTableViewCell *cell = (RequestListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellidentify];
+        
+        if (cell == nil)
+        {
+            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RequestListTableViewCell" owner:self options:nil];
+            cell = [nib objectAtIndex:0];
+        }
+        
+        //populate a cell
+        NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
+        
+        //--title ----------
+        //--contact name ---
+        //--company name ---
+        //--created date ---
+        //--image ----------
+        //----load more-----
+        
+        NSString *title = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"Title"]];
+        NSString *companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CompanyName"]];
+        NSString *contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ContactName"]];
+        NSString *createDate = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
+        
+        
+        cell.titleLabel.text = title;
+        cell.contactNameLabel.text = contactName;
+        cell.companyNameLabel.text = companyName;
+        cell.createdDateLabel.text = createDate;
+        cell.createdDateLabel.textColor = mDelegate_.appThemeColor;
+        
+        //image
+        NSString *parentID = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"RequestCategoryParentID"]];
+        UIImage *image = [appHelper_ imageFromCategoryID:parentID];
+        cell.imageView.image = image;
+        
+        //draw line on Cell
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 84, self.view.bounds.size.width, 1)];
+        lineView.backgroundColor = mDelegate_.textViewBoardColor;
+        [cell addSubview:lineView];
+ 
+        if (indexPath.row == tableData_.count - 1) {
+            currentRequestID_ = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"RequestID"]];
+        }
+        return cell;
+        
+    }else{
+        //add load more indicate on this cell;
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+        if(cell==nil){
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                          reuseIdentifier:@"Cell"];
+        }
+
+        if ([tableData_ count] > lastLoadingTableDataCount_) {
+            [loadMore_ setText:@"Loading Earlier Requests..."];
+            
+            direction_ = @"0";
+            [cell addSubview:loadMore_];
+            [self prepareMoreRequestList:searchType_];
+            lastLoadingTableDataCount_ = [tableData_ count];
+        }
     }
-
-
-    //populate a cell
-    NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
-    
-    //--title ----------
-    //--contact name ---
-    //--company name ---
-    //--created date ---
-    //--image ----------
-    
-    NSString *title = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"Title"]];
-    NSString *companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CompanyName"]];
-    NSString *contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ContactName"]];
-    NSString *createDate = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
-    
-    
-    cell.titleLabel.text = title;
-    cell.contactNameLabel.text = contactName;
-    cell.companyNameLabel.text = companyName;
-    cell.createdDateLabel.text = createDate;
-    cell.createdDateLabel.textColor = mDelegate_.appThemeColor;
-    
-    //image
-    NSString *parentID = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"RequestCategoryParentID"]];
-    UIImage *image = [appHelper_ imageFromCategoryID:parentID];
-    cell.imageView.image = image;
-  
-    //draw line on Cell
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 84, self.view.bounds.size.width, 1)];
-    lineView.backgroundColor = mDelegate_.textViewBoardColor;
-    [cell addSubview:lineView];
-
-    
-    
-    
-    
-    
-//    RequestStatus rs = [[requestObject valueForKey:@"RequestStatus"]integerValue];
-//    NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:rs];
-//    cell.statusLabel.text = [NSString stringWithFormat:@"Status: %@",statusString];
-    
-        //populate image
-//        NSString *myURL =[NSString stringWithFormat:@"%@%@",AWSLinkURL,[requestObject valueForKey:@"PictureURL"]];
-//        
-//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void) {
-//            
-//            UIImage *image = [[UIImage alloc]initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:myURL]]];
-//            
-//            dispatch_sync(dispatch_get_main_queue(), ^(void) {
-//                
-//                [cell.imageView setImage:image];
-//            });
-//        });
 
     return cell;
 }

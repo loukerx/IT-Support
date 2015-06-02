@@ -51,11 +51,33 @@
 }
 
 #pragma mark - Request Status 转换
+-(int)getRequestStatusIndex:(NSString *)searchType;
+{
+    
+    int requestStatusIndex;
+    //@[@"Active",@"Processing",@"Processed",@"Finished"]
+    if ([searchType isEqualToString:@"Active"]) {
+        requestStatusIndex = 0;
+    }else if ([searchType isEqualToString:@"Processing"]) {
+        requestStatusIndex = 1;
+    }else if ([searchType isEqualToString:@"Processed"]) {
+        requestStatusIndex = 2;
+    }else if ([searchType isEqualToString:@"Finished"]) {
+        requestStatusIndex = 3;
+    }else{
+        requestStatusIndex = 0;
+    }
+    return requestStatusIndex;
+}
+
+
+
 -(NSString*)convertRequestStatusStringWithInt:(NSInteger)requestStatusInt
 {
    
     NSString *statusString = @"";
     RequestStatus rs = requestStatusInt;
+
     switch (rs) {
         case Active:
             statusString = @"Active";

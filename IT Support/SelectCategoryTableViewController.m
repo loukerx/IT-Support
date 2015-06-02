@@ -50,7 +50,7 @@
 
     }else{
 
-        [self prepareRequestList];
+        [self prepareCategoryList];
     }
     
     
@@ -66,7 +66,7 @@
 }
 
 #pragma mark - retrieving data
--(void) prepareRequestList
+-(void) prepareCategoryList
 {
     
     //loading HUD
@@ -75,11 +75,6 @@
     
     NSLog(@"retrieving category list data");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    
-//    NSString *clientID = mDelegate_.clientID;
-//    //default requestID = 0
-//    NSString *CurID = @"0";
-//    NSString *Direction = @"1";
     
     NSDictionary *parameters = @{};
     

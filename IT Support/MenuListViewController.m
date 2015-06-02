@@ -9,6 +9,7 @@
 #import "MenuListViewController.h"
 #import "RequestListTableViewController.h"
 #import "AppDelegate.h"
+#import "AppHelper.h"
 #import "LoginViewController.h"
 //test
 //#import "RentTypeTableViewController.h"
@@ -16,6 +17,7 @@
 @interface MenuListViewController ()
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     NSArray *titles_;
     NSArray *iconName_;
 }
@@ -40,6 +42,7 @@
     [super viewDidLoad];
     
     mDelegate_ = [[UIApplication sharedApplication] delegate];
+    appHelper_ = [[AppHelper alloc]init];
     
     //setting
     //User Mode
@@ -62,8 +65,9 @@
     self.tableView.dataSource = self;
     self.tableView.opaque = NO;
 
+    int searchTypeIndex = [appHelper_ getRequestStatusIndex:mDelegate_.searchType];
     //select first tableViewCell
-    NSIndexPath *selection = [NSIndexPath indexPathForItem:THE_ITEM_TO_SELECT
+    NSIndexPath *selection = [NSIndexPath indexPathForItem:searchTypeIndex//THE_ITEM_TO_SELECT
                                                  inSection:THE_SECTION];
     [self.tableView selectRowAtIndexPath:selection
                            animated:NO
@@ -73,13 +77,6 @@
 //    if (mDelegate_.mMobileNumber.length>0) {
 //        [self.logInButton setTitle:@"Log Out" forState:UIControlStateNormal];
 //    }
-}
-
--(void)viewWillAppear:(BOOL)animated{
-//    if (mDelegate_.mMobileNumber.length>0) {
-//        [self.logInButton setTitle:@"Log Out" forState:UIControlStateNormal];
-//    }
-    
 }
 
 -(void)createTableViewHeader
@@ -133,7 +130,13 @@
 
     //populate values
     cell.textLabel.text = titles_[indexPath.row];
-    if (indexPath.row == 0) {
+//    if (indexPath.row == 0) {
+
+    
+    int searchTypeIndex = [appHelper_ getRequestStatusIndex:mDelegate_.searchType];
+    
+    if (indexPath.row == searchTypeIndex) {
+
         UIView *bgColorView = [[UIView alloc] init];
         [bgColorView setBackgroundColor:[UIColor whiteColor]];
         [cell setSelectedBackgroundView:bgColorView];

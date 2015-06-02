@@ -283,7 +283,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="8p1-0i-U4U">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="Cell" id="8p1-0i-U4U">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8p1-0i-U4U" id="N8u-Ee-rL5">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -510,7 +510,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6B-pc-drY">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c6B-pc-drY">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                             </scrollView>
                         </subviews>
@@ -721,7 +721,7 @@
         <image name="Switch Button" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EEI-Sq-Ium"/>
+        <segue reference="etY-Wn-OG3"/>
         <segue reference="0hi-ak-5Cd"/>
         <segue reference="cxg-oB-n2Z"/>
     </inferredMetricsTieBreakers>
