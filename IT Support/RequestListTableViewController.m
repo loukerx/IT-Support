@@ -388,11 +388,10 @@
 
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-//    roomObject_ = [tableData_ objectAtIndex:indexPath.row];
-    
-    //    [self performSegueWithIdentifier:@"To Room Details" sender:self];
-    [self performSegueWithIdentifier:@"To RequestDetail TableView" sender:self];
+    if (indexPath.row != tableData_.count) {
+        [self performSegueWithIdentifier:@"To RequestDetail TableView" sender:self];
+    }
+
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation

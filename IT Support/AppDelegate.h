@@ -10,7 +10,8 @@
 #import <CoreData/CoreData.h>
 
 
-static NSString *const AWSLinkURL = @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";
+static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";// @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";
+
 static float const cellHeightRatio = 0.625f;
 
 #define clientMode @"Client Mode"

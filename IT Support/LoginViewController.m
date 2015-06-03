@@ -11,10 +11,14 @@
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
 
+
 @interface LoginViewController ()
 {
     AppDelegate *mDelegate_;
     MBProgressHUD *hud_;
+    
+    //keyboard animation
+    BOOL keyboardISVisible_;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -69,16 +73,20 @@
     //add observer for keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
-    
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
         self.passwordTextField.text = @"qwe";
     }else{
-        self.emailTextField.text = @"wuyao840610@163.com";
-        self.passwordTextField.text = @"831022";
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
     }
+    
+
 }
+
+
+
 
 #pragma mark - mandatory field check
 
@@ -140,8 +148,8 @@
         self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
         self.passwordTextField.text = @"qwe";
     }else{
-        self.emailTextField.text = @"wuyao840610@163.com";
-        self.passwordTextField.text = @"831022";
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
     }
 }
 
@@ -260,29 +268,31 @@
     [self.view endEditing:YES];
 }
 
-#pragma mark - textfield animation
+#pragma mark - notification textfield animation
 -(void)keyboardFrameDidChange:(NSNotification *)notification
 {
+    
     CGRect keyboardEndFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGFloat keyboardHeight = keyboardEndFrame.size.height;
-   
+    
     //keyboard displays 10 poins below login button
     const int distance = 10;
     CGFloat bottomMargin = self.view.frame.size.height - self.loginButton.frame.origin.y - self.loginButton.frame.size.height - distance;
-
+    
     //whether or not to move the view
     CGFloat animationDistance = keyboardHeight - bottomMargin;
     
     if (animationDistance > 0) {
         
         CGRect newFrame = self.view.frame;
-        
-        if(keyboardEndFrame.origin.y < self.view.frame.size.height)
-        {
+   
+        if (newFrame.origin.y == 0) {
             newFrame.origin.y -= animationDistance;
             [self.switchUserButton setHidden:YES];
-        }else{
-            newFrame.origin.y += animationDistance;
+        }
+        
+        if (newFrame.origin.y < 0 && newFrame.size.height == keyboardEndFrame.origin.y) {
+            newFrame.origin.y = 0;
             [self.switchUserButton setHidden:NO];
         }
         

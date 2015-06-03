@@ -407,7 +407,6 @@
                 NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
                 NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
                 NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
-//                NSString *tempPhotoDescriptionName = [NSString stringWithFormat: @"%@%@", UUIDStr,@"Description"];
                 NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
                 NSString *name = [NSString stringWithFormat:@"%@",nameArray[index]];
                 //send Photo Data
@@ -437,24 +436,6 @@
                                                       otherButtonTitles:nil];
             [alertView show];
             
-//            CGFloat width = self.view.frame.size.width;
-//            CGFloat height = self.view.frame.size.height;
-//            
-//            
-//            //initial countdown advertisement label
-//            UILabel *countdownLabel = [[UILabel alloc]initWithFrame:CGRectMake(width - 50, 30, width, 30)];
-//            NSString *countDownString = @"广告:30";
-//            [countdownLabel setBackgroundColor:[UIColor blackColor]];
-//            [countdownLabel setText:countDownString];
-//            [countdownLabel setTextAlignment:NSTextAlignmentRight];
-//            [countdownLabel setTextColor:[UIColor whiteColor]];
-//            [countdownLabel setFont:[UIFont fontWithName:@"System" size:20.0]];
-//            
-//            
-//            
-//            
-//            
-//            [self.navigationController.view addSubview:countdownLabel];
             [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
             
             
@@ -467,9 +448,9 @@
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
+    
+            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
         }
-
-        
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [hud_ hide:YES];
