@@ -76,13 +76,13 @@
 //    [self.passwordTextField setSecureTextEntry:YES];
     
     //test
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-        self.passwordTextField.text = @"qwe";
-    }else{
-        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-        self.passwordTextField.text = @"12345";
-    }
+//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
+//        self.passwordTextField.text = @"qwe";
+//    }else{
+//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+//        self.passwordTextField.text = @"12345";
+//    }
     
 
 }
@@ -146,13 +146,13 @@
     
     
     //test
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-        self.passwordTextField.text = @"qwe";
-    }else{
-        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-        self.passwordTextField.text = @"12345";
-    }
+//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
+//        self.passwordTextField.text = @"qwe";
+//    }else{
+//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+//        self.passwordTextField.text = @"12345";
+//    }
 }
 
 
@@ -329,7 +329,6 @@
     }
     return NO;
 }
-
 
 #pragma mark - Others
 

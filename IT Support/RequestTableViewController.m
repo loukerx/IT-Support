@@ -77,7 +77,7 @@
 //;
 //    
     
-    //test end
+
     self.imageView = [[UIImageView alloc] initWithImage:nil];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
     if (mDelegate_.mRequestImages.count>0) {

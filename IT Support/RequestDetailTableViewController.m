@@ -465,8 +465,7 @@
     actionSheet.tag = 1;
     [actionSheet showInView:self.view];
 }
-//test测试阶段，更新状态功能完全开启
-//之后再做功能禁用机制
+
 -(void)updateRequest{
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
