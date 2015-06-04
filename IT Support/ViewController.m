@@ -36,7 +36,7 @@
     [hud_ hide:YES];
     
     
-    [self uploadImage];
+//    [self uploadImage];
     
 }
 

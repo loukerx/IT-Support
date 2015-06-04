@@ -73,6 +73,8 @@
     //add observer for keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
+//    [self.passwordTextField setSecureTextEntry:YES];
+    
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
@@ -282,11 +284,9 @@
     //whether or not to move the view
     CGFloat animationDistance = keyboardHeight - bottomMargin;
     
-    if (animationDistance > 0) {
-        
-        CGRect newFrame = self.view.frame;
+    CGRect newFrame = self.view.frame;
    
-        if (newFrame.origin.y == 0) {
+        if (newFrame.origin.y == 0 && animationDistance > 0) {
             newFrame.origin.y -= animationDistance;
             [self.switchUserButton setHidden:YES];
         }
@@ -304,7 +304,6 @@
                          animations:^{
                              self.view.frame = newFrame;
                          } completion:nil];
-    }
 }
 
 #pragma mark - textfield delegate
