@@ -24,11 +24,15 @@
     //instant AppHelper
     appHelper_ = [[AppHelper alloc]init];
     
+    //
     
     //setting user
     self.userToken = @"";
     self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
+    
+    //login view is root
+    self.loginIsRoot = YES;
     
     //setting client
     //test number
@@ -65,7 +69,7 @@
     self.textFieldColor = [appHelper_ colorWithHexString:@"F7F7F7"];
     self.textViewBoardColor = [UIColor colorWithRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1];
     self.menuTextColor =  [appHelper_ colorWithHexString:@"3E444B"]; //[UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f]; //3E444B
-    
+    self.footerTextColor = [UIColor colorWithRed:0.298 green:0.337 blue:0.423 alpha:1.000];
     
     //setting font
     self.menuTextFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:20.0];//[UIFont fontWithName:@"HelveticaNeue" size:20.0];
@@ -85,7 +89,11 @@
         [self initialViewController:@"LoginViewStoryboardID"];
     }
 
-    
+//    
+//    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+//    if (localNotification) {
+//        application.applicationIconBadgeNumber = 0;
+//    }
     return YES;
 }
 
@@ -154,8 +162,11 @@
                 self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"SupportID"]];
             }
             //To RequestList TableView
+            self.loginIsRoot = NO;
             [self initialViewController:@"MainRequestListStoryboardID"];
             
+            //test
+//            [self initialViewController:@"TestStoryboardView"];
         }
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
 
@@ -167,6 +178,39 @@
         [alertView show];
     }];
 }
+
+#pragma mark - Notification
+
+- (void)applicationDidFinishLaunching:(UIApplication *)app {
+    // other setup tasks here....
+    UIUserNotificationType types = UIUserNotificationTypeBadge |
+    UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    
+    UIUserNotificationSettings *mySettings =
+    [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+//    [app.registerForRemoteNotifications];
+}
+
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    NSLog(@"Application did receive local notifications");
+    
+    // 取消某个特定的本地通知
+    for (UILocalNotification *noti in [[UIApplication sharedApplication] scheduledLocalNotifications]) {
+        NSString *notiID = noti.userInfo[@"kLocalNotificationID"];
+        NSString *receiveNotiID = notification.userInfo[@"kLocalNotificationID"];
+        if ([notiID isEqualToString:receiveNotiID]) {
+            [[UIApplication sharedApplication] cancelLocalNotification:notification];
+            return;
+        }
+    }
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"welcome" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -184,6 +228,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+//    NSLog(@"%s", __PRETTY_FUNCTION__);
+//    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

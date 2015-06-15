@@ -14,6 +14,8 @@
 #import "RequestDetailTableViewController.h"
 #import "RequestListTableViewCell.h"
 #import "AppHelper.h"
+#import "RequestReviewTableViewController.h"
+#import "UserSettingTableViewController.h"
 
 @interface RequestListTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -56,7 +58,6 @@
     appHelper_ = [[AppHelper alloc]init];
     
     //loadmore label
-    //loadmore label
     loadMore_ =[[UILabel alloc]initWithFrame: CGRectMake(0,0,self.tableView.frame.size.width,44)];
     loadMore_.textColor = [UIColor blackColor];
     loadMore_.highlightedTextColor = [UIColor darkGrayColor];
@@ -78,47 +79,59 @@
     self.tableView.dataSource = self;
     
     
+    [self initialSettingForView];
+    
+}
+
+
+-(void)initialSettingForView
+{
     //loading HUD
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUD_.labelText = @"Progressing...";
+    self.menuBarButtonItem.enabled = NO;
     //table data
-    currentRequestID_ = @"0";
+    currentRequestID_ = @"";//version 2.0
+    currentRequestID_ = @"0";//version 1.0
     direction_ = @"0";
     lastLoadingTableDataCount_ = 0;
     tableData_ = [[NSMutableArray alloc]init];
     searchType_ = mDelegate_.searchType;
     [self prepareMoreRequestList:searchType_];
     
+    //setting color
+    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        self.addBarButtonItem.enabled = YES;
+        self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    }else{
+        
+        self.addBarButtonItem.enabled = NO;
+        self.addBarButtonItem.tintColor = [UIColor clearColor];
+    }
     
     //menu_ list
     menu_ = [[UIView alloc]init];
     menuListView_ = [[MenuListViewController alloc]init];
     menuListView_.superController = self;
-    
-    //setting color
-    self.menuBarButtonItem.tintColor = mDelegate_.appThemeColor;
-    self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
-    
-    //User Mode
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-
-        self.addBarButtonItem.enabled = YES;
-    }else{
-
-        self.addBarButtonItem.enabled = NO;
-        self.addBarButtonItem.tintColor = [UIColor whiteColor];
-    }
-    
-    self.reloadTableView = NO;
 }
+
 
 
 #pragma mark - refreshControl
 - (void)refresh:(UIRefreshControl *)refreshControl {
     
-    NSDictionary *dic = tableData_[0];
-    
-    currentRequestID_ = [NSString stringWithFormat:@"%@", [dic valueForKey:@"RequestID"]];
+    if (tableData_.count>0) {
+        NSDictionary *dic = tableData_[0];
+        currentRequestID_ = [NSString stringWithFormat:@"%@", [dic valueForKey:@"RequestID"]];
+    }else{
+        currentRequestID_ = @"";//version 2.0
+        currentRequestID_ = @"0";//version 1.0
+    }
+
     direction_ = @"1";
     lastLoadingTableDataCount_ = 0;
 //    tableData_ = [[NSMutableArray alloc]init];
@@ -173,6 +186,7 @@
     //clientID 放在parameters中
     [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
         [HUD_ hide:YES];
+        self.menuBarButtonItem.enabled = YES;
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
         NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
@@ -212,6 +226,7 @@
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [HUD_ hide:YES];
+        self.menuBarButtonItem.enabled = YES;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -260,13 +275,16 @@
     
     
     //sell
-    if ([displayMode isEqualToString:@"Log Out"]){
+    if ([displayMode isEqualToString:@"Setting"]){
 
-        [self performSegueWithIdentifier:@"To Login View" sender:self];
+        [self performSegueWithIdentifier:@"To UserSetting TableView" sender:self];
+        
+//        [self performSegueWithIdentifier:@"To Login View" sender:self];
     }else if (displayMode != nil) {
         
         searchType_ = displayMode;
-        currentRequestID_ = @"0";
+        currentRequestID_ = @"";//version 2.0
+        currentRequestID_ = @"0";//version 1.0
         direction_ = @"0";
         lastLoadingTableDataCount_ = 0;
         tableData_ = [[NSMutableArray alloc]init];
@@ -274,6 +292,7 @@
         //loading HUD
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Progressing...";
+        self.menuBarButtonItem.enabled = NO;
         [self prepareMoreRequestList:searchType_];
         
 //        tableData_ = [[NSMutableArray alloc] init];
@@ -288,6 +307,7 @@
     }else{
 
     }
+    
 }
 
 #pragma mark - TableView Datasource
@@ -385,7 +405,6 @@
 }
 
 
-
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row != tableData_.count) {
@@ -403,6 +422,44 @@
         RequestDetailTableViewController *rdtvc = [segue destinationViewController];
         rdtvc.requestObject = [tableData_ objectAtIndex:indexPath.row];
 
+    }
+
+}
+
+#pragma mark - unwind segue
+-(IBAction)unwindToRequestListTableView:(UIStoryboardSegue *)segue {
+    
+    UIViewController* sourceViewController = segue.sourceViewController;
+    
+    if ([sourceViewController isKindOfClass:[RequestReviewTableViewController class]]||[segue.identifier isEqualToString:@"Unwind From Login View"]||[segue.identifier isEqualToString:@"Unwind From RequestDetail TableView"])
+    {
+        NSLog(@"reload request list...");
+        [self initialSettingForView];
+//        currentRequestID_ = @"";//version 2.0
+//        currentRequestID_ = @"0";//version 1.0
+//        direction_ = @"0";
+//        lastLoadingTableDataCount_ = 0;
+//        tableData_ = [[NSMutableArray alloc]init];
+//        
+//        //loading HUD
+//        HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        HUD_.labelText = @"Progressing...";
+//        self.menuBarButtonItem.enabled = NO;
+//        [self prepareMoreRequestList:searchType_];
+//        
+//        
+//        //setting color
+//        self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+//        
+//        //User Mode
+//        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//            
+//            self.addBarButtonItem.enabled = YES;
+//        }else{
+//            
+//            self.addBarButtonItem.enabled = NO;
+//            self.addBarButtonItem.tintColor = [UIColor clearColor];
+//        }
     }
 
 }

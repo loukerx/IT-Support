@@ -10,7 +10,8 @@
 #import <CoreData/CoreData.h>
 
 
-static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";// @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";
+static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";//version1.0
+//static NSString *const AWSLinkURL = @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";//version2.0
 
 static float const cellHeightRatio = 0.625f;
 
@@ -40,7 +41,8 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) NSDictionary *userDictionary;
 @property (strong, nonatomic) NSString *userEmail;//username
 @property (strong, nonatomic) NSString *userPassword;//password
-
+//login view is root
+@property (nonatomic)BOOL loginIsRoot;
 
 //client user
 @property (strong, nonatomic) NSString *clientID;
@@ -77,7 +79,7 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) UIColor *textFieldColor;
 @property (strong, nonatomic) UIColor *textViewBoardColor;
 @property (strong, nonatomic) UIColor *menuTextColor;
-
+@property (strong, nonatomic) UIColor *footerTextColor;
 
 //font
 @property (strong, nonatomic) UIFont *menuTextFont;

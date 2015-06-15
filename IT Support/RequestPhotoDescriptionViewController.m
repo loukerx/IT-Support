@@ -31,15 +31,15 @@
 
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     
-    [self preparePhotosForScrollView];
-    [self initialCustomView];
+//    [self preparePhotosForScrollView];
+//    [self initialCustomView];
     
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
-    
-    [self.view addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+//                                   initWithTarget:self
+//                                   action:@selector(dismissKeyboard)];
+//    
+//    [self.view addGestureRecognizer:tap];
     
 }
 
@@ -172,4 +172,7 @@
 }
 */
 
+- (IBAction)showDetailAction:(id)sender {
+       [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

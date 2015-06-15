@@ -73,15 +73,23 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 #pragma mark - ButtonAction
  - (void)addPhotoButton:(id)sender{
      
-     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                              delegate:self
-                                                     cancelButtonTitle:@"Cancel"
-                                                destructiveButtonTitle:@"Take Photo"
-                                                     otherButtonTitles:@"Select Photo",nil];
-     //    [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
-     actionSheet.tag = 1;
-     [actionSheet showInView:self.view];
-     
+     if (mDelegate_.mRequestImages.count>8) {
+         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                             message:@"Only 9 Photos In One Request"
+                                                            delegate:nil
+                                                   cancelButtonTitle:@"OK"
+                                                   otherButtonTitles:nil];
+         [alertView show];
+     }else{
+         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:@"Cancel"
+                                                    destructiveButtonTitle:@"Take Photo"
+                                                         otherButtonTitles:@"Select Photo",nil];
+         //    [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
+         actionSheet.tag = 1;
+         [actionSheet showInView:self.view];
+     }
  }
 
 #pragma mark - actionSheet
@@ -96,7 +104,6 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
         default:
             break;
     }
-    
 }
 
 -(void)takePhoto

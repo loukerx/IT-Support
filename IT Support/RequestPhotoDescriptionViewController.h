@@ -10,4 +10,6 @@
 
 @interface RequestPhotoDescriptionViewController : UIViewController
 
+- (IBAction)showDetailAction:(id)sender;
+
 @end

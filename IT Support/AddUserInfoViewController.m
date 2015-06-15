@@ -33,8 +33,8 @@
     
     
     //test
-//    self.companyNameTextField.text = @"IT Express Pro";
-//    self.contactNameTextField.text = @"Benson Shi";
+    self.companyNameTextField.text = @"IT Express Pro";
+    self.contactNameTextField.text = @"Benson Shi";
     
 }
 

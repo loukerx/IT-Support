@@ -270,7 +270,11 @@
         case 0:
             hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud_.labelText = @"Processing...";
-            [self createRequest];
+            
+
+//            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+//            [self createReqeustWithImages];//new version 2.0
+            [self createRequest];//new version 1.0
             break;
         default:
             break;
@@ -288,6 +292,115 @@
                                                     otherButtonTitles:nil];
     actionSheet.tag = 1;
     [actionSheet showInView:self.view];
+
+}
+
+//new version 2.0
+-(void)createReqeustWithImages
+{
+    
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //URL： http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client
+    NSString *clientID = mDelegate_.clientID;
+    NSString *categoryID = mDelegate_.requestCategoryID;
+    NSString *title = mDelegate_.requestSubject;
+    NSString *description = mDelegate_.requestDescription;
+    NSString *priority = @"1";
+    
+    //clear array
+    imageDescriptionArray_ = [[NSMutableArray alloc]init];
+    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+    
+    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
+        //add object in description array
+        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
+        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
+                                         @"Description":descriptionContent
+                                         };
+        //create array
+        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
+        [imageDescriptionArray_ addObject:descriptionDic];
+    }
+    
+    //json to NSString
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:imageDescriptionArray_
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSDictionary *parameters = @{@"clientID" : clientID,
+                                 @"categoryID" : categoryID,
+                                 @"title": title,
+                                 @"description" : description,
+                                 @"priority" : priority,
+                                 @"picDescriptions" :descriptionJsonString
+                                 };
+    
+    //upload images
+    AFHTTPRequestOperationManager *manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];// [AFHTTPRequestOperationManager manager];
+    [manager POST:@"/ITSupportService/API/Request/Client" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        int index =0;
+        if (mDelegate_.mRequestImages.count>0) {
+            for (UIImage *image in mDelegate_.mRequestImages) {
+                
+                NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
+                NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
+                NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
+                NSString *name = [NSString stringWithFormat:@"%@",nameArray[index]];
+                //send Photo Data
+                [formData appendPartWithFileData:bestImageData
+                                            name:name//description tag
+                                        fileName:tempPhotoFileName
+                                        mimeType:@"image/jpeg"];
+                
+                index++;
+            }
+        }
+        
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        [hud_ hide:YES];
+        
+        NSDictionary *responseDictionary = responseObject;
+        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        
+        // 1 == success, 0 == fail
+        if ([requestResultStatus isEqualToString:@"1"]) {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+                                                                message:@"Created Request."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            
+//            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+
+        }else if ([requestResultStatus isEqualToString:@"0"]) {
+            NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+                                                                message:@"Please try later"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+        
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [hud_ hide:YES];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
+                                                            message:[error localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }];
 
 }
 
@@ -338,7 +451,8 @@
             }else{
 
                 hud_.hidden = YES;
-                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+                [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+//                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
             }
             
         }else if ([requestResultStatus isEqualToString:@"0"]) {
@@ -436,8 +550,8 @@
                                                       otherButtonTitles:nil];
             [alertView show];
             
-            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            
+//            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
             
         }else if ([requestResultStatus isEqualToString:@"0"]) {
             NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
@@ -448,8 +562,8 @@
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
-    
-            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            
+            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

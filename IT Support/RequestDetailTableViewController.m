@@ -21,6 +21,7 @@
     AppHelper *appHelper_;
     CGFloat scrollViewHeight_;
     MBProgressHUD *hud_;
+    NSMutableArray *photosArray_;
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -44,6 +45,8 @@
     [mDelegate_.mRequestImagesURL removeAllObjects];
     [mDelegate_.mRequestImageDescriptions removeAllObjects];
     [mDelegate_.mRequestImages removeAllObjects];
+    photosArray_ = [[NSMutableArray alloc]init];
+    
     
     //tableView
     self.tableView.delegate = self;
@@ -65,7 +68,7 @@
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         //ONLY Status Processed(2) ON
         if(![requestStatus isEqualToString:@"2"]){
-            self.switchStatusBarButtonItem.tintColor = [UIColor whiteColor];
+            self.switchStatusBarButtonItem.tintColor = [UIColor clearColor];
             self.switchStatusBarButtonItem.enabled = NO;
         }
     }else{//Support Mode
@@ -73,7 +76,7 @@
         //status Active(0) ON
         //status Processing(1) ON
         if (![requestStatus isEqualToString:@"0"]&&![requestStatus isEqualToString:@"1"]) {
-            self.switchStatusBarButtonItem.tintColor = [UIColor whiteColor];
+            self.switchStatusBarButtonItem.tintColor = [UIColor clearColor];
             self.switchStatusBarButtonItem.enabled = NO;
         }
     }
@@ -180,7 +183,16 @@
 #pragma mark - guesture
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
     
-    if ([mDelegate_.mRequestImages count]>0) {
+//    if ([mDelegate_.mRequestImages count]>0) {
+//        [self performSegueWithIdentifier:@"To RequestPhotoDescription TableView" sender:self];
+//    }
+    
+    if (photosArray_.count == mDelegate_.mRequestImagesURL.count) {
+        for (UIImage *image in photosArray_) {
+            if ([image isKindOfClass:[UIImage class]]){
+                [mDelegate_.mRequestImages addObject:image];
+            }
+        }
         [self performSegueWithIdentifier:@"To RequestPhotoDescription TableView" sender:self];
     }
 }
@@ -200,12 +212,6 @@
      rpdtvc.displayPhotoIndex = roundf(x/width);
      rpdtvc.enableEditMode = NO;
  }
-// if ([segue.identifier isEqualToString:@"To RequestList TableView"])
-// {
-//     RequestListTableViewController *rltvc = [segue destinationViewController];
-//    //RequestCategoryID is the parentID for next page.
-//    rltvc.reloadTableView = YES;
-// }
 
 }
 
@@ -213,7 +219,6 @@
 
 -(void)preparePhotosForScrollView
 {
-    
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
@@ -265,10 +270,12 @@
                 if (image == nil) {
                     UIImage *defaultImage = [UIImage imageNamed:@"Default Image"];
                     image = defaultImage;
-                    [mDelegate_.mRequestImages addObject:defaultImage];
+//                    [mDelegate_.mRequestImages addObject:defaultImage];
+                    [photosArray_ addObject:defaultImage];
                 }else{
                 
-                    [mDelegate_.mRequestImages addObject:image];
+//                    [mDelegate_.mRequestImages addObject:image];
+                    [photosArray_ addObject:image];
                 }
                 dispatch_sync(dispatch_get_main_queue(), ^(void) {
     
@@ -298,8 +305,14 @@
         
         //lower right corner page number
         self.pageLabel = [[UILabel alloc]initWithFrame:CGRectZero];
-        if (mDelegate_.mRequestImages.count>0) {
-            [self.pageLabel setText:[NSString stringWithFormat:@"1/%lu",(unsigned long)[mDelegate_.mRequestImages count]]];
+//        if (mDelegate_.mRequestImages.count>0) {
+//            [self.pageLabel setText:[NSString stringWithFormat:@"1/%lu",(unsigned long)[mDelegate_.mRequestImages count]]];
+//        }else{
+//            [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
+//        }
+
+        if (photosArray_.count>0) {
+            [self.pageLabel setText:[NSString stringWithFormat:@"1/%lu",(unsigned long)[photosArray_ count]]];
         }else{
             [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
         }
@@ -339,6 +352,7 @@
     }else{
         [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
     }
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -414,13 +428,13 @@
         }
     }else if(indexPath.section == 1){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                      reuseIdentifier:@"RequestTableViewCell"];
+                                reuseIdentifier:@"RequestTableViewCell"];
         cell.textLabel.text = @"Status:";
         NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:[[self.requestObject valueForKey:@"RequestStatus"]integerValue]];
         cell.detailTextLabel.text =  [NSString stringWithFormat:@"%@",statusString];
         //image
         cell.imageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
-        
+
     }else{
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -515,9 +529,8 @@
                                                       cancelButtonTitle:@"OK"
                                                       otherButtonTitles:nil];
             [alertView show];
-            
-            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            
+            [self performSegueWithIdentifier:@"Unwind From RequestDetail TableView" sender:self];
+
         }else if ([requestResultStatus isEqualToString:@"0"]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
                                                                 message:[responseObject valueForKey:@"Message"]
@@ -527,7 +540,6 @@
             [alertView show];
         }
 
-        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
                                                             message:[error localizedDescription]

@@ -10,7 +10,7 @@
 #import "RequestListTableViewController.h"
 #import "AppDelegate.h"
 #import "AppHelper.h"
-#import "LoginViewController.h"
+//#import "LoginViewController.h"
 //test
 //#import "RentTypeTableViewController.h"
 
@@ -232,13 +232,17 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 
 #pragma mark - Button Action
 - (IBAction)logOutAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:@"Log Out"
-                                                    otherButtonTitles:nil];
-    actionSheet.tag = 1;
-    [actionSheet showInView:self.view];
+    
+    //hide menu list view controller
+    [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Setting"];
+    
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                             delegate:self
+//                                                    cancelButtonTitle:@"Cancel"
+//                                               destructiveButtonTitle:@"Log Out"
+//                                                    otherButtonTitles:nil];
+//    actionSheet.tag = 1;
+//    [actionSheet showInView:self.view];
 }
 
 
@@ -252,14 +256,10 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (buttonIndex) {
         case 0:
             //CLEAR NSUserDefaults local variables
-//            mDelegate_.userEmail = self.emailTextField.text;
-//            mDelegate_.userPassword = self.passwordTextField.text;
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userEmail"];
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userPassword"];
-            //save uicolor
-//            NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
             [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
             
             //hide menu list view controller

@@ -37,11 +37,11 @@
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     //test
-//    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-//    self.passwordTextField.text = @"qwe";
-//    self.passwordConfirmTextField.text = @"qwe";
-//    self.companyPhoneTextField.text = @"022234";
-//    self.mobileNumberTextField.text =@"123123";
+    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
+    self.passwordTextField.text = @"qwe";
+    self.passwordConfirmTextField.text = @"qwe";
+    self.companyPhoneTextField.text = @"022234";
+    self.mobileNumberTextField.text =@"123123";
 }
 
 #pragma mark - mandatory field check
@@ -142,7 +142,7 @@
             [alertView show];
             
             NSLog(@"Client account is created");
-            [self performSegueWithIdentifier:@"To Login View" sender:self];
+            [self performSegueWithIdentifier:@"Unwind From SignIn View" sender:self];
             
         }else if ([requestResultStatus isEqualToString:@"0"]) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"

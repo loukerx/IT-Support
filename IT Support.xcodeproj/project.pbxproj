@@ -54,6 +54,7 @@
 		AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */; };
 		AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
+		AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */; };
 		AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */; };
 		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
@@ -157,6 +158,8 @@
 		AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUserInfoViewController.m; sourceTree = "<group>"; };
 		AEDA27331B0309420007DE11 /* SelectCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectCategoryTableViewController.m; sourceTree = "<group>"; };
+		AEDAA0F11B295146007F5B86 /* UserSettingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingTableViewController.h; sourceTree = "<group>"; };
+		AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingTableViewController.m; sourceTree = "<group>"; };
 		AEDB5EE21B0AE0DC007C3DAD /* RequestReviewTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestReviewTableViewController.h; sourceTree = "<group>"; };
 		AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestReviewTableViewController.m; sourceTree = "<group>"; };
 		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
@@ -387,6 +390,8 @@
 			children = (
 				AEBA920B1B0B258D00447AA1 /* MenuListViewController.h */,
 				AEBA920C1B0B258D00447AA1 /* MenuListViewController.m */,
+				AEDAA0F11B295146007F5B86 /* UserSettingTableViewController.h */,
+				AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -592,6 +597,7 @@
 				AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */,
 				AE5CDC0B1B01DC1A0035C366 /* AFURLSessionManager.m in Sources */,
 				AE5CDC0C1B01DC1A0035C366 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */,
 				AE5CDBB71B019ED30035C366 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -723,7 +729,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -736,7 +742,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

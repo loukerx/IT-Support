@@ -31,14 +31,58 @@
     //setting
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     
-    hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud_.labelText = @"获取最新频道列表...";
-    [hud_ hide:YES];
+//    hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud_.labelText = @"获取最新频道列表...";
+//    [hud_ hide:YES];
     
     
 //    [self uploadImage];
     
 }
+
+- (IBAction)sendNotification:(id)sender {
+    
+
+    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
+    
+}
+
+
+
+-(void)localNotificationTest
+{
+    
+    // New for iOS 8 - Register the notifications
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+    
+    
+    
+    NSDate *currentDate = [NSDate date];
+    
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    if (localNotification) {
+        localNotification.fireDate = [currentDate dateByAddingTimeInterval:5.0];
+        localNotification.alertBody = [NSString stringWithFormat:@"Alert Fired at %@", currentDate];
+        localNotification.soundName = UILocalNotificationDefaultSoundName;
+        localNotification.applicationIconBadgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber] + 1;;
+    }
+    
+    
+    
+    // 设定通知的userInfo，用来标识该通知
+    NSMutableDictionary *aUserInfo = [[NSMutableDictionary alloc] init];
+    aUserInfo[@"kLocalNotificationID"] = @"LocalNotificationID";
+    localNotification.userInfo = aUserInfo;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
+
+
+
+
 
 
 
@@ -124,5 +168,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

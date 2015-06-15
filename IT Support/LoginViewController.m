@@ -76,18 +76,15 @@
 //    [self.passwordTextField setSecureTextEntry:YES];
     
     //test
-//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-//        self.passwordTextField.text = @"qwe";
-//    }else{
-//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-//        self.passwordTextField.text = @"12345";
-//    }
-    
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"qwe";
+    }else{
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
+    }
 
 }
-
-
 
 
 #pragma mark - mandatory field check
@@ -109,7 +106,7 @@
         
         //submit and create an account
         hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud_.labelText = @"Login...";
+        hud_.labelText = @"Logging In...";
         [self userLogin];
         
     }else{
@@ -146,13 +143,13 @@
     
     
     //test
-//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-//        self.passwordTextField.text = @"qwe";
-//    }else{
-//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-//        self.passwordTextField.text = @"12345";
-//    }
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"qwe";
+    }else{
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
+    }
 }
 
 
@@ -249,7 +246,18 @@
             //save uicolor
             NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
             [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
-            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            
+            //set default searchType
+            mDelegate_.searchType =@"Active";
+            if (mDelegate_.loginIsRoot) {
+                
+                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            }else{
+                
+                [self performSegueWithIdentifier:@"Unwind From Login View" sender:self];
+            }
+
+   
         }
         
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -335,6 +343,17 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - unwind segue
+-(IBAction)unwindToLogin:(UIStoryboardSegue *)segue {
+
+    if ([segue.identifier isEqualToString:@"Unwind From SignIn View"] )
+    {
+        NSLog(@"Unwind From SignIn View.");
+
+    }
 }
 
 /*
