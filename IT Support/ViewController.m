@@ -42,25 +42,53 @@
 
 - (IBAction)sendNotification:(id)sender {
     
-
-    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
+    [self localNotificationTest];
+//    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
     
 }
 
 
+- (void)applicationDidFinishLaunching:(UIApplication *)app {
+    // other setup tasks here....
+    UIUserNotificationType types = UIUserNotificationTypeBadge |
+    UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    
+    UIUserNotificationSettings *mySettings =
+    [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+}
+
+// Delegation methods
+- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
+    const void *devTokenBytes = [devToken bytes];
+//    self.registered = YES;
+    [self sendProviderDeviceToken:devToken]; // custom method
+}
+
+- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
+    NSLog(@"Error in registration. Error: %@", err);
+}
+
+
+-(void)sendProviderDeviceToken:(NSData *)devTokenBytes
+{
+    NSLog(@"%@",devTokenBytes);
+}
 
 -(void)localNotificationTest
 {
     
-    // New for iOS 8 - Register the notifications
+//    // New for iOS 8 - Register the notifications
     UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
     UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-    
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
     
     
     NSDate *currentDate = [NSDate date];
-    
+    //populate localnotification
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     if (localNotification) {
         localNotification.fireDate = [currentDate dateByAddingTimeInterval:5.0];
@@ -87,10 +115,23 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -(void)uploadImage
 {
-    
-    
     NSLog(@"retrieving data");
 //    NSURL *baseURL = [NSURL URLWithString:NewsListURLString];
     

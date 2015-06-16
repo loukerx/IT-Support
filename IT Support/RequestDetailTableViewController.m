@@ -183,11 +183,9 @@
 #pragma mark - guesture
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
     
-//    if ([mDelegate_.mRequestImages count]>0) {
-//        [self performSegueWithIdentifier:@"To RequestPhotoDescription TableView" sender:self];
-//    }
-    
     if (photosArray_.count == mDelegate_.mRequestImagesURL.count) {
+        
+        [mDelegate_.mRequestImages removeAllObjects];
         for (UIImage *image in photosArray_) {
             if ([image isKindOfClass:[UIImage class]]){
                 [mDelegate_.mRequestImages addObject:image];

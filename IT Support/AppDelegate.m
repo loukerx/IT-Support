@@ -24,7 +24,17 @@
     //instant AppHelper
     appHelper_ = [[AppHelper alloc]init];
     
-    //
+    // New for iOS 8 - Register the notifications
+
+    
+    
+//    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+    
+    [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
+//    }
+ 
+    [application registerForRemoteNotifications];
+    
     
     //setting user
     self.userToken = @"";
@@ -94,6 +104,9 @@
 //    if (localNotification) {
 //        application.applicationIconBadgeNumber = 0;
 //    }
+    
+
+    
     return YES;
 }
 
@@ -163,10 +176,10 @@
             }
             //To RequestList TableView
             self.loginIsRoot = NO;
-            [self initialViewController:@"MainRequestListStoryboardID"];
+//            [self initialViewController:@"MainRequestListStoryboardID"];
             
             //test
-//            [self initialViewController:@"TestStoryboardView"];
+            [self initialViewController:@"TestStoryboardView"];
         }
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
 
@@ -181,23 +194,11 @@
 
 #pragma mark - Notification
 
-- (void)applicationDidFinishLaunching:(UIApplication *)app {
-    // other setup tasks here....
-    UIUserNotificationType types = UIUserNotificationTypeBadge |
-    UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    
-    UIUserNotificationSettings *mySettings =
-    [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    
-    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-//    [app.registerForRemoteNotifications];
-}
-
-
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     NSLog(@"Application did receive local notifications");
     
     // 取消某个特定的本地通知
+    // ----功能不清楚-----
     for (UILocalNotification *noti in [[UIApplication sharedApplication] scheduledLocalNotifications]) {
         NSString *notiID = noti.userInfo[@"kLocalNotificationID"];
         NSString *receiveNotiID = notification.userInfo[@"kLocalNotificationID"];
@@ -207,11 +208,22 @@
         }
     }
     
+    // alert 提醒
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"welcome" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
 
 
+#pragma mark - remote notification deviceToken
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"My token is: %@", deviceToken);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -229,8 +241,10 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     
+    //icon badge 设为0
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
-//    application.applicationIconBadgeNumber = 0;
+    NSLog(@"clear icon badge Number");
+    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

@@ -134,7 +134,7 @@
 
     direction_ = @"1";
     lastLoadingTableDataCount_ = 0;
-//    tableData_ = [[NSMutableArray alloc]init];
+    self.menuBarButtonItem.enabled = NO;
     [self prepareMoreRequestList:searchType_];
     [refreshControl endRefreshing];
 }

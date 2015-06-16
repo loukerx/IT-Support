@@ -258,30 +258,6 @@
     return image;
 }
 
-/*
--(NSString*)categoryNameFromCategoryID:(NSString *)categoryID
-{
-    AppDelegate *mDelegate_ = [[UIApplication sharedApplication] delegate];
-    
-    NSString *returnCategoryName = @"Others";
-    if ([categoryID isEqualToString:@"5"]) {
-        return returnCategoryName;
-    }else{
-        for (NSDictionary *dic in mDelegate_.subcategoryListArray) {
-            
-            NSString *subcategoryID =[NSString stringWithFormat:@"%@",[dic valueForKey:@"RequestCategoryID"]];
-            
-            if ([categoryID isEqualToString:subcategoryID]) {
-                
-                returnCategoryName = [NSString stringWithFormat:@"%@",[dic valueForKey:@"Name"]];
-            }
-        }
-    }
-
-    return returnCategoryName;
-    
-}
-*/
 
 #pragma mark - colorWithHexString
 -(UIColor*)colorWithHexString:(NSString*)hex//#FF3B30

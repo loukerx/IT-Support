@@ -37,11 +37,11 @@
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     //test
-    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-    self.passwordTextField.text = @"qwe";
-    self.passwordConfirmTextField.text = @"qwe";
-    self.companyPhoneTextField.text = @"022234";
-    self.mobileNumberTextField.text =@"123123";
+//    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
+//    self.passwordTextField.text = @"qwe";
+//    self.passwordConfirmTextField.text = @"qwe";
+//    self.companyPhoneTextField.text = @"022234";
+//    self.mobileNumberTextField.text =@"123123";
 }
 
 #pragma mark - mandatory field check
