@@ -9,7 +9,9 @@
 #import "UserSettingTableViewController.h"
 #import "AppDelegate.h"
 #import "AppHelper.h"
-
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface UserSettingTableViewController ()<UIActionSheetDelegate>
 {
@@ -71,7 +73,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section != 0) {
+    if (section != 0 && section != 2) {
         return 1;
     }
     return 2;
@@ -88,6 +90,7 @@
     //- available credit
     //-------------section 1
     //- change password
+    //- share on Facebook
     //-------------section 2
     //- about
     //- copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
@@ -120,20 +123,43 @@
                                       reuseIdentifier:cellidentify];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        //change password
         cell.textLabel.text = @"Change Password";
 
     }else if(indexPath.section == AboutSection){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:cellidentify];
-        cell.textLabel.text = @"About";
-        cell.detailTextLabel.text = @"Version 1.0.73";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        //facebook share button
+        FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
+        content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
+        
+        FBSDKShareButton *shareButton = [[FBSDKShareButton alloc] init];
+        shareButton.center = self.view.center;
+        shareButton.shareContent = content;
+        
+        switch (indexPath.row) {
+            case 0:
+                //Share on Facebook
+                cell.textLabel.text = @"Share on Facebook";
+                cell.accessoryView = shareButton;
+//                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
+            case 1:
+                cell.textLabel.text = @"About";
+                cell.detailTextLabel.text = mDelegate_.appVersion;
+                break;
+            default:
+                break;
+        }
     }else{
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:cellidentify];
         
         [cell addSubview:logoutLabel_];
+        
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
@@ -159,7 +185,15 @@
 
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == LogOutSection) {
+
+    if (indexPath.section == AboutSection && indexPath.row == 0) {
+        
+//        FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
+//        content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
+//        [FBSDKShareAPI shareWithContent:content delegate:nil];
+        
+    }else if (indexPath.section == LogOutSection) {
+
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"

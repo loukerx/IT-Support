@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vc4-Dp-VPg">
-                                <rect key="frame" x="227" y="285" width="146" height="30"/>
+                                <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="146" id="o1h-eU-Uug"/>
                                 </constraints>
@@ -33,8 +33,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="centerX" secondItem="Vc4-Dp-VPg" secondAttribute="centerX" id="3a3-c8-ftJ"/>
-                            <constraint firstAttribute="centerY" secondItem="Vc4-Dp-VPg" secondAttribute="centerY" id="cjA-kT-k2Z"/>
+                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="leading" secondItem="Bt3-Zh-E3p" secondAttribute="leading" id="ARZ-gw-M1l"/>
+                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" id="GiY-ce-gdh"/>
                         </constraints>
                     </view>
                     <connections>
@@ -362,7 +362,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ml8-nW-5xX">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="F83-Cd-Vwz">
                                 <autoresizingMask key="autoresizingMask"/>

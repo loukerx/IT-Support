@@ -10,8 +10,9 @@
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 #import "AppDelegate.h"
-
-
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface ViewController ()
 {
@@ -19,8 +20,6 @@
     MBProgressHUD *hud_;
 }
 
-
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -38,13 +37,67 @@
     
 //    [self uploadImage];
     
+    
+//    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
+//    loginButton.center = self.view.center;
+//    [self.view addSubview:loginButton];
+    
+    FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
+    content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
+    
+    FBSDKShareButton *shareButton = [[FBSDKShareButton alloc] init];
+    shareButton.center = self.view.center;
+    shareButton.shareContent = content;
+    [self.view addSubview:shareButton];
+    
+//    FBSDKLikeControl *likeButton = [[FBSDKLikeControl alloc] init];
+//    likeButton.center = self.view.center;
+//    likeButton.objectID = @"https://www.facebook.com/FacebookDevelopers";
+//    [self.view addSubview:likeButton];
 }
 
 - (IBAction)sendNotification:(id)sender {
     
-    [self localNotificationTest];
+    [self restfulConfirmTest];
+    
+//    [self localNotificationTest];
 //    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
     
+}
+
+
+
+
+
+-(void)restfulConfirmTest
+{
+    
+    NSURL *baseURL =[NSURL URLWithString:@"http://52.64.43.116"];// [NSURL URLWithString:AWSLinkURL];
+    
+    NSString *URLString = @"/test/api/test";
+    NSDictionary *parameters =@{@"testString" : @"adsdf"};;
+
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    
+//    manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        
+        NSLog(@"%@",responseObject);
+
+
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
+                                                            message:[error localizedDescription]
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+        [alertView show];
+    }];
 }
 
 
@@ -108,28 +161,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 -(void)uploadImage
 {
     NSLog(@"retrieving data");
@@ -137,7 +168,6 @@
     
     NSURL *baseURL = [NSURL URLWithString:@""];
     NSDictionary *parameters = @{};
-    
 
     
 //    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];

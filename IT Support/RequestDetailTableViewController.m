@@ -14,6 +14,8 @@
 #import "RequestPhotoDescriptionTableViewController.h"
 #import "MBProgressHUD.h"
 #import "RequestListTableViewController.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface RequestDetailTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIActionSheetDelegate>
 {
@@ -458,7 +460,7 @@
         case 0:
             hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud_.labelText = @"Processing...";
-            [self updateRequest];
+            [self updateRequest];//GET
             break;
         default:
             break;
@@ -548,5 +550,8 @@
     }];
     
 }
+
+
+
 
 @end

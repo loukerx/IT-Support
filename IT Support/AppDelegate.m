@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "AppHelper.h"
 #import "AFNetworking.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+//#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface AppDelegate ()
 {
@@ -25,15 +27,15 @@
     appHelper_ = [[AppHelper alloc]init];
     
     // New for iOS 8 - Register the notifications
-
-    
-    
-//    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
-    
     [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
-//    }
- 
     [application registerForRemoteNotifications];
+    
+    //MainBundle version
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *majorVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *minorVersion = [infoDictionary objectForKey:@"CFBundleVersion"];
+    
+    self.appVersion = [NSString stringWithFormat:@"Version %@.%@",majorVersion,minorVersion];
     
     
     //setting user
@@ -107,7 +109,9 @@
     
 
     
-    return YES;
+//    return YES;
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                    didFinishLaunchingWithOptions:launchOptions];
 }
 
 #pragma initial and login check
@@ -176,10 +180,10 @@
             }
             //To RequestList TableView
             self.loginIsRoot = NO;
-//            [self initialViewController:@"MainRequestListStoryboardID"];
+            [self initialViewController:@"MainRequestListStoryboardID"];
             
             //test
-            [self initialViewController:@"TestStoryboardView"];
+//            [self initialViewController:@"TestStoryboardView"];
         }
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
 
@@ -224,6 +228,20 @@
 {
     NSLog(@"Failed to get token, error: %@", error);
 }
+
+
+#pragma mark - facebook
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation];
+}
+
+#pragma mark - application status
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
@@ -240,11 +258,14 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
+
     //icon badge 设为0
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
     NSLog(@"clear icon badge Number");
     application.applicationIconBadgeNumber = 0;
+    
+    //facebook
+     [FBSDKAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

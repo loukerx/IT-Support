@@ -35,6 +35,8 @@ static float const cellHeightRatio = 0.625f;
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
+//version
+@property (strong, nonatomic) NSString *appVersion;
 
 //user
 @property (strong, nonatomic) NSString *userToken;
