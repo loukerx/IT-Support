@@ -18,5 +18,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *companyNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createdDateLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
 
 @end

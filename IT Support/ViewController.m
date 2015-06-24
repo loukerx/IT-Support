@@ -11,15 +11,16 @@
 #import "AFNetworking.h"
 #import "AppDelegate.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
-@interface ViewController ()
+@interface ViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
 {
     AppDelegate *mDelegate_;
-    MBProgressHUD *hud_;
+    MBProgressHUD *HUD_;
+    NSArray *pickerData_;
 }
 
+@property (strong, nonatomic) UIPickerView *pickerView;
 
 @end
 
@@ -29,45 +30,122 @@
     [super viewDidLoad];
     //setting
     mDelegate_ = [[UIApplication sharedApplication] delegate];
+    //    [self uploadImage];
     
-//    hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    hud_.labelText = @"获取最新频道列表...";
-//    [hud_ hide:YES];
+//    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    HUD_.labelText = @"获取最新频道列表...";
+//    [HUD_ hide:YES];
+    
+    pickerData_ = @[@"Item 1", @"Item 2", @"Item 3", @"Item 4", @"Item 5", @"Item 6"];
+    self.pickerView.delegate = self;
+    self.pickerView.dataSource = self;
     
     
-//    [self uploadImage];
-    
-    
-//    FBSDKLoginButton *loginButton = [[FBSDKLoginButton alloc] init];
-//    loginButton.center = self.view.center;
-//    [self.view addSubview:loginButton];
-    
-    FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-    content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
-    
-    FBSDKShareButton *shareButton = [[FBSDKShareButton alloc] init];
-    shareButton.center = self.view.center;
-    shareButton.shareContent = content;
-    [self.view addSubview:shareButton];
-    
-//    FBSDKLikeControl *likeButton = [[FBSDKLikeControl alloc] init];
-//    likeButton.center = self.view.center;
-//    likeButton.objectID = @"https://www.facebook.com/FacebookDevelopers";
-//    [self.view addSubview:likeButton];
+
 }
+
+
 
 - (IBAction)sendNotification:(id)sender {
     
-    [self restfulConfirmTest];
     
+
+//    [self actionSheetExample:sender];
+//    [self restfulConfirmTest];
 //    [self localNotificationTest];
 //    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
     
 }
 
 
+-(void)actionSheetPickerView
+{
+    
+}
+#pragma mark -  Picker View DataSource
+
+// The number of columns of data
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+// The number of rows of data
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return pickerData_.count;
+}
+
+// The data to return for the row and component (column) that's being passed in
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return pickerData_[row];
+}
+
+#pragma mark - Picker View Delegate
+// Catpure the picker view selection
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    // This method is triggered whenever the user makes a change to the picker selection.
+    // The parameter named row and component represents what was selected.
+    
+    NSLog(@"click the pickerView");
+}
+
+#pragma mark - UIAlertController example display ActionSheet example
+
+-(void)actionSheetExample:(id)sender
+{
+    
+    NSString *alertTitle = NSLocalizedString(@"ActionTitle", @"Archive or Delete Data");
+    NSString *alertMessage = NSLocalizedString(@"ActionMessage", @"Deleted data cannot be undone");
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                             message:alertMessage
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"Cancel action");
+                                   }];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete action")
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:^(UIAlertAction *action)
+                                   {
+                                       NSLog(@"Delete action");
+                                   }];
+    
+    UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Archive", @"Archive action")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action)
+                                    {
+                                        NSLog(@"Archive action");
+                                    }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:deleteAction];
+    [alertController addAction:archiveAction];
+    
+    
+    
+    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+    if (popover)
+    {
+        UIButton *button = (UIButton *)sender;
+        popover.sourceView = button;
+        popover.sourceRect = button.bounds;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
 
 
+
+#pragma mark - PUT restful method test
 
 -(void)restfulConfirmTest
 {
@@ -101,34 +179,7 @@
 }
 
 
-- (void)applicationDidFinishLaunching:(UIApplication *)app {
-    // other setup tasks here....
-    UIUserNotificationType types = UIUserNotificationTypeBadge |
-    UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-    
-    UIUserNotificationSettings *mySettings =
-    [UIUserNotificationSettings settingsForTypes:types categories:nil];
-    
-    [[UIApplication sharedApplication] registerUserNotificationSettings:mySettings];
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-}
-
-// Delegation methods
-- (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)devToken {
-    const void *devTokenBytes = [devToken bytes];
-//    self.registered = YES;
-    [self sendProviderDeviceToken:devToken]; // custom method
-}
-
-- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
-    NSLog(@"Error in registration. Error: %@", err);
-}
-
-
--(void)sendProviderDeviceToken:(NSData *)devTokenBytes
-{
-    NSLog(@"%@",devTokenBytes);
-}
+#pragma mark - local notification test
 
 -(void)localNotificationTest
 {
@@ -160,7 +211,7 @@
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
-
+#pragma mark - upload image to server
 -(void)uploadImage
 {
     NSLog(@"retrieving data");
@@ -220,7 +271,7 @@
         NSLog(@"%@: %@",status, message);
         NSLog(@"Name: %@",name);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [hud_ hide:YES];
+        [HUD_ hide:YES];
         
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"获取后台文件失败"
                                                             message:error

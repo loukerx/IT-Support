@@ -15,7 +15,7 @@
 @interface LoginViewController ()
 {
     AppDelegate *mDelegate_;
-    MBProgressHUD *hud_;
+    MBProgressHUD *HUD_;
     
     //keyboard animation
     BOOL keyboardISVisible_;
@@ -105,17 +105,27 @@
     if ([self checkAllField]) {
         
         //submit and create an account
-        hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud_.labelText = @"Logging In...";
+        HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        HUD_.labelText = @"Logging In...";
         [self userLogin];
         
     }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please complete all fields"
-                                                            message:@"Username & Password required"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please complete all fields"
+//                                                            message:@"Username & Password required"
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"Ok"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+//        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please complete all fields"
+                                                                       message:@"Username & Password required"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     
 }
@@ -181,59 +191,56 @@
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-       
-        [hud_ hide:YES];
-
+        [HUD_ hide:YES];
+        
+        NSLog(@"%@",responseObject);
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
 
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"0"]) {
+        if ([responseStatus isEqualToString:@"0"]) {
             
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:errorMessage
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        }else if ([requestResultStatus isEqualToString:@"1"]) {
             
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
             
-           mDelegate_.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {}];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        
+        }else if ([responseStatus isEqualToString:@"1"]) {
 
-            //Client Mode Example
-//            ClientID = 4;
-//            CompanyName = "IT Express Pro";
-//            ContactName = "Benson Shi";
-//            CreateDate = "2015-05-25T05:19:22.393";
-//            Email = "ms.benson@itexpresspro.com.au";
-//            Mobile = 123123;
-//            ModifyDate = "<null>";
-//            Password = qwe;
-//            Phone = 022234;
-//            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
+            //return values
+//            {
+//                Message = "";
+//                Result =     {
+//                    AccountBalance = 100;
+//                    AvailableFunds = 100;
+//                    ContactName = "Benson Shi";
+//                    Email = "hua.yin@itexpresspro.com.au";
+//                    TokenString = "d6427b42-74c2-4df8-bcd8-cac0d342b1a6";
+//                    UserAccountID = "e5041aa9-53d6-4dff-a7f0-875806d6bbcc";
+//                };
+//                Status = 1;
+//            }
+
 
             
-            
-            //Support Mode Example
-//            CreateDate = "2015-05-25T01:21:39.91";
-//            Email = "wuyao840610@163.com";
-//            FirstName = yao;
-//            LastName = wu;
-//            Mobile = 01111;
-//            ModifyDate = "<null>";
-//            Password = 831022;
-//            SupportID = 1;
-//            SupportType = 1;
-            mDelegate_.userDictionary = [responseDictionary valueForKey:@"User"];
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
 
             //user mode
             if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-                mDelegate_.clientID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ClientID"]];
+                mDelegate_.clientID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
             }else{
-                mDelegate_.supportID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"SupportID"]];
+                mDelegate_.supportID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
             }
 
             //NSUserDefaults local variables
@@ -243,6 +250,7 @@
                                                       forKey:@"userEmail"];
             [[NSUserDefaults standardUserDefaults] setObject:self.passwordTextField.text
                                                       forKey:@"userPassword"];
+            
             //save uicolor
             NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
             [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
@@ -257,17 +265,22 @@
                 [self performSegueWithIdentifier:@"Unwind From Login View" sender:self];
             }
 
-   
         }
         
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [hud_ hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Loging In"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        [HUD_ hide:YES];
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Log In"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
     
     
@@ -328,12 +341,16 @@
         //submit and create an account
         [self userLogin];
     }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please complete all fields"
-                                                            message:@"Username & Password required"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController* alert =
+        [UIAlertController alertControllerWithTitle:@"Please complete all fields"
+                                            message:@"Username & Password required"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction =
+        [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     return NO;
 }

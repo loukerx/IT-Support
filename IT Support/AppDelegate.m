@@ -39,7 +39,7 @@
     
     
     //setting user
-    self.userToken = @"";
+//    self.userToken = @"";
     self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
     
@@ -48,8 +48,8 @@
     
     //setting client
     //test number
-    self.clientID = @"0";
-    self.supportID = @"0";
+    self.clientID = @"N/A";
+    self.supportID = @"N/A";
     
     //setting categorylists
     self.categoryListArray = [[NSMutableArray alloc]init];
@@ -62,8 +62,8 @@
     //setting request
     self.requestCategory = @"";
     self.requestSubCategory = @"";
-    self.requestSubject = @"N/A";
-    self.requestDescription = @"N/A";
+//    self.requestSubject = @"N/A";
+//    self.requestDescription = @"N/A";
 
     
     self.mRequestImages = [[NSMutableArray alloc]init];
@@ -93,23 +93,14 @@
     //initialise a view controller
     if (self.userEmail.length>0 && self.userPassword.length >0) {
         
-//        [self initialViewController:@"TabMainStoryboard"];
-//        //check user mobile and password
         [self userLogin];
         
     }else{
         [self initialViewController:@"LoginViewStoryboardID"];
     }
-
-//    
-//    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-//    if (localNotification) {
-//        application.applicationIconBadgeNumber = 0;
-//    }
-    
-
     
 //    return YES;
+    //changed for Facebook API
     return [[FBSDKApplicationDelegate sharedInstance] application:application
                                     didFinishLaunchingWithOptions:launchOptions];
 }
@@ -127,12 +118,11 @@
     [self.window makeKeyAndVisible];
 }
 
+
+#pragma mark - User Login
 - (void) userLogin
 {
-    
     NSLog(@"User Login...");
-    
-    //http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/api/Login
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
     NSString *email = self.userEmail;
@@ -157,26 +147,26 @@
         
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"0"]) {
+        if ([responseStatus isEqualToString:@"0"]) {
             
             NSLog(@"fail");
             //To Login View
             [self initialViewController:@"LoginViewStoryboardID"];
             
-        }else if ([requestResultStatus isEqualToString:@"1"]) {
+        }else if ([responseStatus isEqualToString:@"1"]) {
             
             NSLog(@"success");
-            self.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
-            self.userDictionary = [responseDictionary valueForKey:@"User"];
+//            self.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
+            self.userDictionary = [responseDictionary valueForKey:@"Result"];
             
             //user mode
             if ([self.appThemeColor isEqual:self.clientThemeColor]) {
-                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"ClientID"]];
+                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
             }else{
-                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"SupportID"]];
+                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
             }
             //To RequestList TableView
             self.loginIsRoot = NO;
@@ -193,6 +183,7 @@
                                                   cancelButtonTitle:@"Ok"
                                                   otherButtonTitles:nil];
         [alertView show];
+
     }];
 }
 
@@ -230,7 +221,7 @@
 }
 
 
-#pragma mark - facebook
+#pragma mark - Facebook
 - (BOOL)application:(UIApplication *)application
             openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication
@@ -264,8 +255,8 @@
     NSLog(@"clear icon badge Number");
     application.applicationIconBadgeNumber = 0;
     
-    //facebook
-     [FBSDKAppEvents activateApp];
+    //Facebook
+    [FBSDKAppEvents activateApp];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

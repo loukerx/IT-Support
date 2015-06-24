@@ -30,10 +30,6 @@
                                 <action selector="hideMuneButtonClick:" destination="-1" eventType="touchUpInside" id="w4L-bY-wIs"/>
                             </connections>
                         </button>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" sectionIndexMinimumDisplayRowCount="4" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="vc6-Sh-DQD">
-                            <rect key="frame" x="0.0" y="64" width="450" height="486"/>
-                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        </tableView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="asB-NL-AQu" userLabel="Top Bar View">
                             <rect key="frame" x="0.0" y="0.0" width="450" height="64"/>
                             <subviews>
@@ -68,6 +64,10 @@
                                 <action selector="logOutAction:" destination="-1" eventType="touchUpInside" id="AD6-GO-siT"/>
                             </connections>
                         </button>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" sectionIndexMinimumDisplayRowCount="4" allowsSelectionDuringEditing="YES" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="vc6-Sh-DQD">
+                            <rect key="frame" x="0.0" y="64" width="450" height="486"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        </tableView>
                     </subviews>
                     <constraints>
                         <constraint firstItem="asB-NL-AQu" firstAttribute="leading" secondItem="6kl-Vd-CIK" secondAttribute="leading" id="5WG-DB-TAv"/>

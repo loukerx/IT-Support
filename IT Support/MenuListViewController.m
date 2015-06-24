@@ -252,23 +252,23 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 
 
 #pragma mark - actionSheet delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            //CLEAR NSUserDefaults local variables
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userEmail"];
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userPassword"];
-            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-            
-            //hide menu list view controller
-            [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
-            break;
-        default:
-            break;
-    }
-    
-}
+//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
+//    switch (buttonIndex) {
+//        case 0:
+//            //CLEAR NSUserDefaults local variables
+//            [[NSUserDefaults standardUserDefaults] setObject:@""
+//                                                      forKey:@"userEmail"];
+//            [[NSUserDefaults standardUserDefaults] setObject:@""
+//                                                      forKey:@"userPassword"];
+//            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
+//            
+//            //hide menu list view controller
+//            [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
+//            break;
+//        default:
+//            break;
+//    }
+//    
+//}
 
 @end

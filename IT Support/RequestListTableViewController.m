@@ -92,12 +92,13 @@
     self.menuBarButtonItem.enabled = NO;
     //table data
     currentRequestID_ = @"";//version 2.0
-    currentRequestID_ = @"0";//version 1.0
+//    currentRequestID_ = @"0";//version 1.0
     direction_ = @"0";
     lastLoadingTableDataCount_ = 0;
     tableData_ = [[NSMutableArray alloc]init];
     searchType_ = mDelegate_.searchType;
-    [self prepareMoreRequestList:searchType_];
+//    [self prepareMoreRequestList:searchType_];//version 1.0
+    [self prepareRequestList:searchType_];//version 2.0
     
     //setting color
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
@@ -129,18 +130,136 @@
         currentRequestID_ = [NSString stringWithFormat:@"%@", [dic valueForKey:@"RequestID"]];
     }else{
         currentRequestID_ = @"";//version 2.0
-        currentRequestID_ = @"0";//version 1.0
+//        currentRequestID_ = @"0";//version 1.0
     }
 
     direction_ = @"1";
     lastLoadingTableDataCount_ = 0;
     self.menuBarButtonItem.enabled = NO;
-    [self prepareMoreRequestList:searchType_];
+//    [self prepareMoreRequestList:searchType_];//version 1.0
+    [self prepareRequestList:searchType_];//version 2.0
     [refreshControl endRefreshing];
 }
 
-#pragma mark - retrieving data
+#pragma mark - retrieving data 2.0
+-(void)prepareRequestList:(NSString *)searchType
+{
+    //navigationbar title
+    self.title = searchType;
+    mDelegate_.searchType = searchType;
+    
+    NSLog(@"retrieving requests data...");
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+    //default "curID" is "currentRequestID" = 0
+    NSString *curID = currentRequestID_;
+    NSString *direction = direction_;
+    int requestStatus = [appHelper_ getRequestStatusIndex:searchType];
+    NSString *status = [NSString stringWithFormat:@"%d",requestStatus];
+    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
+    
+    
+    NSString *getMethod = @"";
+    NSDictionary *parameters;
+    //user mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        NSString *clientID = mDelegate_.clientID;
+        parameters = @{@"clientID" : clientID,
+                       @"CurID" : curID,
+                       @"Direction": direction,
+                       @"Status" : status,
+                       @"SearchCondition" : searchCondition
+                       };
+        getMethod = @"/ITSupportService/API/Request/Client";
+    }else{
+        NSString *supportID = mDelegate_.supportID;
+        parameters = @{@"SupportID" : supportID,
+                       @"CurID" : curID,
+                       @"Direction": direction,
+                       @"Status" : status,
+                       @"SearchCondition" : searchCondition
+                       };
+        getMethod = @"/ITSupportService/API/Request/Support";
+    }
+    
+    //URL:   /ITSupportService/API/Request/Client
+    //URL:   /ITSupportService/API/Request/Support
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    //clientID 放在parameters中
+    [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+        [HUD_ hide:YES];
+        self.menuBarButtonItem.enabled = YES;
+      
+        NSLog(@"%@",responseObject);
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"0"]) {
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {}];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+        }else if ([responseStatus isEqualToString:@"1"]) {
+            
+            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+            tempArray = [responseDictionary valueForKey:@"Result"];
+            //0 is load earlier data
+            if ([direction_ isEqualToString:@"0"]) {
+                
+                for (NSDictionary *dic in tempArray) {
+                    [tableData_ addObject:dic];
+                }
+                
+            }else if ([direction_ isEqualToString:@"1"]){
+                //1 is load next data
+                for (NSDictionary *dic in tempArray) {
+                    [tableData_ insertObject:dic atIndex:0];
+                }
+            }
+            
+            [self.tableView reloadData];
+            
+            [loadMore_ setText:@"All Loaded."];
+            NSLog(@"Retrieved Request List Data");
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        self.menuBarButtonItem.enabled = YES;
 
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+}
+
+#pragma mark retrieving data 1.0
 -(void)prepareMoreRequestList:(NSString *)searchType
 {
     //navigationbar title
@@ -189,19 +308,31 @@
         self.menuBarButtonItem.enabled = YES;
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"0"]) {
+        if ([responseStatus isEqualToString:@"0"]) {
             
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:errorMessage
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        }else if ([requestResultStatus isEqualToString:@"1"]) {
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+//                                                                message:errorMessage
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            
+            
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                                           message:errorMessage
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {}];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+        }else if ([responseStatus isEqualToString:@"1"]) {
     
             NSMutableArray *tempArray = [[NSMutableArray alloc]init];
             tempArray = [responseDictionary valueForKey:@"Result"];
@@ -227,12 +358,24 @@
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [HUD_ hide:YES];
         self.menuBarButtonItem.enabled = YES;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
+//                                                            message:[error localizedDescription]
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+        
+        
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
+                                                                       message:[error localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
 }
 
@@ -256,12 +399,15 @@
                         options:UIViewAnimationOptionCurveLinear
                      animations:^{
                          menu_.frame = CGRectMake(0, 0, width, height);
-                     }
-                     completion:nil];
+                     }completion:^(BOOL finished) {
+                         menu_.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+                     }];
 }
 
 - (void)hideMenuListViewController:(NSString *)displayMode
 {
+    menu_.backgroundColor = [UIColor clearColor];
+    
     CGFloat width = mDelegate_.window.frame.size.width;
     CGFloat height = mDelegate_.window.frame.size.height;
     [UIView animateWithDuration:0.3
@@ -274,17 +420,16 @@
                      }];
     
     
-    //sell
+
     if ([displayMode isEqualToString:@"Setting"]){
 
         [self performSegueWithIdentifier:@"To UserSetting TableView" sender:self];
         
-//        [self performSegueWithIdentifier:@"To Login View" sender:self];
     }else if (displayMode != nil) {
         
         searchType_ = displayMode;
         currentRequestID_ = @"";//version 2.0
-        currentRequestID_ = @"0";//version 1.0
+//        currentRequestID_ = @"0";//version 1.0
         direction_ = @"0";
         lastLoadingTableDataCount_ = 0;
         tableData_ = [[NSMutableArray alloc]init];
@@ -293,7 +438,8 @@
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Progressing...";
         self.menuBarButtonItem.enabled = NO;
-        [self prepareMoreRequestList:searchType_];
+//        [self prepareMoreRequestList:searchType_];//version 1.0
+        [self prepareRequestList:searchType_];//version 2.0
         
 //        tableData_ = [[NSMutableArray alloc] init];
 //        [tableData_ addObjectsFromArray:mDelegate_.propertyShortlist];
@@ -335,7 +481,6 @@
     NSString *cellidentify = @"RequestListCell";
     UITableViewCell *cell = nil;
 
-
     if (indexPath.row!= tableData_.count) {
         RequestListTableViewCell *cell = (RequestListTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellidentify];
         
@@ -348,23 +493,66 @@
         //populate a cell
         NSDictionary *requestObject = [tableData_ objectAtIndex:indexPath.row];
         
+        //--image ----------
         //--title ----------
         //--contact name ---
         //--company name ---
+        //--price ----------
         //--created date ---
-        //--image ----------
         //----load more-----
         
         NSString *title = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"Title"]];
-        NSString *companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CompanyName"]];
-        NSString *contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ContactName"]];
-        NSString *createDate = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
+        NSString *price = [NSString stringWithFormat:@"$%@",[requestObject valueForKey:@"Price"]];
+        NSString *contactName,*companyName;
         
         
+        //client 显示 support name,company
+        //support 显示 client name,company
+        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+            contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
+            
+            
+        
+            
+            companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
+
+        }else{
+            contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ClientContactName"]];
+            companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ClientCompanyName"]];
+        }
+        
+
+////        [dateFormat setDateFormat:@"YYYY-MM-dd\'T\'HH:mm:ssZZZZZ"];
+//        NSString *dateString = @"01-02-2010";
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        // this is imporant - we set our input date format to match our input string
+//        // if format doesn't match you'll get nil from your string, so be careful
+//        [dateFormatter setDateFormat:@"dd-MM-yyyy"];
+//        NSDate *dateFromString = [[NSDate alloc] init];
+//        // voila!
+//        dateFromString = [dateFormatter dateFromString:dateString];
+//        
+//        
+//        
+////        NSString *dateStr = [requestObject valueForKey:@"CreateDate"] ;
+//        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+//        [dateFormat setDateStyle:NSDateFormatterShortStyle];
+//        
+//    
+//        NSDate *createDate = [dateFormat dateFromString:dateStr];
+//        
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+//        [dateFormatter setLocale:usLocale];
+//        
+//        NSLog(@"Date for locale %@",[dateFormatter dateFromString:dateStr]);
+        
+
         cell.titleLabel.text = title;
         cell.contactNameLabel.text = contactName;
         cell.companyNameLabel.text = companyName;
-        cell.createdDateLabel.text = createDate;
+        cell.priceLabel.text = price;
+//        cell.createdDateLabel.text = createDate;
         cell.createdDateLabel.textColor = mDelegate_.appThemeColor;
         
         //image
@@ -391,13 +579,18 @@
                                           reuseIdentifier:@"Cell"];
         }
 
+        [cell addSubview:loadMore_];
+        
         if ([tableData_ count] > lastLoadingTableDataCount_) {
             [loadMore_ setText:@"Loading Earlier Requests..."];
             
             direction_ = @"0";
-            [cell addSubview:loadMore_];
-            [self prepareMoreRequestList:searchType_];
+
+//            [self prepareMoreRequestList:searchType_];//version 1.0
+            [self prepareRequestList:searchType_];//version 2.0
             lastLoadingTableDataCount_ = [tableData_ count];
+        }else{
+            [loadMore_ setText:@"All Loaded."];
         }
     }
 

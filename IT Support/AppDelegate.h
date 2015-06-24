@@ -10,8 +10,9 @@
 #import <CoreData/CoreData.h>
 
 
-static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";//version1.0
-//static NSString *const AWSLinkURL = @"http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com";//version2.0
+//static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";//version1.0
+//static NSString *const AWSLinkURL = @"http://ec2-54-153-165-173.ap-southeast-2.compute.amazonaws.com";//version2.0
+static NSString *const AWSLinkURL = @"http://54.153.139.38";//version 0.1
 
 static float const cellHeightRatio = 0.625f;
 
@@ -39,10 +40,11 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) NSString *appVersion;
 
 //user
-@property (strong, nonatomic) NSString *userToken;
+//@property (strong, nonatomic) NSString *userToken;
 @property (strong, nonatomic) NSDictionary *userDictionary;
 @property (strong, nonatomic) NSString *userEmail;//username
 @property (strong, nonatomic) NSString *userPassword;//password
+//@property (strong, nonatomic) NSString *contactName;
 //login view is root
 @property (nonatomic)BOOL loginIsRoot;
 
@@ -56,8 +58,8 @@ static float const cellHeightRatio = 0.625f;
 
 //setting request variables
 @property (strong, nonatomic) NSString *requestCategoryID;
-@property (strong, nonatomic) NSString *requestSubject;
-@property (strong, nonatomic) NSString *requestDescription;
+//@property (strong, nonatomic) NSString *requestSubject;
+//@property (strong, nonatomic) NSString *requestDescription;
 
 //category list
 @property (strong, nonatomic) NSMutableArray *categoryListArray;

@@ -10,4 +10,6 @@
 
 @interface RequestTableViewController : UITableViewController
 
+- (IBAction)reviewAction:(id)sender;
+
 @end

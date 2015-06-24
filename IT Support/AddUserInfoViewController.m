@@ -33,8 +33,8 @@
     
     
     //test
-//    self.companyNameTextField.text = @"IT Express Pro";
-//    self.contactNameTextField.text = @"Benson Shi";
+    self.companyNameTextField.text = @"IT Express Pro";
+    self.contactNameTextField.text = @"Benson Shi";
     
 }
 
@@ -56,12 +56,16 @@
         [self performSegueWithIdentifier:@"To SignIn View" sender:self];
         
     }else{
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                            message:@"Please Fill All Blank."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController* alert =
+        [UIAlertController alertControllerWithTitle:@"Error!!"
+                                            message:@"Please Fill All Blank."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction =
+        [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     
 }

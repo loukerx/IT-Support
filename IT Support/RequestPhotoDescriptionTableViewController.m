@@ -17,7 +17,7 @@
     CGFloat scrollViewHeight_;
     NSInteger displayPhotoIndex_;
     BOOL firstDisplay_;
-    MBProgressHUD *hud_;
+    MBProgressHUD *HUD_;
 }
 
 
@@ -317,8 +317,8 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     switch (buttonIndex) {
         case 0:
-            hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud_.labelText = @"Processing...";
+            HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            HUD_.labelText = @"Processing...";
             
             //delete photo & description from their arrays
             [mDelegate_.mRequestImageDescriptions removeObjectAtIndex:displayPhotoIndex_];
@@ -362,7 +362,7 @@
     //correct description position
     self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
     
-    [hud_ hide:YES];
+    [HUD_ hide:YES];
 }
 
 

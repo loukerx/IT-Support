@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vc4-Dp-VPg">
-                                <rect key="frame" x="0.0" y="0.0" width="146" height="30"/>
+                                <rect key="frame" x="20" y="20" width="146" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="146" id="o1h-eU-Uug"/>
                                 </constraints>
@@ -33,8 +33,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="leading" secondItem="Bt3-Zh-E3p" secondAttribute="leading" id="ARZ-gw-M1l"/>
-                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" id="GiY-ce-gdh"/>
+                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="leading" secondItem="Bt3-Zh-E3p" secondAttribute="leading" constant="20" id="ARZ-gw-M1l"/>
+                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" constant="20" id="GiY-ce-gdh"/>
                         </constraints>
                     </view>
                     <connections>
@@ -169,10 +169,10 @@
         <scene sceneID="tIR-k7-noH">
             <objects>
                 <tableViewController id="Iw3-g9-lvE" customClass="RequestTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="Cl5-pU-ADR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Cl5-pU-ADR">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RequestTableViewCell" id="DLF-EO-O6c">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -190,13 +190,14 @@
                     <navigationItem key="navigationItem" id="sKi-yj-FlU">
                         <barButtonItem key="rightBarButtonItem" title="Review" id="QMT-tq-0FC">
                             <connections>
-                                <segue destination="Fc2-LW-ckI" kind="show" identifier="To RequestReview TableView" id="1ju-PS-3Qf"/>
+                                <action selector="reviewAction:" destination="Iw3-g9-lvE" id="86q-vv-5Qx"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="reviewBarButtonItem" destination="QMT-tq-0FC" id="Av9-rm-0KE"/>
                         <segue destination="dmb-Wl-eIC" kind="show" identifier="To RequestPhoto View" id="fQa-aU-Rhc"/>
+                        <segue destination="Fc2-LW-ckI" kind="show" identifier="To RequestReview TableView" id="jII-jr-E1u"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fH-la-HpE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -385,7 +386,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="wOq-zL-PLH" kind="showDetail" identifier="To Login View" id="xXn-f6-RwB"/>
+                        <segue destination="wOq-zL-PLH" kind="presentation" identifier="To Login View" id="xXn-f6-RwB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qvt-Cz-TbO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -620,6 +621,35 @@
             </objects>
             <point key="canvasLocation" x="5725" y="592"/>
         </scene>
+        <!--Price View Controller-->
+        <scene sceneID="lsy-Fm-0zU">
+            <objects>
+                <viewController id="707-SV-JiZ" customClass="PriceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Qav-PH-cfD"/>
+                        <viewControllerLayoutGuide type="bottom" id="vc9-HH-hZp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hSx-P1-UQr">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rqP-q5-PQs">
+                                <rect key="frame" x="236" y="265" width="97" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="rqP-q5-PQs" secondAttribute="centerX" id="M4X-9z-zpj"/>
+                            <constraint firstAttribute="centerY" secondItem="rqP-q5-PQs" secondAttribute="centerY" id="Tkk-kX-QNa"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7of-lT-ZRB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3581" y="1327"/>
+        </scene>
         <!--Sign In View Controller-->
         <scene sceneID="UdW-2F-UrH">
             <objects>
@@ -724,7 +754,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="37A-E8-Ygl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="mN4-f6-9fO" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="3550" y="2032"/>
+            <point key="canvasLocation" x="3571" y="2027"/>
         </scene>
         <!--Add User Info View Controller-->
         <scene sceneID="2VF-77-TPV">
@@ -738,18 +768,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GNB-UQ-PyZ">
-                                <rect key="frame" x="15" y="74" width="570" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="Yxm-pX-YHj"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contatct Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ym0-lh-0jE">
                                 <rect key="frame" x="15" y="132" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="YdC-bY-c1J"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GNB-UQ-PyZ">
+                                <rect key="frame" x="15" y="72" width="570" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Yxm-pX-YHj"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>

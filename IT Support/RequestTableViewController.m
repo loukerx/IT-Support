@@ -8,6 +8,7 @@
 
 #import "RequestTableViewController.h"
 #import "AppDelegate.h"
+#import "RequestReviewTableViewController.h"
 
 @interface RequestTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>
 {
@@ -18,6 +19,7 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UILabel *pageLabel;
+@property (strong, nonatomic) UITextField *priceTextField;
 @property (strong, nonatomic) UITextField *subjectTextField;
 @property (strong, nonatomic) UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *reviewBarButtonItem;
@@ -25,12 +27,20 @@
 
 @end
 
+#define categorySection 0
+#define priceSection 1
+#define titleSection 2
+#define tableRowHeight 44.0f
+#define textfieldHeight tableRowHeight - 6
+
 @implementation RequestTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     [self initialCustomView];
@@ -40,7 +50,7 @@
     
     [self prepareImageView];
     [self populateTableViewHeader];
-    
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -96,9 +106,8 @@
 
 -(void)initialCustomView{
     
-    //textfield
-    
-    CGRect subjectTextFieldFrame = CGRectMake(10, 10, self.view.frame.size.width - 20, 45);
+    //Title TextField
+    CGRect subjectTextFieldFrame = CGRectMake(10, 10, self.view.frame.size.width - 20, textfieldHeight);
     self.subjectTextField = [[UITextField alloc] initWithFrame:subjectTextFieldFrame];
     self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
     self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
@@ -109,15 +118,16 @@
     self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentLeft;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-//    self.subjectTextField.tag = 101;
+
 //    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.subjectTextField];
+    self.subjectTextField.tag = 101;
     self.subjectTextField.delegate = self;
     
-    //textview
-    CGRect textViewFrame = CGRectMake(10.0f, 0.0f, self.view.frame.size.width - 20, 160.0f);
+    //Description TextView
+    CGRect textViewFrame = CGRectMake(10.0f, 10.0f, self.view.frame.size.width - 20, 160.0f);
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
-//    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
+    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
     self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
     self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
     self.descriptionTextView.layer.cornerRadius = 5.0f;
@@ -125,8 +135,27 @@
     self.descriptionTextView.layer.borderWidth = 0.6f;
     self.descriptionTextView.text = @"For additional question, please leave your message.";
     self.descriptionTextView.textColor = [UIColor lightGrayColor];
+    self.descriptionTextView.tag = 102;
     self.descriptionTextView.delegate = self;
 
+    //price textField
+    CGRect priceTextFieldFrame = CGRectMake(0, 0, 80, textfieldHeight);
+    self.priceTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
+    self.priceTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
+    self.priceTextField.backgroundColor = mDelegate_.textFieldColor;
+    self.priceTextField.textColor = [UIColor blackColor];
+    self.priceTextField.font = [UIFont systemFontOfSize:16.0f];
+    self.priceTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.priceTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.priceTextField.returnKeyType = UIReturnKeyDone;
+    self.priceTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.priceTextField.textAlignment = NSTextAlignmentCenter;
+    self.priceTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+
+    //    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.priceTextField];
+    self.subjectTextField.tag = 103;
+    self.priceTextField.delegate = self;
 }
 
 #pragma mark - TextViewDelegate
@@ -151,14 +180,58 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     
-    mDelegate_.requestDescription = self.descriptionTextView.text;
+//    mDelegate_.requestDescription = self.descriptionTextView.text;
 }
 
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+//    NSString *price = self.priceTextField.text;
+//    self.priceTextField.text = [NSString stringWithFormat:@"$%@",price];
+    
+}
 - (void)textFieldDidChange:(NSNotification *)notification {
     
-    mDelegate_.requestSubject = self.subjectTextField.text;
+    if(self.priceTextField.text.length >5){
+        self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,5)];
+    }else if (self.priceTextField.text.length >1) {
+        NSArray *array = [self.priceTextField.text componentsSeparatedByString:@"$"];
+        if([self checkAvailableFunds:array[1]])
+        {
+            self.priceTextField.text = [NSString stringWithFormat:@"$%@",array[1]];
+        }
+    }else if(self.priceTextField.text.length==1){
+        NSArray *array = [self.priceTextField.text componentsSeparatedByString:@"$"];
+        if (![array[0]isEqualToString:@""]&&![array[0] isEqualToString:@"0"]&&[self checkAvailableFunds:array[0]]) {
+            self.priceTextField.text = [NSString stringWithFormat:@"$%@",array[0]];
+        }else{
+             self.priceTextField.text = @"";
+        }
+    }
 }
 
+-(BOOL)checkAvailableFunds:(NSString *)requestPrice
+{
+    int availableFunds = [[NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]] intValue];
+    int price = [requestPrice intValue];
+    if (price <= availableFunds && availableFunds > 0) {
+        return true;
+    }else{
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Ops, Sorry"
+                                            message:@"You DO NOT have enough funds."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                   self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,self.priceTextField.text.length-1)];
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    return false;
+}
 
 #pragma mark - textFiled Delegate
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -308,10 +381,10 @@
 #pragma mark - Table view data source
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 1 && indexPath.row == 1)
+    if (indexPath.section == titleSection && indexPath.row == 1)
         return 170;
     
-    return self.tableView.rowHeight;
+    return tableRowHeight;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -320,13 +393,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == 1) {
-        return 2;
+        return 3;
     }
     return 2;
 }
@@ -338,11 +411,14 @@
     //- Category
     //- Subcategory
     //-------------section 1
+    //- Available Funds
+    //- Account Balance
+    //-------------section 2
     //- Subject
     //- Description
     UITableViewCell *cell=nil;
     
-    if(indexPath.section == 0){
+    if(indexPath.section == categorySection){
         
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                            reuseIdentifier:@"RequestTableViewCell"];
@@ -364,7 +440,31 @@
              default:
                  break;
          }
-     }else{
+    }else if (indexPath.section == priceSection){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"RequestTableViewCell"];
+        
+        NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
+        NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
+        
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Available Funds:";
+                cell.detailTextLabel.text = availableFunds;
+                break;
+            case 1:
+                cell.textLabel.text = @"Account Balance:";
+                cell.detailTextLabel.text = accountBalance;
+                break;
+            case 2:
+                cell.textLabel.text = @"Your Price:";
+                cell.accessoryView = self.priceTextField;
+                break;
+                
+            default:
+                break;
+        }
+    }else{
 
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                            reuseIdentifier:@"RequestTableViewCell"];
@@ -397,13 +497,44 @@
 
 
 #pragma mark - Navigation
+- (IBAction)reviewAction:(id)sender {
+    [self dismissKeyboard];
+    NSString *priceCheck = self.priceTextField.text;
+    if ([priceCheck isEqualToString:@""]) {
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error"
+                                            message:@"Please input a price"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }else{
+        [self performSegueWithIdentifier:@"To RequestReview TableView" sender:self];
+    }
+
+}
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-//    if ([segue.identifier isEqualToString:@"To RequestReview TableView"]) {
-//        mDelegate_.requestSubject = self.subjectTextField.text;
-//        mDelegate_.requestDescription = self.descriptionTextView.text;
-//    }
+    if ([segue.identifier isEqualToString:@"To RequestReview TableView"]) {
+        
+        RequestReviewTableViewController *rrtvc = segue.destinationViewController;
+        rrtvc.requestTitle = self.subjectTextField.text.length>0?self.subjectTextField.text:@"N/A";
+        
+        if ([self.descriptionTextView.text isEqualToString:@"For additional question, please leave your message."]) {
+            rrtvc.requestDescription = @"N/A";
+        }else{
+            rrtvc.requestDescription = self.descriptionTextView.text;
+        }
+
+        rrtvc.requestPrice = self.priceTextField.text;
+    }
 }
 
 
@@ -411,5 +542,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

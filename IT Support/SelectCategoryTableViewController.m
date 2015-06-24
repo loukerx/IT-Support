@@ -82,18 +82,14 @@
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    //URL: http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/api/requestcategory
-    
     //clientID 放在parameters中
     [manager GET:@"/ITSupportService/API/Requestcategory" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-      
-        
-        
+
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"1"]) {
+        if ([responseStatus isEqualToString:@"1"]) {
             
             categoryArray_ =[[NSArray alloc]initWithArray:[responseDictionary valueForKey:@"Result"]];
             
@@ -105,24 +101,39 @@
             NSLog(@"Retreved category List Data");
             
             
-        }else if ([requestResultStatus isEqualToString:@"0"]) {
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:errorMessage
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {}];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [HUD_ hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Retrieving Categories"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
 }
 

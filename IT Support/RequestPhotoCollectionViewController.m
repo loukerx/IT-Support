@@ -74,12 +74,22 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
  - (void)addPhotoButton:(id)sender{
      
      if (mDelegate_.mRequestImages.count>8) {
-         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                             message:@"Only 9 Photos In One Request"
-                                                            delegate:nil
-                                                   cancelButtonTitle:@"OK"
-                                                   otherButtonTitles:nil];
-         [alertView show];
+//         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                             message:@"Only 9 Photos In One Request"
+//                                                            delegate:nil
+//                                                   cancelButtonTitle:@"OK"
+//                                                   otherButtonTitles:nil];
+//         [alertView show];
+         
+         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
+                                                                        message:@"Only 9 Photos In One Request"
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+         
+         UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {}];
+         
+         [alert addAction:okAction];
+         [self presentViewController:alert animated:YES completion:nil];
      }else{
          UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                   delegate:self
@@ -111,13 +121,23 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     // check if the device has a built in camera
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
-        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                              message:@"Device has no camera"
-                                                             delegate:nil
-                                                    cancelButtonTitle:@"OK"
-                                                    otherButtonTitles: nil];
+//        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
+//                                                              message:@"Device has no camera"
+//                                                             delegate:nil
+//                                                    cancelButtonTitle:@"OK"
+//                                                    otherButtonTitles: nil];
+//        
+//        [myAlertView show];
         
-        [myAlertView show];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
+                                                                       message:@"Device has no camera"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
         
     }else{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];

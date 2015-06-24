@@ -10,6 +10,12 @@
 
 @interface RequestReviewTableViewController : UITableViewController
 
+
+//property
+@property (strong, nonatomic) NSString *requestTitle;
+@property (strong, nonatomic) NSString *requestDescription;
+@property (strong, nonatomic) NSString *requestPrice;
+
 - (IBAction)sendAction:(UIBarButtonItem *)sender;
 
 @end

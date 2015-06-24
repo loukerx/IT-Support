@@ -15,31 +15,33 @@
 #pragma mark - convert dictionary to Json String
 -(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType
 {
-    NSString *requestStatusValue;
+//    NSString *requestStatusValue;
     //@[@"Active",@"Processing",@"Processed",@"Finished"]
-    if ([searchType isEqualToString:@"Active"]) {
-        requestStatusValue = @"0";
-    }else if ([searchType isEqualToString:@"Processing"]) {
-        requestStatusValue = @"1";
-    }else if ([searchType isEqualToString:@"Processed"]) {
-        requestStatusValue = @"2";
-    }else if ([searchType isEqualToString:@"Finished"]) {
-        requestStatusValue = @"3";
-    }else{
-        requestStatusValue = @"0";
-    }
+//    if ([searchType isEqualToString:@"Active"]) {
+//        requestStatusValue = @"0";
+//    }else if ([searchType isEqualToString:@"Processing"]) {
+//        requestStatusValue = @"1";
+//    }else if ([searchType isEqualToString:@"Processed"]) {
+//        requestStatusValue = @"2";
+//    }else if ([searchType isEqualToString:@"Finished"]) {
+//        requestStatusValue = @"3";
+//    }else{
+//        requestStatusValue = @"0";
+//    }
     //多字段组合array
-    NSDictionary *searchRequestStatusCondition =@{@"Name":@"RequestStatus",
-                                                  @"Ope":@"1",
-                                                  @"Val":requestStatusValue
-                                                  };
+//    NSDictionary *searchRequestStatusCondition =@{@"Name":@"RequestStatus",
+//                                                  @"Ope":@"1",
+//                                                  @"Val":requestStatusValue
+//                                                  };
     NSDictionary *searchRequestCategotyIDCondition = @{};
 
     NSDictionary *searchTitleCondition = @{};
 
     NSDictionary *searchPriorityCondition = @{};
 
-    NSArray *searchConditionArray = @[searchRequestCategotyIDCondition,searchRequestStatusCondition,searchTitleCondition,searchPriorityCondition];
+    NSArray *searchConditionArray = @[searchRequestCategotyIDCondition,
+//                                      searchRequestStatusCondition,
+                                      searchTitleCondition,searchPriorityCondition];
     //json to NSString
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:searchConditionArray
@@ -194,15 +196,13 @@
 //levelTWoCategoryDictionary example:
 //    {
 //        "categoryID[1]" =     (
-//                               {
-//                                   CreateDate = "2015-05-22T03:37:54.69";
-//                                   Level = 2;
-//                                   ModifyDate = "<null>";
-//                                   Name = "Website Development";
-//                                   ParentID = 1;
-//                                   RequestCategoryID = 6;
-//                               },
-    
+                            //    {
+                            //        Level = 2;
+                            //        Name = "Website Development";
+                            //        ParentID = 1;
+                            //        RequestCategoryID = 6;
+                            //    }
+
     
     return returnLevelOneCategoryArray;
 

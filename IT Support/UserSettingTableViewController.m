@@ -10,7 +10,6 @@
 #import "AppDelegate.h"
 #import "AppHelper.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
 @interface UserSettingTableViewController ()<UIActionSheetDelegate>
@@ -73,10 +72,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section != 0 && section != 2) {
-        return 1;
+    if (section == 0) {
+        return 3;
+    }else if (section == 2){
+        return 2;
     }
-    return 2;
+    return 1;
 }
 
 
@@ -87,16 +88,17 @@
     // Configure the cell...
     //-------------section 0
     //- contact name
-    //- available credit
+    //- available funds
+    //- Account Balance
     //-------------section 1
     //- change password
-    //- share on Facebook
     //-------------section 2
+    //- share on Facebook
     //- about
-    //- copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
     //-------------section 3
     //- logout
-    
+    //---------footer-------------
+    //- copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
     UITableViewCell *cell=nil;
     
     if(indexPath.section == 0){
@@ -105,15 +107,24 @@
                                       reuseIdentifier:cellidentify];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        NSString *contactName = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactName"]];
+        NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
+        NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
+        
         switch (indexPath.row) {
             case 0:
                 //other info
-                cell.textLabel.text = @"Contact Name:";
-                cell.detailTextLabel.text = @"Benson Shi";
+                cell.textLabel.text = @"You Contact Name:";
+                cell.detailTextLabel.text = contactName;
                 break;
             case 1:
                 cell.textLabel.text = @"Available Funds:";
-                cell.detailTextLabel.text = @"$725";
+                cell.detailTextLabel.text = availableFunds;
+                break;
+            case 2:
+                cell.textLabel.text = @"Account Balance:";
+                cell.detailTextLabel.text = accountBalance;
                 break;
             default:
                 break;
@@ -194,35 +205,80 @@
         
     }else if (indexPath.section == LogOutSection) {
 
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Cancel"
-                                                   destructiveButtonTitle:@"Log Out"
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = 1;
-        [actionSheet showInView:self.view];
+//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+//                                                                 delegate:self
+//                                                        cancelButtonTitle:@"Cancel"
+//                                                   destructiveButtonTitle:@"Log Out"
+//                                                        otherButtonTitles:nil];
+//        actionSheet.tag = 1;
+//        [actionSheet showInView:self.view];
 
+        
+        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:nil
+                                                                          preferredStyle:UIAlertControllerStyleActionSheet];
+        
+        UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * action) {}];
+        UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive
+                                                              handler:^(UIAlertAction * action) {
+                                                                  
+                                                                  [self logoutAction];
+                                                              }];
+        
+        [alertController addAction:cancelAction];
+        [alertController addAction:confirmAction];
+        
+        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+        if (popover)
+        {
+            popover.sourceView = logoutLabel_;
+            popover.sourceRect = logoutLabel_.bounds;
+            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        }
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
+}
+
+-(void)logoutAction
+{
+    //CLEAR NSUserDefaults local variables
+    [[NSUserDefaults standardUserDefaults] setObject:@""
+                                              forKey:@"userEmail"];
+    [[NSUserDefaults standardUserDefaults] setObject:@""
+                                              forKey:@"userPassword"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
+
+    mDelegate_.loginIsRoot = NO;
+    [self performSegueWithIdentifier:@"To Login View" sender:self];
+    
 }
 
 #pragma mark - actionSheet delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            //CLEAR NSUserDefaults local variables
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userEmail"];
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userPassword"];
-            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-            
-            mDelegate_.loginIsRoot = NO;
-            [self performSegueWithIdentifier:@"To Login View" sender:self];
-            break;
-        default:
-            break;
-    }
-}
+
+//- (void)      actionSheet:(UIActionSheet *)actionSheet
+//didDismissWithButtonIndex:(NSInteger)buttonIndex {
+//    
+//    switch (buttonIndex) {
+//        case 0:
+//            //CLEAR NSUserDefaults local variables
+//            [[NSUserDefaults standardUserDefaults] setObject:@""
+//                                                      forKey:@"userEmail"];
+//            [[NSUserDefaults standardUserDefaults] setObject:@""
+//                                                      forKey:@"userPassword"];
+//            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
+//            
+//            mDelegate_.loginIsRoot = NO;
+//            [self performSegueWithIdentifier:@"To Login View" sender:self];
+//
+//            break;
+//        default:
+//            break;
+//    }
+//    
+//    
+//}
 
 //#pragma initial and login check
 //-(void)initialViewController:(NSString *)viewControllerIdentifier

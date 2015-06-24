@@ -17,7 +17,7 @@
     CGFloat scrollViewHeight_;
     NSString *requestID_;
     NSMutableArray *imageDescriptionArray_;
-    MBProgressHUD *hud_;
+    MBProgressHUD *HUD_;
 }
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (strong, nonatomic) UILabel *pageLabel;
@@ -65,7 +65,7 @@
 //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentLeft;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=[NSString stringWithFormat:@"%@",mDelegate_.requestSubject];
+    self.subjectTextField.text=self.requestTitle;//[NSString stringWithFormat:@"%@",mDelegate_.requestSubject];
     self.subjectTextField.enabled = NO;
 
     
@@ -78,7 +78,7 @@
     self.descriptionTextView.layer.cornerRadius = 5.0f;
     self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
     self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text =[NSString stringWithFormat:@"Description:\n\n%@",mDelegate_.requestDescription];
+    self.descriptionTextView.text = self.requestDescription;//[NSString stringWithFormat:@"Description:\n\n%@",mDelegate_.requestDescription];
     self.descriptionTextView.editable = NO;
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
@@ -208,7 +208,7 @@
     if (section == 1) {
         return 1;
     }
-    return 2;
+    return 3;
 }
 
 
@@ -218,6 +218,7 @@
     //-------------section 0
     //- Category
     //- Subcategory
+    //- Price
     //-------------section 1
     //- Subject
     //- Description
@@ -241,6 +242,10 @@
                 //                 [cell.textLabel adjustsFontSizeToFitWidth];
                 cell.detailTextLabel.text = mDelegate_.requestSubCategory;
                 break;
+            case 2:
+                cell.textLabel.text = @"Given Price:";
+                cell.detailTextLabel.text = self.requestPrice;
+                break;
                 
             default:
                 break;
@@ -251,51 +256,422 @@
                                       reuseIdentifier:@"RequestTableViewCell"];
         //subject textfield
         [cell addSubview:self.subjectTextField];
-//        self.subjectTextField.text= mDelegate_.requestSubject;
-//        self.subjectTextField.enabled = NO;
+
         //description textview
         [cell addSubview:self.descriptionTextView];
-//        self.descriptionTextView.text = mDelegate_.requestDescription;
-//        self.descriptionTextView.editable = NO;
-        
-        
+     
     }
     
     return cell;
 }
 
-#pragma mark - actionSheet delegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            hud_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud_.labelText = @"Processing...";
-            
-
-//            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
-//            [self createReqeustWithImages];//new version 2.0
-            [self createRequest];//new version 1.0
-            break;
-        default:
-            break;
-    }
-    
-}
-
 #pragma mark - Send Request
 - (IBAction)sendAction:(UIBarButtonItem *)sender {
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                               destructiveButtonTitle:@"Send Request"
-                                                    otherButtonTitles:nil];
-    actionSheet.tag = 1;
-    [actionSheet showInView:self.view];
+    
+    UIAlertController* alertController =
+    [UIAlertController alertControllerWithTitle:nil
+                                        message:nil
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
+
+    
+    UIAlertAction *cancelAction =
+    [UIAlertAction actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                           handler:^(UIAlertAction *action) {}];
+    
+    UIAlertAction *confirmAction =
+    [UIAlertAction actionWithTitle:@"Confirm"
+                             style:UIAlertActionStyleDestructive
+                           handler:^(UIAlertAction *action){
+//                               [self createReqeustWithImages];//new version 1.5
+//                               [self createRequest];//new version 1.0
+                               
+                               
+                               if (mDelegate_.mRequestImages.count > 0) {
+                                    [self createImageFiles];//version 2.0<#statements#>
+                               }else{
+//                                   NSDictionary *returnDictionay;
+                                   [self createRequest:nil];
+                               }
+                           
+                           
+                           }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:confirmAction];
+    
+    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+    if (popover)
+    {
+        UIBarButtonItem *sendBarButton = (UIBarButtonItem *)sender;
+        popover.barButtonItem = sendBarButton;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+    
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 
 }
 
-//new version 2.0
+#pragma mark version 2.0
+-(void)createImageFiles
+{
+    NSLog(@"uploading photos");
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+//    //clear array
+//    imageDescriptionArray_ = [[NSMutableArray alloc]init];
+//    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+//    
+//    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
+//        //add object in description array
+//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
+//        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
+//                                         @"Description":descriptionContent
+//                                         };
+//        //create array
+//        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
+//        [imageDescriptionArray_ addObject:descriptionDic];
+//    }
+//    
+//    //json to NSString
+//    NSError *error;
+//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:imageDescriptionArray_
+//                                                       options:NSJSONWritingPrettyPrinted
+//                                                         error:&error];
+//    NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+//    NSDictionary *parameters = @{@"RequestID" : requestID_,
+//                                 @"picDescriptions" :descriptionJsonString
+//                                 };
+//    
+
+    NSDictionary *parameters = @{};
+    
+    //upload images
+    AFHTTPRequestOperationManager *manager =[[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];// [AFHTTPRequestOperationManager manager];
+    [manager POST:@"/ITSupportService/API/File" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        int index =0;
+        if (mDelegate_.mRequestImages.count>0) {
+            for (UIImage *image in mDelegate_.mRequestImages) {
+                
+                NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
+                NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
+                NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
+                NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
+//                NSString *name = [NSString stringWithFormat:@"%@",nameArray[index]];
+                NSString *name = [NSString stringWithFormat:@"%d", index];
+                //send Photo Data
+                [formData appendPartWithFileData:bestImageData
+                                            name:name//description tag
+                                        fileName:tempPhotoFileName
+                                        mimeType:@"image/jpeg"];
+                
+                index++;
+            }
+        }
+        
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+
+        
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Success"
+                                                message:@"Uploading Photos."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+             {
+                 NSDictionary *returnDictionay = [responseDictionary valueForKey:@"Result"];
+                 [self createRequest:returnDictionay];
+                 
+             }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            
+            [HUD_ hide:YES];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:@"Please try later"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+
+                                   }];
+
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [HUD_ hide:YES];
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Uploading Photos"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+
+    }];
+}
+
+-(void)createRequest:(NSDictionary *)returnDictionay
+{
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //URL： http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client
+    NSString *clientID = mDelegate_.clientID;
+    NSString *categoryID = mDelegate_.requestCategoryID;
+    NSString *price = [self.requestPrice substringFromIndex:1];
+    NSString *title = self.requestTitle;
+    NSString *description = self.requestDescription;
+    NSString *priority = @"1";
+    
+    
+    //create picDescritptions
+    imageDescriptionArray_ = [[NSMutableArray alloc]init];
+    
+    
+//    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
+//    
+//    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
+//        //add object in description array
+//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
+//        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
+//                                         @"Description":descriptionContent
+//                                         };
+//        //create array
+//        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
+//        [imageDescriptionArray_ addObject:descriptionDic];
+//    }
+    
+//    int i = 0;
+    //匹配 description 与image File 返回值
+    for (NSDictionary *dic in returnDictionay) {
+ 
+//        NSString *fileKey = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileKey"]];
+//        NSString *iString = [NSString stringWithFormat:@"%d",i];
+//        NSString *fileRecordID = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileRecordID"]];
+//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[i]];
+//        if ([fileKey isEqualToString:iString]) {
+//            NSDictionary *descriptionDic = @{@"FileRecordID":fileRecordID,//this name connects to photo
+//                                             @"Description":descriptionContent
+//                                             };
+//            [imageDescriptionArray_ addObject:descriptionDic];
+//        }
+//        i++;
+        
+        
+        //version 2.0
+        NSString *fileKey = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileKey"]];
+        int i = [fileKey intValue];
+        NSString *fileRecordID = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileRecordID"]];
+        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[i]];
+        NSDictionary *descriptionDic = @{@"FileRecordID":fileRecordID,//this name connects to photo
+                                             @"Description":descriptionContent
+                                             };
+        [imageDescriptionArray_ addObject:descriptionDic];
+        
+    }
+    
+
+    
+    
+    
+    //json to NSString
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:imageDescriptionArray_
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSDictionary *parameters = @{@"clientID" : clientID,
+                                 @"categoryID" : categoryID,
+                                 @"price" : price,
+                                 @"title": title,
+                                 @"description" : description,
+                                 @"priority" : priority,
+                                 @"picDescriptions" :descriptionJsonString
+                                 };
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager POST:@"/ITSupportService/API/Request/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        [HUD_ hide:YES];
+        
+        NSLog(@"%@",responseObject);
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            //retrieve user info, update mDelegate_.userDictionary
+            ///
+            ///
+            ///
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Success"
+                                                message:@"Created Request."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action)
+            {
+                [self retrieveUserInfo];
+//                [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+            }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:@"Please try later"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+                                       
+                                   }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    
+}
+
+
+-(void)retrieveUserInfo{
+    
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+    NSString *URLString;
+    NSDictionary *parameters;
+    
+    //Client Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        NSString *clientID = mDelegate_.clientID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
+        parameters = @{@"clientID" : clientID
+                       };
+        
+    }else{//Support Mode
+        NSString *supportID = mDelegate_.supportID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
+        parameters = @{@"supportID" : supportID
+                       };
+    }
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        [HUD_ hide:YES];
+        
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
+            
+            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+                                        [self performSegueWithIdentifier:@"Unwind From RequestDetail TableView" sender:self];
+                                   }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                   [self performSegueWithIdentifier:@"Unwind From RequestDetail TableView" sender:self];
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+}
+
+
+
+
+
+
+#pragma mark version 1.5
 -(void)createReqeustWithImages
 {
     
@@ -303,8 +679,8 @@
     //URL： http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client
     NSString *clientID = mDelegate_.clientID;
     NSString *categoryID = mDelegate_.requestCategoryID;
-    NSString *title = mDelegate_.requestSubject;
-    NSString *description = mDelegate_.requestDescription;
+    NSString *title = self.requestTitle;
+    NSString *description = self.requestDescription;
     NSString *priority = @"1";
     
     //clear array
@@ -362,56 +738,85 @@
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        [hud_ hide:YES];
+        [HUD_ hide:YES];
         
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"1"]) {
+        if ([responseStatus isEqualToString:@"1"]) {
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                message:@"Created Request."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+//                                                                message:@"Created Request."
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
             
-//            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Success"
+                                                                           message:@"Created Request."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+                                                                     [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+                                                             
+                                                             }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+    
 
-        }else if ([requestResultStatus isEqualToString:@"0"]) {
+        }else if ([responseStatus isEqualToString:@"0"]) {
             NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:@"Please try later"
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-        
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+//                                                                message:@"Please try later"
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                                           message:@"Please try later"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {}];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [hud_ hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        [HUD_ hide:YES];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
+//                                                            message:[error localizedDescription]
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                                       message:[error localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
 
 }
 
+#pragma mark version 1.0 app store
 -(void)createRequest{
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     //URL： http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client
     NSString *clientID = mDelegate_.clientID;
     NSString *categoryID = mDelegate_.requestCategoryID;
-    NSString *title = mDelegate_.requestSubject;
-    NSString *description = mDelegate_.requestDescription;
+    NSString *title = self.requestTitle;
+    NSString *description = self.requestDescription;
     NSString *priority = @"1";
     
     NSDictionary *parameters = @{@"clientID" : clientID,
@@ -429,55 +834,82 @@
         NSLog(@"%@",responseObject);
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"1"]) {
+        if ([responseStatus isEqualToString:@"1"]) {
 
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                message:@"Created Request."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
-    
-            NSDictionary *newRequest = [responseDictionary valueForKey:@"Result"];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+//                                                                message:@"Created Request."
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Success"
+                                                                           message:@"Created Request."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
             
-            //需要requestID值
-            requestID_ = [NSString stringWithFormat:@"%@",[newRequest valueForKey:@"RequestID"]];
-            
-            if (mDelegate_.mRequestImages.count>0) {
-                [self uploadingRequestPhotos];
-            }else{
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+                                                                 NSDictionary *newRequest = [responseDictionary valueForKey:@"Result"];
+                                                                 
+                                                                 //需要requestID值
+                                                                 requestID_ = [NSString stringWithFormat:@"%@",[newRequest valueForKey:@"RequestID"]];
+                                                                 
+                                                                 if (mDelegate_.mRequestImages.count>0) {
+                                                                     [self uploadingRequestPhotos];
+                                                                 }else{
+                                                                     
+                                                                     HUD_.hidden = YES;
+                                                                     [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+   
+                                                                 }
 
-                hud_.hidden = YES;
-                [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
-//                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            }
+                                                             }];
             
-        }else if ([requestResultStatus isEqualToString:@"0"]) {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:[responseObject valueForKey:@"Message"]
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+//                                                                message:[responseObject valueForKey:@"Message"]
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                                           message:[responseObject valueForKey:@"Message"]
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {}];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-       [hud_ hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+       [HUD_ hide:YES];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Creating Request"
+//                                                            message:[error localizedDescription]
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+                                                                       message:[error localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
  
 }
 
 
-//waiting for test
 -(void)uploadingRequestPhotos
 {
     NSLog(@"uploading photos");
@@ -535,45 +967,75 @@
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        [hud_ hide:YES];
+        [HUD_ hide:YES];
         
         NSDictionary *responseDictionary = responseObject;
-        NSString *requestResultStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"RequestResultStatus"]];
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         
         // 1 == success, 0 == fail
-        if ([requestResultStatus isEqualToString:@"1"]) {
+        if ([responseStatus isEqualToString:@"1"]) {
 
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
-                                                                message:@"Uploading Photos."
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Success"
+//                                                                message:@"Uploading Photos."
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Success"
+                                                                           message:@"Uploading Photos."
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
             
-//            [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+                                                                         [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+                                                             }];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
             
-        }else if ([requestResultStatus isEqualToString:@"0"]) {
-            NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
+
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-                                                                message:@"Please try later"
-                                                               delegate:nil
-                                                      cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil];
-            [alertView show];
+        }else if ([responseStatus isEqualToString:@"0"]) {
+//            NSLog(@"Error Message:%@",[responseObject valueForKey:@"Message"]);
+//            
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+//                                                                message:@"Please try later"
+//                                                               delegate:nil
+//                                                      cancelButtonTitle:@"OK"
+//                                                      otherButtonTitles:nil];
+//            [alertView show];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                                           message:@"Please try later"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
             
-            [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * action) {
+                                                             
+                                                                 
+                                                                 [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+                                                             }];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+
         }
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [hud_ hide:YES];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-        [alertView show];
+        [HUD_ hide:YES];
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Uploading Photos"
+//                                                            message:[error localizedDescription]
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"OK"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+        
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Uploading Photos"
+                                                                       message:[error localizedDescription]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }];
     
 }
