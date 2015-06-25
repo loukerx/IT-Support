@@ -14,4 +14,5 @@
 
 @property (strong, nonatomic) NSString *companyName;
 @property (strong, nonatomic) NSString *contactName;
+@property (strong, nonatomic) NSString * contactNumber;
 @end

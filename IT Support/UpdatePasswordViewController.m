@@ -1,45 +1,40 @@
 //
-//  SignInViewController.m
+//  UpdatePasswordViewController.m
 //  IT Support
 //
-//  Created by Yin Hua on 20/05/2015.
+//  Created by Yin Hua on 25/06/2015.
 //  Copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
 //
 
-#import "SignInViewController.h"
+#import "UpdatePasswordViewController.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 
-@interface SignInViewController ()<UIActionSheetDelegate>
+@interface UpdatePasswordViewController ()
 {
     AppDelegate *mDelegate_;
     MBProgressHUD *HUD_;
 }
 
 
-@property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
+@property (weak, nonatomic) IBOutlet UITextField *oldPasswordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordConfirmTextField;
-@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
 @end
 
-@implementation SignInViewController
+@implementation UpdatePasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
+
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    //test
-    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-    self.passwordTextField.text = @"qwe";
-    self.passwordConfirmTextField.text = @"qwe";
-//    self.companyPhoneTextField.text = @"022234";
-//    self.mobileNumberTextField.text =@"123123";
+    [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
 }
 
 #pragma mark - mandatory field check
@@ -48,8 +43,8 @@
     //check password
     if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
         //check all textfield
-        if ([self.emailAddressTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0) {
-          
+        if ([self.oldPasswordTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0) {
+            
             return true;
         }else{
             UIAlertController* alert =
@@ -79,9 +74,10 @@
     return false;
 }
 
+
 #pragma mark - Button Action
 - (IBAction)submitAction:(id)sender {
-
+    
     BOOL checkField = [self checkAllField];
     
     if (checkField) {
@@ -99,10 +95,8 @@
                                  style:UIAlertActionStyleDestructive
                                handler:^(UIAlertAction * action)
          {
-             HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-             HUD_.labelText = @"Processing...";
              //submit and create an account
-             [self createClientAccount];
+             [self updatePassword];
          }];
         
         [alertController addAction:cancelAction];
@@ -121,48 +115,62 @@
     }
 }
 
-#pragma mark - create client account
--(void)createClientAccount{
+#pragma mark - update password
+-(void)updatePassword{
+    
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Processing...";
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-
-    NSString *email = self.emailAddressTextField.text;
-    NSString *password = self.passwordTextField.text;
-    NSString *companyName = self.companyName;
-    NSString *contactName = self.contactName;
-    NSString *contactNumber = self.contactNumber;
-//    NSString *phone = self.companyPhoneTextField.text;
-//    NSString *mobile = self.mobileNumberTextField.text;
     
-    NSDictionary *parameters = @{@"email" : email,
-                                 @"password" : password,
-                                 @"companyName": companyName,
-                                 @"contactName" : contactName,
-                                 @"contactNumber" : contactNumber
-                                 };
+    NSString *oldPassword = self.oldPasswordTextField.text;
+    NSString *password = self.passwordTextField.text;
+
+    NSString *URLString;
+    NSDictionary *parameters;
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        NSString *clientID = mDelegate_.clientID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
+        parameters = @{@"clientID" : clientID,
+                       @"oldPassword" : oldPassword,
+                       @"password" : password
+                       };
+        
+    }else{
+        NSString *supportID = mDelegate_.supportID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
+        parameters = @{@"supportID" : supportID,
+                       @"oldPassword" : oldPassword,
+                       @"password" : password
+                       };
+    }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager POST:@"/ITSupportService/API/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Status"]];
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
             
             UIAlertController* alert =
             [UIAlertController alertControllerWithTitle:@"Success"
-                                                message:@"Account Created."
+                                                message:@"Password Updated."
                                          preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction* okAction =
             [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action)
              {
-                 NSLog(@"Client account is created");
-                 [self performSegueWithIdentifier:@"Unwind From SignIn View" sender:self];
-                 
+                 NSLog(@"User password has been updated");
+                 [self retrieveUserInfo];
+        
              }];
             
             [alert addAction:okAction];
@@ -172,7 +180,7 @@
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Password Updated Fail!!"
                                                 message:errorMessage
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -183,14 +191,13 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
-
-        }        
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [HUD_ hide:YES];
         
         UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Error Creating Client Account"
+        [UIAlertController alertControllerWithTitle:@"Server Error"
                                             message:[error localizedDescription]
                                      preferredStyle:UIAlertControllerStyleAlert];
         
@@ -206,22 +213,97 @@
 }
 
 
+-(void)retrieveUserInfo{
+    
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+    NSString *URLString;
+    NSDictionary *parameters;
+    
+    //Client Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        NSString *clientID = mDelegate_.clientID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
+        parameters = @{@"clientID" : clientID
+                       };
+        
+    }else{//Support Mode
+        NSString *supportID = mDelegate_.supportID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
+        parameters = @{@"supportID" : supportID
+                       };
+    }
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        [HUD_ hide:YES];
+        
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Update User Info Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+                                       [self.navigationController popViewControllerAnimated:YES];
+                                   }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Update User Info Error!!"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                                   [self.navigationController popViewControllerAnimated:YES];
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+}
 
-#pragma mark - others
+
+
+#pragma mark - Navigation
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 
 @end

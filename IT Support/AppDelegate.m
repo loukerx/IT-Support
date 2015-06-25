@@ -39,7 +39,7 @@
     
     
     //setting user
-//    self.userToken = @"";
+    self.notificationToken = @"";
     self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
     
@@ -89,15 +89,15 @@
     
     
     
-    //Auto Login check username & password
-    //initialise a view controller
-    if (self.userEmail.length>0 && self.userPassword.length >0) {
-        
-        [self userLogin];
-        
-    }else{
-        [self initialViewController:@"LoginViewStoryboardID"];
-    }
+//    //Auto Login check username & password
+//    //initialise a view controller
+//    if (self.userEmail.length>0 && self.userPassword.length >0) {
+//        
+//        [self userLogin];
+//        
+//    }else{
+//        [self initialViewController:@"LoginViewStoryboardID"];
+//    }
     
 //    return YES;
     //changed for Facebook API
@@ -128,6 +128,7 @@
     NSString *email = self.userEmail;
     NSString *password = self.userPassword;
     NSString *userType = userTypeClient;
+    NSString *notificationToken = self.notificationToken;
     //set user type
     if ([self.appThemeColor isEqual:self.clientThemeColor]) {
         userType = userTypeClient;
@@ -137,7 +138,8 @@
     
     NSDictionary *parameters = @{@"email": email,
                                  @"password":password,
-                                 @"userType":userType
+                                 @"userType":userType,
+                                 @"notificationToken" : notificationToken
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
@@ -159,7 +161,7 @@
         }else if ([responseStatus isEqualToString:@"1"]) {
             
             NSLog(@"success");
-//            self.userToken = [NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Token"]];
+
             self.userDictionary = [responseDictionary valueForKey:@"Result"];
             
             //user mode
@@ -213,6 +215,9 @@
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     NSLog(@"My token is: %@", deviceToken);
+    self.notificationToken = [[[[deviceToken description]stringByReplacingOccurrencesOfString: @"<" withString: @""]stringByReplacingOccurrencesOfString: @">" withString: @""]stringByReplacingOccurrencesOfString: @" " withString: @""];
+    
+    NSLog(@"My token string is: %@", self.notificationToken);
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
@@ -236,22 +241,42 @@
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    
+       NSLog(@"applicationWillResignActive");
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+           NSLog(@"applicationDidEnterBackground");
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+               NSLog(@"applicationWillEnterForeground");
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-
+    
+    NSLog(@"applicationDidBecomeActive");
     //icon badge 设为0
 //    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    
+    //Auto Login check username & password
+    //initialise a view controller
+    if (self.userEmail.length>0 && self.userPassword.length >0) {
+        
+        [self userLogin];
+        
+    }else{
+        [self initialViewController:@"LoginViewStoryboardID"];
+    }
+    
+    
     NSLog(@"clear icon badge Number");
     application.applicationIconBadgeNumber = 0;
     

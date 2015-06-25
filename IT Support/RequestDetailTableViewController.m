@@ -476,19 +476,19 @@
         //- Support company
         //- mobile
         //- Email
-        NSString *contactName =@"N/A",*companyName =@"N/A",*mobile =@"N/A",*email=@"N/A";
+        NSString *contactName =@"N/A",*companyName =@"N/A",*contactNumber =@"N/A",*email=@"N/A";
         
         //client 显示 support name,company
         //support 显示 client name,company
         if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
             contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
             companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
-            mobile = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportMobile"]?:@"N/A"];
+            contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@"N/A"];
             email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@"N/A"];
         }else{
             contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactName"]];
             companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]];
-            mobile = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientMobile"]];
+            contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]];
             email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]];
         }
         
@@ -503,8 +503,8 @@
                 cell.detailTextLabel.text = companyName;
                 break;
             case 2:
-                cell.textLabel.text = @"Mobile";
-                cell.detailTextLabel.text = mobile;
+                cell.textLabel.text = @"Contact Number";
+                cell.detailTextLabel.text = contactNumber;
                 break;
             case 3:
                 cell.textLabel.text = @"Email";
@@ -589,6 +589,7 @@
 #pragma mark version2.0 PUT
 -(void)updateRequest{
     
+    NSLog(@"Updating Request Status");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
 
     NSString *requestID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestID"]];
@@ -621,7 +622,9 @@
     [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Status"]];
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
             
@@ -652,7 +655,7 @@
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Confirm Fail!!"
                                                 message:errorMessage
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -668,7 +671,7 @@
         [HUD_ hide:YES];
         
         UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+        [UIAlertController alertControllerWithTitle:@"Server Error"
                                             message:[error localizedDescription]
                                      preferredStyle:UIAlertControllerStyleAlert];
         
@@ -690,14 +693,14 @@
     NSString *URLString;
     NSDictionary *parameters;
     
-    //Client Mode
+    //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         NSString *clientID = mDelegate_.clientID;
         URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
         parameters = @{@"clientID" : clientID
                        };
         
-    }else{//Support Mode
+    }else{
         NSString *supportID = mDelegate_.supportID;
         URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
         parameters = @{@"supportID" : supportID

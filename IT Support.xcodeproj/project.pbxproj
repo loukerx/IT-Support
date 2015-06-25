@@ -48,7 +48,6 @@
 		AEBA920D1B0B258D00447AA1 /* MenuListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA920C1B0B258D00447AA1 /* MenuListViewController.m */; };
 		AEBA92111B0B28CE00447AA1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92101B0B28CE00447AA1 /* LoginViewController.m */; };
 		AEBA92151B0B2C8E00447AA1 /* RequestDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */; };
-		AED06E1E1B33E1050037E490 /* PriceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED06E1D1B33E1050037E490 /* PriceViewController.m */; };
 		AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD201B0C28EB0020B054 /* SignInViewController.m */; };
 		AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */; };
 		AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */; };
@@ -57,7 +56,10 @@
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
 		AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */; };
 		AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */; };
-		AEDBFA4D1B3A8B72004C6460 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDBFA4C1B3A8B72004C6460 /* FBSDKCoreKit.framework */; };
+		AEDD2ECD1B3B8433000BCCA7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */; };
+		AEDD2ED01B3B8B46000BCCA7 /* UpdatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */; };
+		AEDD2ED31B3B991C000BCCA7 /* UpdateContactNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */; };
+		AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */; };
 		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
 		AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
@@ -150,8 +152,6 @@
 		AEBA92101B0B28CE00447AA1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		AEBA92131B0B2C8E00447AA1 /* RequestDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailTableViewController.h; sourceTree = "<group>"; };
 		AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestDetailTableViewController.m; sourceTree = "<group>"; };
-		AED06E1C1B33E1050037E490 /* PriceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PriceViewController.h; sourceTree = "<group>"; };
-		AED06E1D1B33E1050037E490 /* PriceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PriceViewController.m; sourceTree = "<group>"; };
 		AED1AD1F1B0C28EB0020B054 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		AED1AD201B0C28EB0020B054 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		AED1AD251B0C64990020B054 /* RequestListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestListTableViewCell.h; sourceTree = "<group>"; };
@@ -167,7 +167,13 @@
 		AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingTableViewController.m; sourceTree = "<group>"; };
 		AEDB5EE21B0AE0DC007C3DAD /* RequestReviewTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestReviewTableViewController.h; sourceTree = "<group>"; };
 		AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestReviewTableViewController.m; sourceTree = "<group>"; };
-		AEDBFA4C1B3A8B72004C6460 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AEDD2ECE1B3B8B46000BCCA7 /* UpdatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdatePasswordViewController.h; sourceTree = "<group>"; };
+		AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdatePasswordViewController.m; sourceTree = "<group>"; };
+		AEDD2ED11B3B991C000BCCA7 /* UpdateContactNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateContactNumberViewController.h; sourceTree = "<group>"; };
+		AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateContactNumberViewController.m; sourceTree = "<group>"; };
+		AEDD2ED41B3BA0F1000BCCA7 /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordViewController.h; sourceTree = "<group>"; };
+		AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordViewController.m; sourceTree = "<group>"; };
 		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		AEDDA5321B1846BA008213BE /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
@@ -183,7 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
-				AEDBFA4D1B3A8B72004C6460 /* FBSDKCoreKit.framework in Frameworks */,
+				AEDD2ECD1B3B8433000BCCA7 /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +376,7 @@
 		AE85876A1B31313800949FB8 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				AEDBFA4C1B3A8B72004C6460 /* FBSDKCoreKit.framework */,
+				AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -386,8 +392,6 @@
 				AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */,
 				AEE684241B032D36005F9AE7 /* RequestTableViewController.h */,
 				AEE684251B032D36005F9AE7 /* RequestTableViewController.m */,
-				AED06E1C1B33E1050037E490 /* PriceViewController.h */,
-				AED06E1D1B33E1050037E490 /* PriceViewController.m */,
 				AEDB5EE21B0AE0DC007C3DAD /* RequestReviewTableViewController.h */,
 				AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */,
 			);
@@ -413,6 +417,10 @@
 				AEBA920C1B0B258D00447AA1 /* MenuListViewController.m */,
 				AEDAA0F11B295146007F5B86 /* UserSettingTableViewController.h */,
 				AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */,
+				AEDD2ECE1B3B8B46000BCCA7 /* UpdatePasswordViewController.h */,
+				AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */,
+				AEDD2ED11B3B991C000BCCA7 /* UpdateContactNumberViewController.h */,
+				AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */,
 			);
 			name = Menu;
 			sourceTree = "<group>";
@@ -426,6 +434,8 @@
 				AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */,
 				AED1AD1F1B0C28EB0020B054 /* SignInViewController.h */,
 				AED1AD201B0C28EB0020B054 /* SignInViewController.m */,
+				AEDD2ED41B3BA0F1000BCCA7 /* ForgotPasswordViewController.h */,
+				AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -587,16 +597,18 @@
 				AEBA920D1B0B258D00447AA1 /* MenuListViewController.m in Sources */,
 				AE5CDC121B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m in Sources */,
 				AE5CDC0E1B01DC1A0035C366 /* UIAlertView+AFNetworking.m in Sources */,
+				AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */,
 				AE5CDBBD1B019ED30035C366 /* IT_Support.xcdatamodeld in Sources */,
 				AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */,
 				AE5CDC071B01DC1A0035C366 /* AFSecurityPolicy.m in Sources */,
 				AE5CDBBA1B019ED30035C366 /* AppDelegate.m in Sources */,
 				AE5CDC041B01DC1A0035C366 /* AFHTTPRequestOperationManager.m in Sources */,
 				AE5CDC081B01DC1A0035C366 /* AFURLConnectionOperation.m in Sources */,
+				AEDD2ED01B3B8B46000BCCA7 /* UpdatePasswordViewController.m in Sources */,
 				AE5CDC101B01DC1A0035C366 /* UIImageView+AFNetworking.m in Sources */,
 				AE5CDC031B01DC1A0035C366 /* AFHTTPRequestOperation.m in Sources */,
+				AEDD2ED31B3B991C000BCCA7 /* UpdateContactNumberViewController.m in Sources */,
 				AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */,
-				AED06E1E1B33E1050037E490 /* PriceViewController.m in Sources */,
 				AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */,
 				AE5CDC0D1B01DC1A0035C366 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */,
@@ -789,6 +801,11 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -824,6 +841,11 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

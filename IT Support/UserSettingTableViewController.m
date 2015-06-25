@@ -26,7 +26,8 @@
 #define ChangePasswordSection 1
 #define AboutSection 2
 #define LogOutSection 3
-
+#define contactNumberRow 0
+#define changePasswordRow 1
 
 @implementation UserSettingTableViewController
 
@@ -74,7 +75,7 @@
     // Return the number of rows in the section.
     if (section == 0) {
         return 3;
-    }else if (section == 2){
+    }else if (section == 2 || section == 1){
         return 2;
     }
     return 1;
@@ -91,6 +92,7 @@
     //- available funds
     //- Account Balance
     //-------------section 1
+    //- contact number
     //- change password
     //-------------section 2
     //- share on Facebook
@@ -115,7 +117,7 @@
         switch (indexPath.row) {
             case 0:
                 //other info
-                cell.textLabel.text = @"You Contact Name:";
+                cell.textLabel.text = @"Contact Name:";
                 cell.detailTextLabel.text = contactName;
                 break;
             case 1:
@@ -134,8 +136,36 @@
                                       reuseIdentifier:cellidentify];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        //change password
-        cell.textLabel.text = @"Change Password";
+        NSString *contactNumber = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactNumber"]];
+        
+        
+        //Client Mode
+        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+            
+            cell.userInteractionEnabled = YES;
+            cell.selectionStyle =UITableViewCellSelectionStyleDefault;
+            
+        }else{//Support Mode
+            cell.userInteractionEnabled = NO;
+            cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        }
+        
+        
+        switch (indexPath.row) {
+            case 0:
+                //change contact number
+                cell.textLabel.text = @"Contact Number:";
+                cell.detailTextLabel.text = contactNumber;
+                break;
+            case 1:
+                //change password
+                cell.textLabel.text = @"Change Password";
+                break;
+            default:
+                break;
+        }
+
+
 
     }else if(indexPath.section == AboutSection){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
@@ -155,7 +185,6 @@
                 //Share on Facebook
                 cell.textLabel.text = @"Share on Facebook";
                 cell.accessoryView = shareButton;
-//                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case 1:
                 cell.textLabel.text = @"About";
@@ -197,11 +226,14 @@
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    if (indexPath.section == AboutSection && indexPath.row == 0) {
-        
-//        FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
-//        content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
-//        [FBSDKShareAPI shareWithContent:content delegate:nil];
+    if (indexPath.section == ChangePasswordSection) {
+        if (indexPath.row == contactNumberRow) {
+            [self performSegueWithIdentifier:@"To Update ContactNumber View" sender:self]; 
+        }else if(indexPath.row == changePasswordRow) {
+            
+            [self performSegueWithIdentifier:@"To UpdatePassword View" sender:self];
+        }
+
         
     }else if (indexPath.section == LogOutSection) {
 

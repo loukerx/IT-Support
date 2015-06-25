@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *switchUserButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 
 @end
 
@@ -60,6 +61,8 @@
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+    
     
     //setting guesture & textfield delegate
     self.emailTextField.delegate = self;
@@ -99,8 +102,7 @@
 }
 
 
-#pragma mark - login
-
+#pragma mark - button action
 - (IBAction)loginAction:(id)sender {
     if ([self checkAllField]) {
         
@@ -110,13 +112,7 @@
         [self userLogin];
         
     }else{
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Please complete all fields"
-//                                                            message:@"Username & Password required"
-//                                                           delegate:nil
-//                                                  cancelButtonTitle:@"Ok"
-//                                                  otherButtonTitles:nil];
-//        [alertView show];
-//        
+
         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Please complete all fields"
                                                                        message:@"Username & Password required"
                                                                 preferredStyle:UIAlertControllerStyleAlert];
@@ -150,7 +146,7 @@
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    
+    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
@@ -162,7 +158,11 @@
     }
 }
 
+- (IBAction)forgotPasswordAction:(id)sender {
+    [self performSegueWithIdentifier:@"To ForgotPassword View" sender:self];
+}
 
+#pragma mark - user log in
 - (void) userLogin
 {
 
@@ -175,6 +175,7 @@
     NSString *email = self.emailTextField.text;
     NSString *password = self.passwordTextField.text;
     NSString *userType = userTypeClient;
+    NSString *notificationToken = mDelegate_.notificationToken;
     //set user type
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         userType = userTypeClient;
@@ -184,7 +185,8 @@
 
     NSDictionary *parameters = @{@"email": email,
                                  @"password":password,
-                                 @"userType":userType
+                                 @"userType":userType,
+                                 @"notificationToken" : notificationToken
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];    
@@ -204,7 +206,7 @@
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
             
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Check your username or password!!"
                                                 message:errorMessage
                                          preferredStyle:UIAlertControllerStyleAlert];
             

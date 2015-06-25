@@ -1,90 +1,50 @@
 //
-//  SignInViewController.m
+//  ForgotPasswordViewController.m
 //  IT Support
 //
-//  Created by Yin Hua on 20/05/2015.
+//  Created by Yin Hua on 25/06/2015.
 //  Copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
 //
 
-#import "SignInViewController.h"
+#import "ForgotPasswordViewController.h"
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 
-@interface SignInViewController ()<UIActionSheetDelegate>
+@interface ForgotPasswordViewController ()
 {
     AppDelegate *mDelegate_;
     MBProgressHUD *HUD_;
 }
 
-
-@property (weak, nonatomic) IBOutlet UITextField *emailAddressTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordConfirmTextField;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
 
 @end
 
-@implementation SignInViewController
+@implementation ForgotPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+   
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    //test
-    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-    self.passwordTextField.text = @"qwe";
-    self.passwordConfirmTextField.text = @"qwe";
-//    self.companyPhoneTextField.text = @"022234";
-//    self.mobileNumberTextField.text =@"123123";
+    [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
 }
 
-#pragma mark - mandatory field check
-- (BOOL)checkAllField
-{
-    //check password
-    if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
-        //check all textfield
-        if ([self.emailAddressTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0) {
-          
-            return true;
-        }else{
-            UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                message:@"Please Fill All Blank."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* okAction =
-            [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-    }else{
-        UIAlertController* alert =
-        [UIAlertController alertControllerWithTitle:@"Password Error"
-                                            message:@"Please Confirm Your Password."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okAction =
-        [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    return false;
-}
 
 #pragma mark - Button Action
-- (IBAction)submitAction:(id)sender {
-
-    BOOL checkField = [self checkAllField];
+- (IBAction)cancelAction:(id)sender {
     
-    if (checkField) {
+    [self.view endEditing:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)submitAction:(id)sender {
+  
+    if ([self.emailTextField.text length]>0) {
         UIAlertController* alertController =
         [UIAlertController alertControllerWithTitle:nil
                                             message:nil
@@ -99,10 +59,8 @@
                                  style:UIAlertActionStyleDestructive
                                handler:^(UIAlertAction * action)
          {
-             HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-             HUD_.labelText = @"Processing...";
              //submit and create an account
-             [self createClientAccount];
+             [self sendNewPassword];
          }];
         
         [alertController addAction:cancelAction];
@@ -118,51 +76,63 @@
         }
         
         [self presentViewController:alertController animated:YES completion:nil];
+    }else {
+        UIAlertController* alert =
+        [UIAlertController alertControllerWithTitle:@"Error!!"
+                                            message:@"Please Enter Your Email."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction =
+        [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
 
-#pragma mark - create client account
--(void)createClientAccount{
+#pragma mark - update password
+-(void)sendNewPassword{
+    
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Processing...";
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-
-    NSString *email = self.emailAddressTextField.text;
-    NSString *password = self.passwordTextField.text;
-    NSString *companyName = self.companyName;
-    NSString *contactName = self.contactName;
-    NSString *contactNumber = self.contactNumber;
-//    NSString *phone = self.companyPhoneTextField.text;
-//    NSString *mobile = self.mobileNumberTextField.text;
     
-    NSDictionary *parameters = @{@"email" : email,
-                                 @"password" : password,
-                                 @"companyName": companyName,
-                                 @"contactName" : contactName,
-                                 @"contactNumber" : contactNumber
-                                 };
+    NSString *email = self.emailTextField.text;
+
+    
+    NSString *URLString;
+    NSDictionary *parameters;
+    
+    URLString =[NSString stringWithFormat:@"/ITSupportService/API/Login"];
+    parameters = @{@"email" : email
+                   };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager POST:@"/ITSupportService/API/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Status"]];
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
             
             UIAlertController* alert =
             [UIAlertController alertControllerWithTitle:@"Success"
-                                                message:@"Account Created."
+                                                message:@"New password has been sent to your email."
                                          preferredStyle:UIAlertControllerStyleAlert];
             
             UIAlertAction* okAction =
             [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action)
              {
-                 NSLog(@"Client account is created");
-                 [self performSegueWithIdentifier:@"Unwind From SignIn View" sender:self];
-                 
+                 NSLog(@"NEW password has been sent");
+                 [self.view endEditing:YES];
+                 [self dismissViewControllerAnimated:YES completion:nil];
              }];
             
             [alert addAction:okAction];
@@ -183,14 +153,13 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
-
-        }        
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [HUD_ hide:YES];
         
         UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Error Creating Client Account"
+        [UIAlertController alertControllerWithTitle:@"Server Error"
                                             message:[error localizedDescription]
                                      preferredStyle:UIAlertControllerStyleAlert];
         
@@ -205,9 +174,6 @@
     
 }
 
-
-
-#pragma mark - others
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

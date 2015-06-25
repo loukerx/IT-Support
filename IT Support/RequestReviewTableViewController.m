@@ -284,8 +284,9 @@
     [UIAlertAction actionWithTitle:@"Confirm"
                              style:UIAlertActionStyleDestructive
                            handler:^(UIAlertAction *action){
-//                               [self createReqeustWithImages];//new version 1.5
-//                               [self createRequest];//new version 1.0
+                               
+                               HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                               HUD_.labelText = @"Logging In...";
                                
                                
                                if (mDelegate_.mRequestImages.count > 0) {
@@ -319,33 +320,6 @@
 {
     NSLog(@"uploading photos");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    
-//    //clear array
-//    imageDescriptionArray_ = [[NSMutableArray alloc]init];
-//    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
-//    
-//    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
-//        //add object in description array
-//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
-//        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
-//                                         @"Description":descriptionContent
-//                                         };
-//        //create array
-//        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
-//        [imageDescriptionArray_ addObject:descriptionDic];
-//    }
-//    
-//    //json to NSString
-//    NSError *error;
-//    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:imageDescriptionArray_
-//                                                       options:NSJSONWritingPrettyPrinted
-//                                                         error:&error];
-//    NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-//    NSDictionary *parameters = @{@"RequestID" : requestID_,
-//                                 @"picDescriptions" :descriptionJsonString
-//                                 };
-//    
 
     NSDictionary *parameters = @{};
     
@@ -374,7 +348,6 @@
         }
         
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
 
         
         NSDictionary *responseDictionary = responseObject;
@@ -406,7 +379,7 @@
             [HUD_ hide:YES];
             
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Upload Photos Error"
                                                 message:@"Please try later"
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -455,36 +428,8 @@
     //create picDescritptions
     imageDescriptionArray_ = [[NSMutableArray alloc]init];
     
-    
-//    NSMutableArray *nameArray = [[NSMutableArray alloc]init];
-//    
-//    for (int index =0; index < mDelegate_.mRequestImages.count;index++) {
-//        //add object in description array
-//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[index]];
-//        NSDictionary *descriptionDic = @{@"Name":[NSString stringWithFormat:@"photo%dDescription",index],//this name connects to photo
-//                                         @"Description":descriptionContent
-//                                         };
-//        //create array
-//        [nameArray addObject:[NSString stringWithFormat:@"photo%d",index]];
-//        [imageDescriptionArray_ addObject:descriptionDic];
-//    }
-    
-//    int i = 0;
     //匹配 description 与image File 返回值
     for (NSDictionary *dic in returnDictionay) {
- 
-//        NSString *fileKey = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileKey"]];
-//        NSString *iString = [NSString stringWithFormat:@"%d",i];
-//        NSString *fileRecordID = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileRecordID"]];
-//        NSString *descriptionContent = [NSString stringWithFormat:@"%@",mDelegate_.mRequestImageDescriptions[i]];
-//        if ([fileKey isEqualToString:iString]) {
-//            NSDictionary *descriptionDic = @{@"FileRecordID":fileRecordID,//this name connects to photo
-//                                             @"Description":descriptionContent
-//                                             };
-//            [imageDescriptionArray_ addObject:descriptionDic];
-//        }
-//        i++;
-        
         
         //version 2.0
         NSString *fileKey = [NSString stringWithFormat:@"%@", [dic valueForKey:@"FileKey"]];
@@ -497,10 +442,6 @@
         [imageDescriptionArray_ addObject:descriptionDic];
         
     }
-    
-
-    
-    
     
     //json to NSString
     NSError *error;
@@ -523,7 +464,6 @@
     
     [manager POST:@"/ITSupportService/API/Request/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
-        [HUD_ hide:YES];
         
         NSLog(@"%@",responseObject);
         //convert to NSDictionary
@@ -531,11 +471,6 @@
         NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
-            
-            //retrieve user info, update mDelegate_.userDictionary
-            ///
-            ///
-            ///
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Success"
@@ -548,15 +483,17 @@
                                    handler:^(UIAlertAction *action)
             {
                 [self retrieveUserInfo];
-//                [self performSegueWithIdentifier:@"Unwind To RequestList TableView" sender:self];
+
             }];
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
+            
+            [HUD_ hide:YES];
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Create Request Error!!"
                                                 message:@"Please try later"
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -631,7 +568,7 @@
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Update User Info Error!!"
                                                 message:errorMessage
                                          preferredStyle:UIAlertControllerStyleAlert];
             
@@ -650,7 +587,7 @@
         [HUD_ hide:YES];
         
         UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+        [UIAlertController alertControllerWithTitle:@"Update User Info Error!!"
                                             message:[error localizedDescription]
                                      preferredStyle:UIAlertControllerStyleAlert];
         

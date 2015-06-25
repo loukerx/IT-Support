@@ -18,6 +18,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *companyNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *contactNameTextField;
+@property (weak, nonatomic) IBOutlet UITextField *contactNumberTextField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *nextBarButtonItem;
 
@@ -35,7 +36,7 @@
     //test
     self.companyNameTextField.text = @"IT Express Pro";
     self.contactNameTextField.text = @"Benson Shi";
-    
+    self.contactNumberTextField.text = @"0412345678";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -74,7 +75,7 @@
 
 - (BOOL)checkAllField
 {
-    if ([self.companyNameTextField.text length]>0 &&[self.contactNameTextField.text length]>0) {
+    if ([self.companyNameTextField.text length] > 0 &&[self.contactNameTextField.text length] > 0 && [self.contactNumberTextField.text length] > 0) {
         return true;
     }else{
         return false;
@@ -91,6 +92,7 @@
         SignInViewController *sivc = [segue destinationViewController];
         sivc.companyName = self.companyNameTextField.text;
         sivc.contactName = self.contactNameTextField.text;
+        sivc.contactNumber = self.contactNumberTextField.text;
         
     }
 }
