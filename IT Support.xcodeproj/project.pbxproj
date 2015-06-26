@@ -52,11 +52,12 @@
 		AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */; };
 		AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */; };
 		AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */; };
+		AED5D3781B3CC40400C33FC0 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED5D3771B3CC40400C33FC0 /* FBSDKCoreKit.framework */; };
+		AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */; };
 		AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
 		AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */; };
 		AEDB5EE41B0AE0DC007C3DAD /* RequestReviewTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */; };
-		AEDD2ECD1B3B8433000BCCA7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */; };
 		AEDD2ED01B3B8B46000BCCA7 /* UpdatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */; };
 		AEDD2ED31B3B991C000BCCA7 /* UpdateContactNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */; };
 		AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */; };
@@ -159,6 +160,9 @@
 		AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestListTableViewCell.xib; sourceTree = "<group>"; };
 		AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
 		AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
+		AED5D3771B3CC40400C33FC0 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AED5D3791B3CE53100C33FC0 /* ConnectServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectServerViewController.h; sourceTree = "<group>"; };
+		AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectServerViewController.m; sourceTree = "<group>"; };
 		AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserInfoViewController.h; sourceTree = "<group>"; };
 		AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddUserInfoViewController.m; sourceTree = "<group>"; };
 		AEDA27331B0309420007DE11 /* SelectCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectCategoryTableViewController.h; sourceTree = "<group>"; };
@@ -167,7 +171,6 @@
 		AEDAA0F21B295146007F5B86 /* UserSettingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingTableViewController.m; sourceTree = "<group>"; };
 		AEDB5EE21B0AE0DC007C3DAD /* RequestReviewTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestReviewTableViewController.h; sourceTree = "<group>"; };
 		AEDB5EE31B0AE0DC007C3DAD /* RequestReviewTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestReviewTableViewController.m; sourceTree = "<group>"; };
-		AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEDD2ECE1B3B8B46000BCCA7 /* UpdatePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdatePasswordViewController.h; sourceTree = "<group>"; };
 		AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdatePasswordViewController.m; sourceTree = "<group>"; };
 		AEDD2ED11B3B991C000BCCA7 /* UpdateContactNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdateContactNumberViewController.h; sourceTree = "<group>"; };
@@ -189,7 +192,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
-				AEDD2ECD1B3B8433000BCCA7 /* FBSDKCoreKit.framework in Frameworks */,
+				AED5D3781B3CC40400C33FC0 /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,7 +379,7 @@
 		AE85876A1B31313800949FB8 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				AEDD2ECC1B3B8433000BCCA7 /* FBSDKCoreKit.framework */,
+				AED5D3771B3CC40400C33FC0 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -410,7 +413,7 @@
 			name = "Display Request";
 			sourceTree = "<group>";
 		};
-		AEBA920E1B0B259300447AA1 /* Menu */ = {
+		AEBA920E1B0B259300447AA1 /* Menu Setting */ = {
 			isa = PBXGroup;
 			children = (
 				AEBA920B1B0B258D00447AA1 /* MenuListViewController.h */,
@@ -422,10 +425,10 @@
 				AEDD2ED11B3B991C000BCCA7 /* UpdateContactNumberViewController.h */,
 				AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */,
 			);
-			name = Menu;
+			name = "Menu Setting";
 			sourceTree = "<group>";
 		};
-		AEBA92121B0B28D200447AA1 /* User */ = {
+		AEBA92121B0B28D200447AA1 /* User  */ = {
 			isa = PBXGroup;
 			children = (
 				AEBA920F1B0B28CE00447AA1 /* LoginViewController.h */,
@@ -437,7 +440,7 @@
 				AEDD2ED41B3BA0F1000BCCA7 /* ForgotPasswordViewController.h */,
 				AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */,
 			);
-			name = User;
+			name = "User ";
 			sourceTree = "<group>";
 		};
 		AED1AD1B1B0C027A0020B054 /* RequestListCell */ = {
@@ -459,6 +462,15 @@
 			name = Helper;
 			sourceTree = "<group>";
 		};
+		AED5D37C1B3CE53A00C33FC0 /* Connect */ = {
+			isa = PBXGroup;
+			children = (
+				AED5D3791B3CE53100C33FC0 /* ConnectServerViewController.h */,
+				AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */,
+			);
+			name = Connect;
+			sourceTree = "<group>";
+		};
 		AEDA27321B0309150007DE11 /* Test */ = {
 			isa = PBXGroup;
 			children = (
@@ -473,8 +485,9 @@
 		AEDA27361B0309460007DE11 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				AEBA92121B0B28D200447AA1 /* User */,
-				AEBA920E1B0B259300447AA1 /* Menu */,
+				AED5D37C1B3CE53A00C33FC0 /* Connect */,
+				AEBA92121B0B28D200447AA1 /* User  */,
+				AEBA920E1B0B259300447AA1 /* Menu Setting */,
 				AEBA92081B0B24A900447AA1 /* Display Request */,
 				AEBA92041B0B246500447AA1 /* Create Request */,
 				AE306A6B1B099AEF0058E9E2 /* Request Photo */,
@@ -627,6 +640,7 @@
 				AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */,
 				AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */,
 				AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */,
+				AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */,
 				AE5CDC061B01DC1A0035C366 /* AFNetworkReachabilityManager.m in Sources */,
 				AE5CDC0A1B01DC1A0035C366 /* AFURLResponseSerialization.m in Sources */,
 				AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */,
@@ -806,6 +820,16 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -841,6 +865,16 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

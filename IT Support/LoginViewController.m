@@ -1,9 +1,9 @@
 //
 //  LoginViewController.m
-//  ez4rent
+//  IT Support
 //
-//  Created by Yin Hua on 2/02/2015.
-//  Copyright (c) 2015 Yin Hua. All rights reserved.
+//  Created by Yin Hua on 19/05/2015.
+//  Copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
 //
 
 #import "LoginViewController.h"
@@ -80,8 +80,8 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-        self.passwordTextField.text = @"qwe";
+        self.emailTextField.text = @"yaowu1984@gmail.com";
+        self.passwordTextField.text = @"12345";
     }else{
         self.emailTextField.text = @"william.wu@itexpresspro.com.au";
         self.passwordTextField.text = @"12345";
@@ -106,7 +106,7 @@
 - (IBAction)loginAction:(id)sender {
     if ([self checkAllField]) {
         
-        //submit and create an account
+        //loading view
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Logging In...";
         [self userLogin];
@@ -150,8 +150,8 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"hua.yin@itexpresspro.com.au";
-        self.passwordTextField.text = @"qwe";
+        self.emailTextField.text = @"yaowu1984@gmail.com";
+        self.passwordTextField.text = @"12345";
     }else{
         self.emailTextField.text = @"william.wu@itexpresspro.com.au";
         self.passwordTextField.text = @"12345";
@@ -237,7 +237,10 @@
 
             
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
-
+            mDelegate_.userToken = [mDelegate_.userDictionary valueForKey:@"TokenString"];
+            [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.userToken
+                                                      forKey:@"userToken"];
+            
             //user mode
             if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
                 mDelegate_.clientID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];

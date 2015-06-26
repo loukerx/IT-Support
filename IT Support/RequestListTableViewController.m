@@ -511,9 +511,6 @@
         if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
             contactName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
             
-            
-        
-            
             companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
 
         }else{
@@ -521,38 +518,22 @@
             companyName = [NSString stringWithFormat:@"%@",[requestObject valueForKey:@"ClientCompanyName"]];
         }
         
-
-////        [dateFormat setDateFormat:@"YYYY-MM-dd\'T\'HH:mm:ssZZZZZ"];
-//        NSString *dateString = @"01-02-2010";
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        // this is imporant - we set our input date format to match our input string
-//        // if format doesn't match you'll get nil from your string, so be careful
-//        [dateFormatter setDateFormat:@"dd-MM-yyyy"];
-//        NSDate *dateFromString = [[NSDate alloc] init];
-//        // voila!
-//        dateFromString = [dateFormatter dateFromString:dateString];
-//        
-//        
-//        
-////        NSString *dateStr = [requestObject valueForKey:@"CreateDate"] ;
-//        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-//        [dateFormat setDateStyle:NSDateFormatterShortStyle];
-//        
-//    
-//        NSDate *createDate = [dateFormat dateFromString:dateStr];
-//        
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
-//        [dateFormatter setLocale:usLocale];
-//        
-//        NSLog(@"Date for locale %@",[dateFormatter dateFromString:dateStr]);
+        NSString *dateStr =[NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
         
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
+        NSDate *date = [dateFormatter dateFromString:dateStr];
+
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [dateFormatter setTimeZone:pdt];
+        NSString * createDate = [dateFormatter stringFromDate:date];
 
         cell.titleLabel.text = title;
         cell.contactNameLabel.text = contactName;
         cell.companyNameLabel.text = companyName;
         cell.priceLabel.text = price;
-//        cell.createdDateLabel.text = createDate;
+        cell.createdDateLabel.text = createDate;
         cell.createdDateLabel.textColor = mDelegate_.appThemeColor;
         
         //image
@@ -582,7 +563,7 @@
         [cell addSubview:loadMore_];
         
         if ([tableData_ count] > lastLoadingTableDataCount_) {
-            [loadMore_ setText:@"Loading Earlier Requests..."];
+            [loadMore_ setText:@"Loading..."];
             
             direction_ = @"0";
 

@@ -11,14 +11,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="xYG-ib-tap">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                    <rect key="frame" x="-2" y="0.0" width="482" height="480"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="xYG-ib-tap" secondAttribute="trailing" id="7ZR-ua-v4n"/>
                 <constraint firstItem="xYG-ib-tap" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="KzF-cv-XOT"/>
-                <constraint firstItem="xYG-ib-tap" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SUg-y8-A7y"/>
+                <constraint firstItem="xYG-ib-tap" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="-2" id="SUg-y8-A7y"/>
                 <constraint firstItem="xYG-ib-tap" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="dMA-gl-1l3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

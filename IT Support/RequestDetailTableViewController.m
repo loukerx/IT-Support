@@ -431,7 +431,16 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
         //createdDate
-         NSString *createDate = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
+        NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
+        NSDate *date = [dateFormatter dateFromString:dateStr];
+        
+        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [dateFormatter setTimeZone:pdt];
+        NSString * createDate = [dateFormatter stringFromDate:date];
         
         //category
         NSString *categoryName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryName"]];
@@ -441,6 +450,7 @@
         //status
         NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:[[self.requestObject valueForKey:@"RequestStatus"]integerValue]];
         UIImage *statusImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
+        
         
         //price
         NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];

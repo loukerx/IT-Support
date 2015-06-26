@@ -9,6 +9,8 @@
 #import "UserSettingTableViewController.h"
 #import "AppDelegate.h"
 #import "AppHelper.h"
+#import "AFNetworking.h"
+#import "MBProgressHUD.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
@@ -17,6 +19,7 @@
     AppDelegate *mDelegate_;
     AppHelper *appHelper_;
     UILabel *logoutLabel_;
+    MBProgressHUD *HUD_;
 }
 
 @property (strong, nonatomic) UILabel *logoutLabel;
@@ -44,6 +47,12 @@
     
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
 -(void)initialCustomView{
     
     //logout label
@@ -56,9 +65,6 @@
     logoutLabel_.text= @"Log Out";
 }
 
-- (IBAction)cancelAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
 
 #pragma mark - Table view data source
 
@@ -135,17 +141,19 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:cellidentify];
         
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         NSString *contactNumber = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactNumber"]];
         
         
         //Client Mode
         if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
             
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.userInteractionEnabled = YES;
             cell.selectionStyle =UITableViewCellSelectionStyleDefault;
             
         }else{//Support Mode
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
             cell.userInteractionEnabled = NO;
             cell.selectionStyle =UITableViewCellSelectionStyleNone;
         }
@@ -255,7 +263,8 @@
         UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive
                                                               handler:^(UIAlertAction * action) {
                                                                   
-                                                                  [self logoutAction];
+//                                                                  [self logoutAction];
+                                                                  [self userLogout];
                                                               }];
         
         [alertController addAction:cancelAction];
@@ -273,6 +282,11 @@
     }
 }
 
+#pragma mark - Button Action
+- (IBAction)cancelAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 -(void)logoutAction
 {
     //CLEAR NSUserDefaults local variables
@@ -287,45 +301,107 @@
     
 }
 
-#pragma mark - actionSheet delegate
+#pragma mark - user logout
+-(void)userLogout{
+    
+    //loading view
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Logging In...";
+    
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    //URL: /ITSupportService/API/Logout
+    
+    
+    NSString *email = [mDelegate_.userDictionary valueForKey:@"Email"];
+    NSString *tokenString = mDelegate_.userToken;
+    
+    
+    NSString *URLString =[NSString stringWithFormat:@"/ITSupportService/API/Logout"];
+    NSDictionary *parameters = @{@"email" : email,
+                                 @"tokenString" : tokenString
+                                };
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager POST:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        
+        [HUD_ hide:YES];
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            UIAlertController* alert =
+            [UIAlertController alertControllerWithTitle:@"Success"
+                                                message:@"Contact Number Updated."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okAction =
+            [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+             {
+                 NSLog(@"User log out success");
+                 //CLEAR NSUserDefaults local variables
+                 [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                           forKey:@"userEmail"];
+                 [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                           forKey:@"userPassword"];
+                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
 
-//- (void)      actionSheet:(UIActionSheet *)actionSheet
-//didDismissWithButtonIndex:(NSInteger)buttonIndex {
-//    
-//    switch (buttonIndex) {
-//        case 0:
-//            //CLEAR NSUserDefaults local variables
-//            [[NSUserDefaults standardUserDefaults] setObject:@""
-//                                                      forKey:@"userEmail"];
-//            [[NSUserDefaults standardUserDefaults] setObject:@""
-//                                                      forKey:@"userPassword"];
-//            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-//            
-//            mDelegate_.loginIsRoot = NO;
-//            [self performSegueWithIdentifier:@"To Login View" sender:self];
-//
-//            break;
-//        default:
-//            break;
-//    }
-//    
-//    
-//}
+                 //unregister remote notification
+                 [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+                 
+                 
+                 mDelegate_.loginIsRoot = NO;
 
-//#pragma initial and login check
-//-(void)initialViewController:(NSString *)viewControllerIdentifier
-//{
-//    self.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-//    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    
-//    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerIdentifier];
-//    
-//    self.window.rootViewController = viewController;
-//    [self.window makeKeyAndVisible];
-//}
+                 [self performSegueWithIdentifier:@"To Login View" sender:self];
+             }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            
 
-/*
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {}];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        
+        [HUD_ hide:YES];
+        
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Server Error"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+    
+}
+
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -333,7 +409,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
 }
-*/
+
 
 
 - (void)didReceiveMemoryWarning {

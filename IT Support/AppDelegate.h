@@ -41,6 +41,7 @@ static float const cellHeightRatio = 0.625f;
 
 //user
 @property (strong, nonatomic) NSString *notificationToken;
+@property (strong, nonatomic) NSString *userToken;
 @property (strong, nonatomic) NSDictionary *userDictionary;
 @property (strong, nonatomic) NSString *userEmail;//username
 @property (strong, nonatomic) NSString *userPassword;//password

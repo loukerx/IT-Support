@@ -1,9 +1,9 @@
 //
 //  MenuListViewController.m
-//  ez4rent
+//  IT Support
 //
-//  Created by Yin Hua on 13/04/2015.
-//  Copyright (c) 2015 Yin Hua. All rights reserved.
+//  Created by Yin Hua on 19/05/2015.
+//  Copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
 //
 
 #import "MenuListViewController.h"
@@ -46,12 +46,12 @@
     
     //setting
     //User Mode
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        
-//        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
-    }else{
-
-    }
+//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//        
+////        titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
+//    }else{
+//
+//    }
     titles_ = @[@"Active",@"Processing",@"Processed",@"Finished"];
     iconName_ =[[NSArray alloc]initWithArray:titles_];
     

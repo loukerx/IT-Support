@@ -234,7 +234,7 @@
         NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
-            
+        
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
             [self.navigationController popViewControllerAnimated:YES];
             

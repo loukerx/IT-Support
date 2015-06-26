@@ -123,33 +123,29 @@
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
-    NSString *oldPassword = self.oldPasswordTextField.text;
-    NSString *password = self.passwordTextField.text;
-
-    NSString *URLString;
-    NSDictionary *parameters;
+    NSString *originalPassword = self.oldPasswordTextField.text;
+    NSString *newPassword = self.passwordTextField.text;
+    //URL: /ITSupportService/API/Account
+    NSString *URLString = [NSString stringWithFormat:@"/ITSupportService/API/Account"];
+   
+    NSString *userAccountID;
     //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        NSString *clientID = mDelegate_.clientID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
-        parameters = @{@"clientID" : clientID,
-                       @"oldPassword" : oldPassword,
-                       @"password" : password
-                       };
+        userAccountID = mDelegate_.clientID;
         
     }else{
-        NSString *supportID = mDelegate_.supportID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
-        parameters = @{@"supportID" : supportID,
-                       @"oldPassword" : oldPassword,
-                       @"password" : password
-                       };
+        userAccountID = mDelegate_.supportID;
     }
+    
+    NSDictionary *parameters = @{@"userAccountID" : userAccountID,
+                   @"originalPassword" : originalPassword,
+                   @"newPassword" : newPassword
+                   };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager POST:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
         NSLog(@"%@",responseObject);

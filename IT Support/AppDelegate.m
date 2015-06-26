@@ -37,9 +37,9 @@
     
     self.appVersion = [NSString stringWithFormat:@"Version %@.%@",majorVersion,minorVersion];
     
-    
     //setting user
     self.notificationToken = @"";
+    self.userToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"]?:@"";
     self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
     
@@ -89,10 +89,11 @@
     
     
     
-//    //Auto Login check username & password
-//    //initialise a view controller
+    //Auto Login check username & password
+    //initialise a view controller
 //    if (self.userEmail.length>0 && self.userPassword.length >0) {
 //        
+        [self initialViewController:@"ConnectServerStoryboardID"];
 //        [self userLogin];
 //        
 //    }else{
@@ -119,77 +120,78 @@
 }
 
 
-#pragma mark - User Login
-- (void) userLogin
-{
-    NSLog(@"User Login...");
-    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    
-    NSString *email = self.userEmail;
-    NSString *password = self.userPassword;
-    NSString *userType = userTypeClient;
-    NSString *notificationToken = self.notificationToken;
-    //set user type
-    if ([self.appThemeColor isEqual:self.clientThemeColor]) {
-        userType = userTypeClient;
-    }else{
-        userType = userTypeSupport;
-    }
-    
-    NSDictionary *parameters = @{@"email": email,
-                                 @"password":password,
-                                 @"userType":userType,
-                                 @"notificationToken" : notificationToken
-                                 };
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-        //convert to NSDictionary
-        NSDictionary *responseDictionary = responseObject;
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
-        
-        // 1 == success, 0 == fail
-        if ([responseStatus isEqualToString:@"0"]) {
-            
-            NSLog(@"fail");
-            //To Login View
-            [self initialViewController:@"LoginViewStoryboardID"];
-            
-        }else if ([responseStatus isEqualToString:@"1"]) {
-            
-            NSLog(@"success");
+//#pragma mark - User Login
+//- (void) userLogin
+//{
+//    NSLog(@"User Login...");
+//    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+//    
+//    NSString *email = self.userEmail;
+//    NSString *password = self.userPassword;
+//    NSString *userType = userTypeClient;
+//    NSString *notificationToken = self.notificationToken;
+//    //set user type
+//    if ([self.appThemeColor isEqual:self.clientThemeColor]) {
+//        userType = userTypeClient;
+//    }else{
+//        userType = userTypeSupport;
+//    }
+//    
+//    NSDictionary *parameters = @{@"email": email,
+//                                 @"password":password,
+//                                 @"userType":userType,
+//                                 @"notificationToken" : notificationToken
+//                                 };
+//    
+//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    
+//    [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+//        
+//        //convert to NSDictionary
+//        NSDictionary *responseDictionary = responseObject;
+//        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+//        
+//        // 1 == success, 0 == fail
+//        if ([responseStatus isEqualToString:@"0"]) {
+//            
+//            NSLog(@"fail");
+//            //To Login View
+//            [self initialViewController:@"LoginViewStoryboardID"];
+//            
+//        }else if ([responseStatus isEqualToString:@"1"]) {
+//            
+//            NSLog(@"success");
+//
+//            self.userDictionary = [responseDictionary valueForKey:@"Result"];
+//            
+//            //user mode
+//            if ([self.appThemeColor isEqual:self.clientThemeColor]) {
+//                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
+//            }else{
+//                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
+//            }
+//            //To RequestList TableView
+//            self.loginIsRoot = NO;
+//            [self initialViewController:@"MainRequestListStoryboardID"];
+//            
+//            //test
+////            [self initialViewController:@"TestStoryboardView"];
+//        }
+//    }failure:^(NSURLSessionDataTask *task, NSError *error) {
+//
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Loging In"
+//                                                            message:[error localizedDescription]
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:@"Ok"
+//                                                  otherButtonTitles:nil];
+//        [alertView show];
+//        //To Login View
+//        [self initialViewController:@"LoginViewStoryboardID"];
+//    }];
+//}
 
-            self.userDictionary = [responseDictionary valueForKey:@"Result"];
-            
-            //user mode
-            if ([self.appThemeColor isEqual:self.clientThemeColor]) {
-                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
-            }else{
-                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
-            }
-            //To RequestList TableView
-            self.loginIsRoot = NO;
-            [self initialViewController:@"MainRequestListStoryboardID"];
-            
-            //test
-//            [self initialViewController:@"TestStoryboardView"];
-        }
-    }failure:^(NSURLSessionDataTask *task, NSError *error) {
-
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Loging In"
-                                                            message:[error localizedDescription]
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Ok"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-
-    }];
-}
-
-#pragma mark - Notification
+#pragma mark - Local Notification
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
     NSLog(@"Application did receive local notifications");
@@ -210,6 +212,15 @@
     [alert show];
 }
 
+#pragma mark - Remote Notification
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:
+    (NSDictionary *)userInfo{
+    
+    // alert 提醒
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hello" message:@"welcome" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    
+}
 
 #pragma mark - remote notification deviceToken
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
@@ -268,13 +279,13 @@
     
     //Auto Login check username & password
     //initialise a view controller
-    if (self.userEmail.length>0 && self.userPassword.length >0) {
-        
-        [self userLogin];
-        
-    }else{
-        [self initialViewController:@"LoginViewStoryboardID"];
-    }
+//    if (self.userEmail.length>0 && self.userPassword.length >0) {
+//        
+//        [self userLogin];
+//        
+//    }else{
+//        [self initialViewController:@"LoginViewStoryboardID"];
+//    }
     
     
     NSLog(@"clear icon badge Number");
