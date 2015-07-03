@@ -10,8 +10,6 @@
 #import <CoreData/CoreData.h>
 
 
-//static NSString *const AWSLinkURL =@"http://ec2-54-66-167-254.ap-southeast-2.compute.amazonaws.com";//version1.0
-//static NSString *const AWSLinkURL = @"http://ec2-54-153-165-173.ap-southeast-2.compute.amazonaws.com";//version2.0
 static NSString *const AWSLinkURL = @"http://54.153.139.38";//version 0.1
 
 static float const cellHeightRatio = 0.625f;

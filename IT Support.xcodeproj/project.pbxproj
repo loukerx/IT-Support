@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AE00448C1B4622AC0068F806 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00448B1B4622AC0068F806 /* FBSDKCoreKit.framework */; };
+		AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00448D1B46374B0068F806 /* libsqlite3.dylib */; };
+		AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00448F1B46375F0068F806 /* Bolts.framework */; };
+		AE0044941B467C9C0068F806 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE0044931B467C9C0068F806 /* FBSDKCoreKit.framework */; };
 		AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */; };
 		AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */; };
 		AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */; };
@@ -78,7 +80,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AE00448B1B4622AC0068F806 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AE00448D1B46374B0068F806 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		AE00448F1B46375F0068F806 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/Bolts.framework"; sourceTree = "<group>"; };
+		AE0044931B467C9C0068F806 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AE306A651B099AD70058E9E2 /* PhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -191,8 +195,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE0044941B467C9C0068F806 /* FBSDKCoreKit.framework in Frameworks */,
+				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
+				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
-				AE00448C1B4622AC0068F806 /* FBSDKCoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,7 +385,9 @@
 		AE85876A1B31313800949FB8 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				AE00448B1B4622AC0068F806 /* FBSDKCoreKit.framework */,
+				AE00448F1B46375F0068F806 /* Bolts.framework */,
+				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
+				AE0044931B467C9C0068F806 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -865,6 +873,16 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -900,6 +918,16 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,
