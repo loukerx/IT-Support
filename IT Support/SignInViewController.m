@@ -35,9 +35,9 @@
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     //test
-    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-    self.passwordTextField.text = @"qwe";
-    self.passwordConfirmTextField.text = @"qwe";
+//    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
+//    self.passwordTextField.text = @"qwe";
+//    self.passwordConfirmTextField.text = @"qwe";
 //    self.companyPhoneTextField.text = @"022234";
 //    self.mobileNumberTextField.text =@"123123";
 }

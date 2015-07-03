@@ -34,9 +34,9 @@
     
     
     //test
-    self.companyNameTextField.text = @"IT Express Pro";
-    self.contactNameTextField.text = @"Benson Shi";
-    self.contactNumberTextField.text = @"0412345678";
+//    self.companyNameTextField.text = @"IT Express Pro";
+//    self.contactNameTextField.text = @"Benson Shi";
+//    self.contactNumberTextField.text = @"0412345678";
 }
 
 - (void)didReceiveMemoryWarning {

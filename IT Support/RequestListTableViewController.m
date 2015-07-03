@@ -77,7 +77,7 @@
     //tableview delegate
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
     [self initialSettingForView];
     
@@ -580,6 +580,238 @@
 
 
 #pragma mark - TableView Delegate
+#pragma mark - Delete Request [Client][Active]
+// Override to support conditional editing of the table view.
+// This only needs to be implemented if you are going to be returning NO
+// for some items. By default, all items are editable.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return YES if you want the specified item to be editable.
+    if ([mDelegate_.searchType isEqualToString:@"Active"] && [mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        return YES;
+    }
+    return NO;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSLog(@"Delete this row.....");
+        
+        
+        HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        HUD_.labelText = @"Processing...";
+        
+        [self cancelActiveRequest:indexPath];
+        
+        
+//        
+//        
+//        UIAlertController* alertController =
+//        [UIAlertController alertControllerWithTitle:nil
+//                                            message:nil
+//                                     preferredStyle:UIAlertControllerStyleActionSheet];
+//        
+//        UIAlertAction* cancelAction =
+//        [UIAlertAction actionWithTitle:@"Cancel"
+//                                 style:UIAlertActionStyleCancel
+//                               handler:^(UIAlertAction * action) {}];
+//        UIAlertAction* confirmAction =
+//        [UIAlertAction actionWithTitle:@"Confirm"
+//                                 style:UIAlertActionStyleDestructive
+//                               handler:^(UIAlertAction * action)
+//         {
+
+             
+             
+             //test
+            
+//             [tableData_ removeObjectAtIndex:indexPath.row];
+//             [self.tableView reloadData];
+
+             
+//             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//         }];
+//
+//        [alertController addAction:cancelAction];
+//        [alertController addAction:confirmAction];
+        
+//        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+//        if (popover)
+//        {
+//            UIBarButtonItem *confirmBarButton = (UIBarButtonItem *)sender;
+//            popover.barButtonItem = confirmBarButton;
+//            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+//        }
+//        
+        
+//        [self presentViewController:alertController animated:YES completion:nil];
+        
+
+    }
+}
+
+-(void)cancelActiveRequest:(NSIndexPath *)indexPath
+{
+    
+    NSLog(@"Deleting request...");
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+    
+    NSString *clientID = mDelegate_.clientID;
+    
+    NSDictionary *requestObj = [tableData_ objectAtIndex:indexPath.row];
+    NSString *requestID = [NSString stringWithFormat:@"%@", [requestObj valueForKey:@"RequestID"]];
+    
+    NSString *getMethod = @"/ITSupportService/API/Request/Client";
+    NSDictionary *parameters = @{@"ClientID" : clientID,
+                                @"RequestID" : requestID
+                                };
+
+    
+    //URL:   /ITSupportService/API/Request/Client
+
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    //clientID 放在parameters中
+    [manager DELETE:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+
+        self.menuBarButtonItem.enabled = YES;
+        
+        NSLog(@"%@",responseObject);
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"0"]) {
+            
+            [HUD_ hide:YES];
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"Delete Request Error!!"
+                                                message:@"An error has been occured"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+                                   
+                                    //refresh this view controller
+                                    [self initialSettingForView];
+                                   
+                                   }];
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+        }else if ([responseStatus isEqualToString:@"1"]) {
+            
+            [tableData_ removeObjectAtIndex:indexPath.row];
+            
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            //update user info
+            HUD_.labelText = @"Update User Info...";
+            [self retrieveUserInfo];
+            NSLog(@"----Cancel Successed, Request List Data Updated------");
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        self.menuBarButtonItem.enabled = YES;
+        
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Server Error"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+}
+
+-(void)retrieveUserInfo{
+    
+    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+    
+    NSString *URLString;
+    NSDictionary *parameters;
+    
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        NSString *clientID = mDelegate_.clientID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
+        parameters = @{@"clientID" : clientID
+                       };
+        
+    }else{
+        NSString *supportID = mDelegate_.supportID;
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
+        parameters = @{@"supportID" : supportID
+                       };
+    }
+    
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        [HUD_ hide:YES];
+        
+        NSLog(@"%@",responseObject);
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+        // 1 == success, 0 == fail
+        if ([responseStatus isEqualToString:@"1"]) {
+            
+            mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
+            
+        }else if ([responseStatus isEqualToString:@"0"]) {
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+            
+            UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:@"User Info Updated Error!!"
+                                                message:errorMessage
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction =
+            [UIAlertAction actionWithTitle:@"OK"
+                                     style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction *action) {
+
+                                   }];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [HUD_ hide:YES];
+        
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error Creating Request"
+                                            message:[error localizedDescription]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }];
+}
+
+#pragma mark - Select Row
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row != tableData_.count) {
         [self performSegueWithIdentifier:@"To RequestDetail TableView" sender:self];
@@ -607,33 +839,9 @@
     
     if ([sourceViewController isKindOfClass:[RequestReviewTableViewController class]]||[segue.identifier isEqualToString:@"Unwind From Login View"]||[segue.identifier isEqualToString:@"Unwind From RequestDetail TableView"])
     {
-        NSLog(@"reload request list...");
+        NSLog(@"unwind segue processed...");
         [self initialSettingForView];
-//        currentRequestID_ = @"";//version 2.0
-//        currentRequestID_ = @"0";//version 1.0
-//        direction_ = @"0";
-//        lastLoadingTableDataCount_ = 0;
-//        tableData_ = [[NSMutableArray alloc]init];
-//        
-//        //loading HUD
-//        HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        HUD_.labelText = @"Progressing...";
-//        self.menuBarButtonItem.enabled = NO;
-//        [self prepareMoreRequestList:searchType_];
-//        
-//        
-//        //setting color
-//        self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-//        
-//        //User Mode
-//        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//            
-//            self.addBarButtonItem.enabled = YES;
-//        }else{
-//            
-//            self.addBarButtonItem.enabled = NO;
-//            self.addBarButtonItem.tintColor = [UIColor clearColor];
-//        }
+
     }
 
 }

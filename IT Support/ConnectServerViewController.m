@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
+#import "UIProgressView+AFNetworking.h"
 
 @interface ConnectServerViewController ()
 {
@@ -26,8 +27,8 @@
     [super viewDidLoad];
 
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
-//    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    HUD_.labelText = @"Logging In...";
+    HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    HUD_.labelText = @"Connecting Server...";
     
     //initialise a view controller
     if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
@@ -39,15 +40,33 @@
         //[self initialViewController:@"TestStoryboardView"];
         
     }else{
+        
         [self initialViewController:@"LoginViewStoryboardID"];
     }
 }
+
+- (void)setupTimerWithTimer{
+   [NSTimer scheduledTimerWithTimeInterval:0.1f
+                                                    target:self
+                                                  selector:@selector(updateTimer)
+                                                  userInfo:nil
+                                                   repeats:YES];
+}
+
+- (void)updateTimer{
+    if (self.progressView.progress <0.98) {
+        float newProgress = [self.progressView progress] + 0.01;
+        [self.progressView setProgress:newProgress animated:YES];
+    }
+}
+
 #pragma mark - initial progress view
 -(void)initialProgressView
 {
     self.progressView.progressTintColor = mDelegate_.clientThemeColor;
-    self.progressView.trackTintColor = mDelegate_.supportThemeColor;
+    self.progressView.trackTintColor = [UIColor whiteColor];
     self.progressView.progress = 0.0f;
+
 }
 
 
@@ -67,6 +86,7 @@
 #pragma mark - User Login
 - (void) userLogin
 {
+    [self setupTimerWithTimer];
     NSLog(@"User Login...");
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     
@@ -87,37 +107,34 @@
                                  @"notificationToken" : notificationToken
                                  };
     
+    NSLog(@"\n parameters:\n%@",parameters);
+    
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    //progress value
-    [self.progressView setProgress:0.3f animated:YES];
+
     [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-        //progress value
-        [self.progressView setProgress:0.1f animated:YES];
+    
         
         [HUD_ hide:YES];
         //convert to NSDictionary
-        NSLog(@"%@",responseObject);
+        NSLog(@"\nLog in response\n%@",responseObject);
         
         NSDictionary *responseDictionary = responseObject;
         NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"0"]) {
-            //progress value
-            [self.progressView setProgress:1.0f animated:YES];
+
             NSLog(@"fail");
             //To Login View
             [self initialViewController:@"LoginViewStoryboardID"];
             
         }else if ([responseStatus isEqualToString:@"1"]) {
-            //progress value
-            [self.progressView setProgress:1.0f animated:YES];
+            
             NSLog(@"success");
             
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
-            mDelegate_.userToken = [mDelegate_.userDictionary valueForKey:@"TokenString"];
+            mDelegate_.userToken =[NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"TokenString"]];
             [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.userToken
                                                       forKey:@"userToken"];
             //user mode
@@ -132,8 +149,6 @@
             
         }
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
-        //progress value
-        [self.progressView setProgress:1.0f animated:YES];
         
         [HUD_ hide:YES];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Loging In"

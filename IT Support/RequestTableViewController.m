@@ -190,8 +190,8 @@
 }
 - (void)textFieldDidChange:(NSNotification *)notification {
     
-    if(self.priceTextField.text.length >5){
-        self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,5)];
+    if(self.priceTextField.text.length >6){
+        self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,6)];
     }else if (self.priceTextField.text.length >1) {
         NSArray *array = [self.priceTextField.text componentsSeparatedByString:@"$"];
         if([self checkAvailableFunds:array[1]])
@@ -224,7 +224,9 @@
         [UIAlertAction actionWithTitle:@"OK"
                                  style:UIAlertActionStyleDefault
                                handler:^(UIAlertAction *action) {
-                                   self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,self.priceTextField.text.length-1)];
+                                   if ([self.priceTextField.text integerValue]>9) {
+                                       self.priceTextField.text = [self.priceTextField.text substringWithRange:NSMakeRange(0,self.priceTextField.text.length-1)];
+                                   }
                                }];
         
         [alert addAction:okAction];

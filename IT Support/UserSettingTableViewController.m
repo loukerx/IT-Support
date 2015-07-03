@@ -306,7 +306,7 @@
     
     //loading view
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD_.labelText = @"Logging In...";
+    HUD_.labelText = @"Logging Out...";
     
     NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
     //URL: /ITSupportService/API/Logout
@@ -334,38 +334,27 @@
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
             
-            UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Success"
-                                                message:@"Contact Number Updated."
-                                         preferredStyle:UIAlertControllerStyleAlert];
             
-            UIAlertAction* okAction =
-            [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action)
-             {
-                 NSLog(@"User log out success");
-                 //CLEAR NSUserDefaults local variables
-                 [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                           forKey:@"userEmail"];
-                 [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                           forKey:@"userPassword"];
-                 [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-
-                 //unregister remote notification
-                 [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-                 
-                 
-                 mDelegate_.loginIsRoot = NO;
-
-                 [self performSegueWithIdentifier:@"To Login View" sender:self];
-             }];
+            NSLog(@"User log out success");
+            //CLEAR NSUserDefaults local variables
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userToken"];
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userEmail"];
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userPassword"];
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
             
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            //unregister remote notification
+            NSLog(@"Unregister For Remote Notification");
+            [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+            mDelegate_.loginIsRoot = NO;
+            
+            [self performSegueWithIdentifier:@"To Login View" sender:self];
+            
             
         }else if ([responseStatus isEqualToString:@"0"]) {
             
-
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =

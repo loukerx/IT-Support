@@ -80,12 +80,14 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"yaowu1984@gmail.com";
-        self.passwordTextField.text = @"12345";
+        self.emailTextField.text = @"";// @"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"";//@"qwe";
     }else{
         self.emailTextField.text = @"william.wu@itexpresspro.com.au";
         self.passwordTextField.text = @"12345";
     }
+    
+    self.emailTextField.text = mDelegate_.userEmail;
 
 }
 
@@ -150,8 +152,8 @@
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        self.emailTextField.text = @"yaowu1984@gmail.com";
-        self.passwordTextField.text = @"12345";
+        self.emailTextField.text = @"";//@"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"";//@"qwe";
     }else{
         self.emailTextField.text = @"william.wu@itexpresspro.com.au";
         self.passwordTextField.text = @"12345";
@@ -188,6 +190,7 @@
                                  @"userType":userType,
                                  @"notificationToken" : notificationToken
                                  };
+    NSLog(@"\n parameters:\n%@",parameters);
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -237,7 +240,7 @@
 
             
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
-            mDelegate_.userToken = [mDelegate_.userDictionary valueForKey:@"TokenString"];
+            mDelegate_.userToken =[NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"TokenString"]];
             [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.userToken
                                                       forKey:@"userToken"];
             
