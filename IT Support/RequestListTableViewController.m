@@ -187,7 +187,18 @@
     //URL:   /ITSupportService/API/Request/Support
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+
+
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//   NSString *newString = [@"test;11111" stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    NSData *utf8Data = [@"test;11111" dataUsingEncoding:NSUTF8StringEncoding];
+//    NSString *dataString = [NSString stringWithFormat:@"%@",utf8Data];
+//    [manager.requestSerializer setValue:newString forHTTPHeaderField:@"Authorization"];
+    
+    
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
+    
     
     //clientID 放在parameters中
     [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -201,22 +212,32 @@
         
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"0"]) {
+           
             
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-            
-            UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                message:errorMessage
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *okAction =
-            [UIAlertAction actionWithTitle:@"OK"
-                                     style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action) {}];
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            
-            
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:@"Login session out of date, please login again."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
+                NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+                
+                UIAlertController *alert =
+                [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                    message:errorMessage
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *okAction =
+                [UIAlertAction actionWithTitle:@"OK"
+                                         style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction *action) {}];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
         }else if ([responseStatus isEqualToString:@"1"]) {
             
             NSMutableArray *tempArray = [[NSMutableArray alloc]init];
@@ -245,7 +266,7 @@
         self.menuBarButtonItem.enabled = YES;
 
         UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
+        [UIAlertController alertControllerWithTitle:@"Server Error"
                                             message:[error localizedDescription]
                                      preferredStyle:UIAlertControllerStyleAlert];
         
@@ -259,125 +280,126 @@
     }];
 }
 
-#pragma mark retrieving data 1.0
--(void)prepareMoreRequestList:(NSString *)searchType
-{
-    //navigationbar title
-    self.title = searchType;
-    mDelegate_.searchType = searchType;
-    
-    NSLog(@"retrieving requests data...");
-    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    
-    //URL:Client http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?ClientID=ClientID&curID=CurID&direction=Direction&searchCondition=SearchCondition
-    
-    //URL:Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?curID=CurID&direction=Direction&searchCondition=SearchCondition
-    
-    //default "curID" is "currentRequestID" = 0
-    NSString *curID = currentRequestID_;
-    NSString *direction = direction_;
-    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
-    
-    
-    NSString *getMethod = @"";
-    NSDictionary *parameters;
-    //user mode
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        
-        NSString *clientID = mDelegate_.clientID;
-        parameters = @{@"clientID" : clientID,
-                       @"CurID" : curID,
-                       @"Direction": direction,
-                       @"SearchCondition" : searchCondition
-                       };
-        getMethod = @"/ITSupportService/API/Request/Client";
-    }else{
-        parameters = @{@"CurID" : curID,
-                       @"Direction": direction,
-                       @"SearchCondition" : searchCondition
-                       };
-        getMethod = @"/ITSupportService/API/Request/Support";
-    }
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    //clientID 放在parameters中
-    [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-        [HUD_ hide:YES];
-        self.menuBarButtonItem.enabled = YES;
-        //convert to NSDictionary
-        NSDictionary *responseDictionary = responseObject;
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
-        
-        // 1 == success, 0 == fail
-        if ([responseStatus isEqualToString:@"0"]) {
-            
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-//                                                                message:errorMessage
-//                                                               delegate:nil
-//                                                      cancelButtonTitle:@"OK"
-//                                                      otherButtonTitles:nil];
-//            [alertView show];
-            
-            
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                                           message:errorMessage
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * action) {}];
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
-            
-            
-        }else if ([responseStatus isEqualToString:@"1"]) {
-    
-            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-            tempArray = [responseDictionary valueForKey:@"Result"];
-            //0 is load earlier data
-            if ([direction_ isEqualToString:@"0"]) {
-                
-                for (NSDictionary *dic in tempArray) {
-                    [tableData_ addObject:dic];
-                }
 
-            }else if ([direction_ isEqualToString:@"1"]){
-                //1 is load next data
-                for (NSDictionary *dic in tempArray) {
-                    [tableData_ insertObject:dic atIndex:0];
-                }
-            }
-            
-            [self.tableView reloadData];
-
-            [loadMore_ setText:@"All Loaded."];
-            NSLog(@"Retreved Request List Data");
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [HUD_ hide:YES];
-        self.menuBarButtonItem.enabled = YES;
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
-//                                                            message:[error localizedDescription]
-//                                                           delegate:nil
-//                                                  cancelButtonTitle:@"OK"
-//                                                  otherButtonTitles:nil];
-//        [alertView show];
-        
-        
-        
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
-                                                                       message:[error localizedDescription]
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-    }];
-}
+//#pragma mark retrieving data 1.0
+//-(void)prepareMoreRequestList:(NSString *)searchType
+//{
+//    //navigationbar title
+//    self.title = searchType;
+//    mDelegate_.searchType = searchType;
+//    
+//    NSLog(@"retrieving requests data...");
+//    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
+//    
+//    //URL:Client http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?ClientID=ClientID&curID=CurID&direction=Direction&searchCondition=SearchCondition
+//    
+//    //URL:Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?curID=CurID&direction=Direction&searchCondition=SearchCondition
+//    
+//    //default "curID" is "currentRequestID" = 0
+//    NSString *curID = currentRequestID_;
+//    NSString *direction = direction_;
+//    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
+//    
+//    
+//    NSString *getMethod = @"";
+//    NSDictionary *parameters;
+//    //user mode
+//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//        
+//        NSString *clientID = mDelegate_.clientID;
+//        parameters = @{@"clientID" : clientID,
+//                       @"CurID" : curID,
+//                       @"Direction": direction,
+//                       @"SearchCondition" : searchCondition
+//                       };
+//        getMethod = @"/ITSupportService/API/Request/Client";
+//    }else{
+//        parameters = @{@"CurID" : curID,
+//                       @"Direction": direction,
+//                       @"SearchCondition" : searchCondition
+//                       };
+//        getMethod = @"/ITSupportService/API/Request/Support";
+//    }
+//    
+//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    
+//    //clientID 放在parameters中
+//    [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+//        [HUD_ hide:YES];
+//        self.menuBarButtonItem.enabled = YES;
+//        //convert to NSDictionary
+//        NSDictionary *responseDictionary = responseObject;
+//        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
+//        
+//        // 1 == success, 0 == fail
+//        if ([responseStatus isEqualToString:@"0"]) {
+//            
+//            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+////            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
+////                                                                message:errorMessage
+////                                                               delegate:nil
+////                                                      cancelButtonTitle:@"OK"
+////                                                      otherButtonTitles:nil];
+////            [alertView show];
+//            
+//            
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
+//                                                                           message:errorMessage
+//                                                                    preferredStyle:UIAlertControllerStyleAlert];
+//            
+//            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+//                                                             handler:^(UIAlertAction * action) {}];
+//            [alert addAction:okAction];
+//            [self presentViewController:alert animated:YES completion:nil];
+//            
+//            
+//        }else if ([responseStatus isEqualToString:@"1"]) {
+//    
+//            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
+//            tempArray = [responseDictionary valueForKey:@"Result"];
+//            //0 is load earlier data
+//            if ([direction_ isEqualToString:@"0"]) {
+//                
+//                for (NSDictionary *dic in tempArray) {
+//                    [tableData_ addObject:dic];
+//                }
+//
+//            }else if ([direction_ isEqualToString:@"1"]){
+//                //1 is load next data
+//                for (NSDictionary *dic in tempArray) {
+//                    [tableData_ insertObject:dic atIndex:0];
+//                }
+//            }
+//            
+//            [self.tableView reloadData];
+//
+//            [loadMore_ setText:@"All Loaded."];
+//            NSLog(@"Retreved Request List Data");
+//        }
+//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+//        [HUD_ hide:YES];
+//        self.menuBarButtonItem.enabled = YES;
+////        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
+////                                                            message:[error localizedDescription]
+////                                                           delegate:nil
+////                                                  cancelButtonTitle:@"OK"
+////                                                  otherButtonTitles:nil];
+////        [alertView show];
+//        
+//        
+//        
+//        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
+//                                                                       message:[error localizedDescription]
+//                                                                preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+//                                                         handler:^(UIAlertAction * action) {}];
+//        
+//        [alert addAction:okAction];
+//        [self presentViewController:alert animated:YES completion:nil];
+//    }];
+//}
 
 #pragma mark - Menu List
 - (IBAction)MenuAction:(id)sender {
@@ -602,51 +624,6 @@
         HUD_.labelText = @"Processing...";
         
         [self cancelActiveRequest:indexPath];
-        
-        
-//        
-//        
-//        UIAlertController* alertController =
-//        [UIAlertController alertControllerWithTitle:nil
-//                                            message:nil
-//                                     preferredStyle:UIAlertControllerStyleActionSheet];
-//        
-//        UIAlertAction* cancelAction =
-//        [UIAlertAction actionWithTitle:@"Cancel"
-//                                 style:UIAlertActionStyleCancel
-//                               handler:^(UIAlertAction * action) {}];
-//        UIAlertAction* confirmAction =
-//        [UIAlertAction actionWithTitle:@"Confirm"
-//                                 style:UIAlertActionStyleDestructive
-//                               handler:^(UIAlertAction * action)
-//         {
-
-             
-             
-             //test
-            
-//             [tableData_ removeObjectAtIndex:indexPath.row];
-//             [self.tableView reloadData];
-
-             
-//             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//         }];
-//
-//        [alertController addAction:cancelAction];
-//        [alertController addAction:confirmAction];
-        
-//        UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-//        if (popover)
-//        {
-//            UIBarButtonItem *confirmBarButton = (UIBarButtonItem *)sender;
-//            popover.barButtonItem = confirmBarButton;
-//            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-//        }
-//        
-        
-//        [self presentViewController:alertController animated:YES completion:nil];
-        
-
     }
 }
 
@@ -662,7 +639,7 @@
     NSDictionary *requestObj = [tableData_ objectAtIndex:indexPath.row];
     NSString *requestID = [NSString stringWithFormat:@"%@", [requestObj valueForKey:@"RequestID"]];
     
-    NSString *getMethod = @"/ITSupportService/API/Request/Client";
+    NSString *URLString = @"/ITSupportService/API/Request/ClientDelete";
     NSDictionary *parameters = @{@"ClientID" : clientID,
                                 @"RequestID" : requestID
                                 };
@@ -672,10 +649,12 @@
 
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     //clientID 放在parameters中
-    [manager DELETE:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
+    [manager POST:URLString parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
 
         self.menuBarButtonItem.enabled = YES;
         
@@ -686,7 +665,10 @@
         
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"0"]) {
-            
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             [HUD_ hide:YES];
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
             
@@ -706,7 +688,7 @@
                                    }];
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
-            
+            }
             
         }else if ([responseStatus isEqualToString:@"1"]) {
             
@@ -759,7 +741,9 @@
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         [HUD_ hide:YES];
@@ -773,6 +757,12 @@
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
+          
+            
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
@@ -789,6 +779,7 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
+            }
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

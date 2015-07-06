@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vc4-Dp-VPg">
-                                <rect key="frame" x="20" y="20" width="146" height="30"/>
+                                <rect key="frame" x="20" y="120" width="146" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="146" id="o1h-eU-Uug"/>
                                 </constraints>
@@ -31,19 +31,21 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Vc4-Dp-VPg" firstAttribute="leading" secondItem="Bt3-Zh-E3p" secondAttribute="leading" constant="20" id="ARZ-gw-M1l"/>
-                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" constant="20" id="GiY-ce-gdh"/>
+                            <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" constant="120" id="GiY-ce-gdh"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="AUn-8j-ggs">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="CBf-ft-aZf"/>
+                    </navigationItem>
                     <connections>
-                        <segue destination="roB-wv-B07" kind="custom" identifier="To Test2 View" id="NZX-0c-uPY"/>
+                        <segue destination="roB-wv-B07" kind="modal" identifier="To Test2 View" modalTransitionStyle="crossDissolve" id="NZX-0c-uPY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vYl-T9-QF4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5019" y="-279"/>
+            <point key="canvasLocation" x="5165" y="-313"/>
         </scene>
         <!--Select Category Table View Controller-->
         <scene sceneID="EOm-Md-jYO">
@@ -264,7 +266,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.50196081399917603" green="0.25098040699958801" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="centerY" secondItem="lUi-3f-uO8" secondAttribute="centerY" id="K7w-3A-Smx"/>
                             <constraint firstAttribute="centerX" secondItem="lUi-3f-uO8" secondAttribute="centerX" id="e9p-Iz-wiN"/>
@@ -273,7 +275,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qoL-Dk-k7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4322" y="-279"/>
+            <point key="canvasLocation" x="5990" y="-313"/>
         </scene>
         <!--Request Photo Description Table View Controller-->
         <scene sceneID="CdY-7j-pgV">
@@ -1088,6 +1090,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KFB-ST-hwV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="560" y="2145"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="4DV-XQ-l2o">
+            <objects>
+                <navigationController storyboardIdentifier="TestNavigationControllerID" automaticallyAdjustsScrollViewInsets="NO" id="PWT-Jq-diN" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="R2D-e6-EUh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="hri-sy-CoA" kind="relationship" relationship="rootViewController" id="2Qr-ZW-r4F"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="veP-dK-zPR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4353" y="-313"/>
         </scene>
     </scenes>
     <resources>

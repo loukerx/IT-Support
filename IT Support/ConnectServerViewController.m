@@ -8,6 +8,7 @@
 
 #import "ConnectServerViewController.h"
 #import "AppDelegate.h"
+#import "AppHelper.h"
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
 #import "UIProgressView+AFNetworking.h"
@@ -15,6 +16,7 @@
 @interface ConnectServerViewController ()
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
 }
 
@@ -27,8 +29,15 @@
     [super viewDidLoad];
 
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    appHelper_ = [[AppHelper alloc]init];
+    
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUD_.labelText = @"Connecting Server...";
+
+    
+    //test
+//    [appHelper_ initialViewController:@"TestStoryboardView"];
+//    [appHelper_ initialViewController:@"TestNavigationControllerID"];
     
     //initialise a view controller
     if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
@@ -36,12 +45,9 @@
         [self initialProgressView];
         [self userLogin];
         
-        //test
-        //[self initialViewController:@"TestStoryboardView"];
-        
     }else{
-        
-        [self initialViewController:@"LoginViewStoryboardID"];
+
+        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
     }
 }
 
@@ -110,7 +116,9 @@
     NSLog(@"\n parameters:\n%@",parameters);
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+// manager.requestSerializer = [AFJSONRequestSerializer serializer];   
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [manager.requestSerializer setValue:mDelegate_.userToken forHTTPHeaderField:@"Authorization"];
 
     [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
     
@@ -127,7 +135,7 @@
 
             NSLog(@"fail");
             //To Login View
-            [self initialViewController:@"LoginViewStoryboardID"];
+            [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             
         }else if ([responseStatus isEqualToString:@"1"]) {
             
@@ -144,8 +152,8 @@
                 mDelegate_.supportID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
             }
             //To RequestList TableView
-            mDelegate_.loginIsRoot = NO;
-            [self initialViewController:@"MainRequestListStoryboardID"];
+//            mDelegate_.loginIsRoot = NO;
+            [appHelper_ initialViewController:@"MainRequestListStoryboardID"];
             
         }
     }failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -158,7 +166,7 @@
                                                   otherButtonTitles:nil];
         [alertView show];
         //To Login View
-        [self initialViewController:@"LoginViewStoryboardID"];
+        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
     }];
 }
 

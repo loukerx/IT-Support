@@ -8,12 +8,14 @@
 
 #import "UpdateContactNumberViewController.h"
 #import "AppDelegate.h"
+#import "AppHelper.h"
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 
 @interface UpdateContactNumberViewController ()
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
 }
 @property (weak, nonatomic) IBOutlet UITextField *contactNumberTextField;
@@ -123,23 +125,25 @@
     //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         NSString *clientID = mDelegate_.clientID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Client"];
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/ClientUpdate"];
         parameters = @{@"clientID" : clientID,
                        @"contactNumber" : contactNumber
                        };
         
     }else{
         NSString *supportID = mDelegate_.supportID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Support"];
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/SupportUpdate"];
         parameters = @{@"supportID" : supportID,
                        @"contactNumber" : contactNumber
                        };
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
+    
+    [manager POST:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         NSLog(@"%@",responseObject);
         NSDictionary *responseDictionary = responseObject;
@@ -165,7 +169,10 @@
             [self presentViewController:alert animated:YES completion:nil];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
-            
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             [HUD_ hide:YES];
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
@@ -181,6 +188,7 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
+        }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
@@ -224,7 +232,9 @@
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         [HUD_ hide:YES];
@@ -239,6 +249,11 @@
             [self.navigationController popViewControllerAnimated:YES];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
+            
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
@@ -256,7 +271,7 @@
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
         }
-        
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [HUD_ hide:YES];
         

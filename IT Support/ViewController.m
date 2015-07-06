@@ -13,7 +13,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
-@interface ViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
+@interface ViewController ()<UIScrollViewDelegate,UIPickerViewDataSource, UIPickerViewDelegate>
 {
     AppDelegate *mDelegate_;
     MBProgressHUD *HUD_;
@@ -21,6 +21,7 @@
 }
 
 @property (strong, nonatomic) UIPickerView *pickerView;
+@property (strong, nonatomic) UIScrollView *scrollView;
 
 @end
 
@@ -39,7 +40,7 @@
     pickerData_ = @[@"Item 1", @"Item 2", @"Item 3", @"Item 4", @"Item 5", @"Item 6"];
     self.pickerView.delegate = self;
     self.pickerView.dataSource = self;
-    
+  
     
 
 }
@@ -48,20 +49,67 @@
 
 - (IBAction)sendNotification:(id)sender {
     
-    
+        [self prepareScrollViewContent];
 
-//    [self actionSheetExample:sender];
 //    [self restfulConfirmTest];
-//    [self localNotificationTest];
+
 //    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
     
 }
 
+#pragma mark - scrollView content
 
--(void)actionSheetPickerView
+- (void)prepareScrollViewContent
 {
+    CGFloat scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
+    self.scrollView.pagingEnabled = YES;
+    self.scrollView.delegate = self;
     
+    
+    [self.view addSubview:self.scrollView];
+//    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollviewSingleTapGesture:)];
+//    [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
+    
+    //test image data
+    for (int num=1;num<6; num++) {
+        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+
+        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+    }
+    
+    NSArray *photos = [NSArray arrayWithArray: mDelegate_.mRequestImages];
+    
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = self.view.frame.size.height;
+    self.scrollView.contentSize =  CGSizeMake(width * photos.count,0);
+    
+    int count = 0;
+    
+    for(UIImage *image in photos)
+    {
+        UIImageView *imageview = [[UIImageView alloc] initWithImage:image];
+        imageview.contentMode = UIViewContentModeScaleAspectFit;
+        imageview.frame = CGRectMake(0, 0, width, height);
+        
+        UIScrollView *pageScrollView = [[UIScrollView alloc]
+                                        initWithFrame:CGRectMake(width * count, 0, width, height)];
+        pageScrollView.minimumZoomScale = 1.0f;
+        pageScrollView.maximumZoomScale = 2.5f;
+        //scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
+        //        pageScrollView.contentSize = CGSizeMake(imageview.frame.size.width, pageScrollView.frame.size.height);
+        pageScrollView.contentSize = CGSizeMake(width,height);
+        //        pageScrollView.scrollEnabled = NO;
+        pageScrollView.decelerationRate = 1.0f;
+        pageScrollView.delegate = self;
+        [pageScrollView addSubview:imageview];
+        
+        [self.scrollView addSubview:pageScrollView];
+        count++;
+    }
 }
+
+
 #pragma mark -  Picker View DataSource
 
 // The number of columns of data
@@ -92,56 +140,6 @@
     NSLog(@"click the pickerView");
 }
 
-#pragma mark - UIAlertController example display ActionSheet example
-
--(void)actionSheetExample:(id)sender
-{
-    
-    NSString *alertTitle = NSLocalizedString(@"ActionTitle", @"Archive or Delete Data");
-    NSString *alertMessage = NSLocalizedString(@"ActionMessage", @"Deleted data cannot be undone");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
-                                                                             message:alertMessage
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       NSLog(@"Cancel action");
-                                   }];
-    
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Delete", @"Delete action")
-                                                           style:UIAlertActionStyleDestructive
-                                                         handler:^(UIAlertAction *action)
-                                   {
-                                       NSLog(@"Delete action");
-                                   }];
-    
-    UIAlertAction *archiveAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Archive", @"Archive action")
-                                                            style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction *action)
-                                    {
-                                        NSLog(@"Archive action");
-                                    }];
-    
-    [alertController addAction:cancelAction];
-    [alertController addAction:deleteAction];
-    [alertController addAction:archiveAction];
-    
-    
-    
-    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
-    if (popover)
-    {
-        UIButton *button = (UIButton *)sender;
-        popover.sourceView = button;
-        popover.sourceRect = button.bounds;
-        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    }
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
 
 
 
@@ -157,7 +155,9 @@
 
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     
 //    manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
@@ -211,77 +211,6 @@
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
-#pragma mark - upload image to server
--(void)uploadImage
-{
-    NSLog(@"retrieving data");
-//    NSURL *baseURL = [NSURL URLWithString:NewsListURLString];
-    
-    NSURL *baseURL = [NSURL URLWithString:@""];
-    NSDictionary *parameters = @{};
-
-    
-//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    //http://ec2-52-64-98-132.ap-southeast-2.compute.amazonaws.com/NewsManagement/API/newsinfo
-    //request 10 records
-    
-//    [manager POST:@"/NewsManagement/API/newsinfo" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-
-    [manager POST:@"http://10.0.0.142/ApiTest/api/upload" parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-       
-
-        
-        
-        for (int num = 1; num<3; num++) {
-            
-            NSString *filePath = [[NSBundle mainBundle] pathForResource:[NSString stringWithFormat:@"room%d",num]
-                                                                 ofType:@"jpg"];
-            NSURL *fileURL = [NSURL fileURLWithPath:filePath];
-            
-            [formData appendPartWithFileURL:fileURL name:@"room3" error:nil];
-            
-//            [formData appendPartWithFileData:data1
-//                                        name:@"image1"
-//                                    fileName:@"image1.jpg"
-//                                    mimeType:@"image/jpeg"];
-        }
-        
-        
-        
-        
-    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        
-        
-//        self.tableViewData = [[NSMutableArray alloc]init];
-//        self.tableViewData = responseObject;
-//        [self.tableView reloadData];
-//
-        
-        
-        NSString *message = [responseObject objectForKey:@"message"];
-        NSString *status = [responseObject objectForKey:@"status"];
-        NSString *name =[responseObject objectForKey:@"name"];
-        
-        NSLog(@"%@: %@",status, message);
-        NSLog(@"Name: %@",name);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [HUD_ hide:YES];
-        
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"获取后台文件失败"
-                                                            message:error
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"确定"
-                                                  otherButtonTitles:nil];
-        [alertView show];
-    }];
-    
-}
 
 
 

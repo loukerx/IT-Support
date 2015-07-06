@@ -107,7 +107,7 @@
 #pragma mark - button action
 - (IBAction)loginAction:(id)sender {
     if ([self checkAllField]) {
-        
+
         //loading view
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Logging In...";
@@ -193,7 +193,9 @@
     NSLog(@"\n parameters:\n%@",parameters);
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];    
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+//    [manager.requestSerializer setValue:mDelegate_.userToken forHTTPHeaderField:@"Authorization"];
 
     [manager POST:@"/ITSupportService/api/Login" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
         [HUD_ hide:YES];
@@ -265,13 +267,13 @@
             
             //set default searchType
             mDelegate_.searchType =@"Active";
-            if (mDelegate_.loginIsRoot) {
-                
+//            if (mDelegate_.loginIsRoot) {
+            
                 [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-            }else{
-                
-                [self performSegueWithIdentifier:@"Unwind From Login View" sender:self];
-            }
+//            }else{
+//                
+//                [self performSegueWithIdentifier:@"Unwind From Login View" sender:self];
+//            }
 
         }
         

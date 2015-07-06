@@ -107,14 +107,6 @@
 
 #pragma mark - gesture
 
--(void)handleSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
-    //如果keyboard弹出
-    
-    //else
-    //go back to RequestPhotoCollectionViewController
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 -(void)dismissKeyboard{
     if (self.enableEditMode) {
         [self.view endEditing:YES];
@@ -122,15 +114,6 @@
        [self performSegueWithIdentifier:@"To Image View" sender:self];
     }
  
-}
-
--(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
-        return;
-    }
-
-    [self performSegueWithIdentifier:@"To Image View" sender:self];
 }
 
 #pragma mark - scrollview & tableHeaderView
@@ -141,18 +124,6 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-//    
-//    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapGesture:)];
-//    [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
-//    
-//    
-    
-    // attach long press gesture to collectionView
-//    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
-//       initWithTarget:self action:@selector(handleLongPress:)];
-//    lpgr.minimumPressDuration = .5; //seconds
-//    lpgr.delegate = self;
-//    [self.scrollView addGestureRecognizer:lpgr];
     
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];

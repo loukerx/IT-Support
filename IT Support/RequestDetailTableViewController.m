@@ -101,7 +101,9 @@
     NSDictionary *parameters = @{@"RequestID" : requestID};
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     //clientID 放在parameters中
     [manager GET:@"/ITSupportService/API/Image" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -132,6 +134,11 @@
             NSLog(@"Retrieved Request Photos");
             
         }else if ([responseStatus isEqualToString:@"0"]) {
+          
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
 
             UIAlertController *alert =
@@ -146,6 +153,7 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
+            }
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -611,7 +619,7 @@
     //Client Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         NSString *clientID = mDelegate_.clientID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Client"];
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/ClientUpdate"];
         
         parameters = @{@"clientID" : clientID,
                        @"requestID" : requestID,
@@ -619,7 +627,7 @@
                        };
     }else{//Support Mode
         NSString *supportID = mDelegate_.supportID;
-        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/Support"];
+        URLString =[NSString stringWithFormat:@"/ITSupportService/API/Request/SupportUpdate"];
         parameters = @{@"supportID" : supportID,
                        @"requestID" : requestID,
                        @"status": status
@@ -627,9 +635,11 @@
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
-    [manager PUT:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
+    
+    [manager POST:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
         NSLog(@"%@",responseObject);
@@ -662,6 +672,10 @@
 
         }else if ([responseStatus isEqualToString:@"0"]) {
 
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
@@ -676,6 +690,7 @@
 
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
+        }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [HUD_ hide:YES];
@@ -718,7 +733,9 @@
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     [manager GET:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         [HUD_ hide:YES];
@@ -733,6 +750,11 @@
             [self performSegueWithIdentifier:@"Unwind From RequestDetail TableView" sender:self];
 
         }else if ([responseStatus isEqualToString:@"0"]) {
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
+            
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
@@ -749,6 +771,7 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
+            }
         }
 
     } failure:^(NSURLSessionDataTask *task, NSError *error) {

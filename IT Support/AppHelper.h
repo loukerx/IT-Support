@@ -19,6 +19,9 @@ typedef NS_ENUM(NSInteger, RequestStatus){
     
 };
 
+//initial View Controller
+-(void)initialViewController:(NSString *)viewControllerIdentifier;
+
 //convert Dictionary Array to JsonString
 -(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType;
 

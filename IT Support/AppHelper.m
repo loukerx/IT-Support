@@ -12,6 +12,20 @@
 @implementation AppHelper
 
 
+#pragma mark - initial and login check
+-(void)initialViewController:(NSString *)viewControllerIdentifier
+{
+    AppDelegate *mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    mDelegate_.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    
+    UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerIdentifier];
+    
+    mDelegate_.window.rootViewController = viewController;
+    [mDelegate_.window makeKeyAndVisible];
+}
+
 #pragma mark - convert dictionary to Json String
 -(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType
 {

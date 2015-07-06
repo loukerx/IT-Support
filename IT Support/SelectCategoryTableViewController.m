@@ -80,11 +80,17 @@
     NSDictionary *parameters = @{};
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     //clientID 放在parameters中
     [manager GET:@"/ITSupportService/API/Requestcategory" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
 
+        
+        NSLog(@"%@",responseObject);
+        
         //convert to NSDictionary
         NSDictionary *responseDictionary = responseObject;
         NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
@@ -102,7 +108,10 @@
             
             
         }else if ([responseStatus isEqualToString:@"0"]) {
-            
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
             
             UIAlertController *alert =
@@ -117,7 +126,7 @@
             
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
-            
+            }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

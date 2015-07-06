@@ -45,7 +45,7 @@
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
     
     //login view is root
-    self.loginIsRoot = YES;
+//    self.loginIsRoot = YES;
     
     //setting client
     //test number
@@ -87,19 +87,6 @@
     //setting font
     self.menuTextFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:20.0];//[UIFont fontWithName:@"HelveticaNeue" size:20.0];
     
-    
-    
-    
-    //Auto Login check username & password
-    //initialise a view controller
-//    if (self.userEmail.length>0 && self.userPassword.length >0) {
-//        
-
-//        [self userLogin];
-//        
-//    }else{
-//        [self initialViewController:@"LoginViewStoryboardID"];
-//    }
     
 //    return YES;
     //changed for Facebook API
@@ -179,14 +166,14 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     NSLog(@"My token string is: %@", self.notificationToken);
     
     //initial view controller
-    [self initialViewController:@"ConnectServerStoryboardID"];
+    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"Failed to get token, error: %@", error);
     //initial view controller
-    [self initialViewController:@"ConnectServerStoryboardID"];
+    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
 }
 
 

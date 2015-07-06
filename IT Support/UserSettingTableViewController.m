@@ -263,7 +263,7 @@
         UIAlertAction* confirmAction = [UIAlertAction actionWithTitle:@"Confirm" style:UIAlertActionStyleDestructive
                                                               handler:^(UIAlertAction * action) {
                                                                   
-//                                                                  [self logoutAction];
+
                                                                   [self userLogout];
                                                               }];
         
@@ -287,19 +287,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)logoutAction
-{
-    //CLEAR NSUserDefaults local variables
-    [[NSUserDefaults standardUserDefaults] setObject:@""
-                                              forKey:@"userEmail"];
-    [[NSUserDefaults standardUserDefaults] setObject:@""
-                                              forKey:@"userPassword"];
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-
-    mDelegate_.loginIsRoot = NO;
-    [self performSegueWithIdentifier:@"To Login View" sender:self];
-    
-}
 
 #pragma mark - user logout
 -(void)userLogout{
@@ -322,7 +309,9 @@
                                 };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
+    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     [manager POST:URLString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
@@ -339,8 +328,8 @@
             //CLEAR NSUserDefaults local variables
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userToken"];
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userEmail"];
+//            [[NSUserDefaults standardUserDefaults] setObject:@""
+//                                                      forKey:@"userEmail"];
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userPassword"];
             [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
@@ -348,27 +337,32 @@
             //unregister remote notification
             NSLog(@"Unregister For Remote Notification");
             [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-            mDelegate_.loginIsRoot = NO;
-            
-            [self performSegueWithIdentifier:@"To Login View" sender:self];
-            
+//            mDelegate_.loginIsRoot = NO;
+//
+//            [self performSegueWithIdentifier:@"To Login View" sender:self];
+   
+            [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
             
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
-            
-            UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                message:errorMessage
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *okAction =
-            [UIAlertAction actionWithTitle:@"OK"
-                                     style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction *action) {}];
-            
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+                //log out
+                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            }else{
+                NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+                
+                UIAlertController *alert =
+                [UIAlertController alertControllerWithTitle:@"Error!!"
+                                                    message:errorMessage
+                                             preferredStyle:UIAlertControllerStyleAlert];
+                
+                UIAlertAction *okAction =
+                [UIAlertAction actionWithTitle:@"OK"
+                                         style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction *action) {}];
+                [alert addAction:okAction];
+                [self presentViewController:alert animated:YES completion:nil];
+            }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         

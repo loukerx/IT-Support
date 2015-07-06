@@ -46,7 +46,7 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) NSString *userPassword;//password
 //@property (strong, nonatomic) NSString *contactName;
 //login view is root
-@property (nonatomic)BOOL loginIsRoot;
+//@property (nonatomic)BOOL loginIsRoot;
 
 //client user
 @property (strong, nonatomic) NSString *clientID;
