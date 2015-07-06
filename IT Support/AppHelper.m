@@ -22,6 +22,7 @@
     
     UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerIdentifier];
     
+    
     mDelegate_.window.rootViewController = viewController;
     [mDelegate_.window makeKeyAndVisible];
 }
