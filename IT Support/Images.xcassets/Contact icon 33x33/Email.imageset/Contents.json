@@ -7,16 +7,17 @@
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "Website@2x.png"
+      "filename" : "Email @2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "Website@3x.png"
+      "filename" : "Email @3x.png"
     }
   ],
   "info" : {
     "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "template-rendering-intent" : "template"
   }
 }

@@ -76,8 +76,6 @@
     //add observer for keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
-//    [self.passwordTextField setSecureTextEntry:YES];
-    
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         self.emailTextField.text = @"";// @"hua.yin@itexpresspro.com.au";
@@ -149,6 +147,9 @@
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+    
+    self.emailTextField.text = @"";//@"hua.yin@itexpresspro.com.au";
+    self.passwordTextField.text = @"";//@"qwe";
     
     //test
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {

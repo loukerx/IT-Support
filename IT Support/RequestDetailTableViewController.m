@@ -32,6 +32,10 @@
 @property (strong, nonatomic) UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *switchStatusBarButtonItem;
 
+//custome button
+@property (strong, nonatomic) UIButton *emailButton;
+@property (strong, nonatomic) UIButton *phoneButton;
+
 
 @end
 
@@ -64,6 +68,7 @@
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     
     [self initialCustomView];
+    [self initialCustomerButton];
     [self preparePhotosForScrollView];
     [self populateTableViewHeader];
     [self downloadPhotoData];
@@ -207,6 +212,81 @@
     self.descriptionTextView.delegate = self;
     
 }
+
+-(void)initialCustomerButton
+{
+    
+    //email button
+    self.emailButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.emailButton addTarget:self
+               action:@selector(emailButtonAction:)
+     forControlEvents:UIControlEventTouchUpInside];
+    [self.emailButton setImage:[UIImage imageNamed:@"Email"] forState:UIControlStateNormal];
+    [self.emailButton sizeToFit];
+    self.emailButton.center = CGPointMake(self.view.bounds.size.width*0.33, 22);
+    
+    //phone button
+    self.phoneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [self.phoneButton addTarget:self
+                         action:@selector(phoneButtonAction:)
+               forControlEvents:UIControlEventTouchUpInside];
+    [self.phoneButton setImage:[UIImage imageNamed:@"Phone"] forState:UIControlStateNormal];
+    [self.phoneButton sizeToFit];
+    self.phoneButton.center = CGPointMake(self.view.bounds.size.width*0.64, 22);
+}
+
+#pragma mark - Custom Button Action
+
+-(void)emailButtonAction:(UIButton*)sender
+{
+    
+    
+//    NSString* str = [NSString stringWithFormat:@"mailto:%@?cc=%@&subject=%@&body=%@",
+//                     to, cc, subject, body];
+//    str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"mailto:%@",sender.titleLabel.text]]];
+    
+}
+
+-(void)phoneButtonAction:(UIButton*)sender
+{
+    UIAlertController* alertController =
+    [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"Phone: %@",sender.titleLabel.text]
+                                        message:nil
+                                 preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction* cancelAction =
+    [UIAlertAction actionWithTitle:@"Cancel"
+                             style:UIAlertActionStyleCancel
+                           handler:^(UIAlertAction * action) {}];
+    UIAlertAction* confirmAction =
+    [UIAlertAction actionWithTitle:@"Dail"
+                             style:UIAlertActionStyleDestructive
+                           handler:^(UIAlertAction * action)
+     {
+    
+         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"tel:%@",sender.titleLabel.text]]];
+         
+     }];
+    
+    [alertController addAction:cancelAction];
+    [alertController addAction:confirmAction];
+    
+    UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+    if (popover)
+    {
+        UIBarButtonItem *confirmBarButton = (UIBarButtonItem *)sender;
+        popover.barButtonItem = confirmBarButton;
+        popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    }
+    
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+
+}
+
 
 #pragma mark - guesture
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
@@ -393,7 +473,7 @@
     if (indexPath.section == 2)
         return 230;
     
-    return self.tableView.rowHeight;
+    return self.tableView.rowHeight;//44
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
@@ -410,7 +490,7 @@
     if (section == requestSection) {
         return 4;
     }else if(section == contactSection){
-        return 4;
+        return 3;
     }
     return 1;
 }
@@ -419,12 +499,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Configure the cell...
-    //-------------section 0
+    //-------------section requestSection 0
     //- Created Date
     //- Subcategory
     //- status
     //- Price
-    //-------------section 1
+    //-------------section contactSection 1
     //- Support Name
     //- Support company
     //- mobile
@@ -437,7 +517,7 @@
     if(indexPath.section == requestSection){
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                      reuseIdentifier:@"RequestTableViewCell"];
+                                      reuseIdentifier:@"RequestDetailTableViewCell"];
         //createdDate
         NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
         
@@ -452,13 +532,13 @@
         
         //category
         NSString *categoryName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryName"]];
-        NSString *parentID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryParentID"]];
-        UIImage *categoryImage = [appHelper_ imageFromCategoryID:parentID];
+//        NSString *parentID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryParentID"]];
+//        UIImage *categoryImage = [appHelper_ imageFromCategoryID:parentID];
         
         //status
         NSString *statusString = [appHelper_ convertRequestStatusStringWithInt:[[self.requestObject valueForKey:@"RequestStatus"]integerValue]];
-        UIImage *statusImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
-        
+//        UIImage *statusImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
+    
         
         //price
         NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];
@@ -488,27 +568,37 @@
     }else if(indexPath.section == contactSection){
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                reuseIdentifier:@"RequestTableViewCell"];
+                                reuseIdentifier:@"RequestDetailTableViewCell"];
         //-------------section 1
         //- Support Name
         //- Support company
         //- mobile
         //- Email
-        NSString *contactName =@"N/A",*companyName =@"N/A",*contactNumber =@"N/A",*email=@"N/A";
+        NSString *contactName =@"N/A",*companyName =@"N/A",*contactNumber =@"",*email=@"";
+        BOOL buttonEnable = NO;
+        UIColor *contactColor = [UIColor grayColor];
         
-        //client 显示 support name,company
-        //support 显示 client name,company
-        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-            contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
-            companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
-            contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@"N/A"];
-            email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@"N/A"];
-        }else{
-            contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactName"]];
-            companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]];
-            contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]];
-            email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]];
+        if (![mDelegate_.searchType isEqualToString:@"Active"]) {
+            
+            //client 显示 support name,company
+            //support 显示 client name,company
+            if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+                buttonEnable = YES;
+                contactColor = mDelegate_.supportThemeColor;
+                contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
+                companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
+                contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@""];
+                email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@""];
+            }else{
+                buttonEnable = YES;
+                contactColor = mDelegate_.clientThemeColor;
+                contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactName"]?:@"N/A"];
+                companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]?:@"N/A"];
+                contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]?:@""];
+                email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]?:@""];
+            }
         }
+        
         
         switch (indexPath.row) {
                 
@@ -520,13 +610,27 @@
                 cell.textLabel.text = @"Company Name";
                 cell.detailTextLabel.text = companyName;
                 break;
+//            case 2:
+//                cell.textLabel.text = @"Contact Number";
+//                cell.detailTextLabel.text = contactNumber;
+//                break;
+//            case 3:
+//                cell.textLabel.text = @"Email";
+//                cell.detailTextLabel.text = email;
+//                break;
             case 2:
-                cell.textLabel.text = @"Contact Number";
-                cell.detailTextLabel.text = contactNumber;
-                break;
-            case 3:
-                cell.textLabel.text = @"Email";
-                cell.detailTextLabel.text = email;
+                [self.emailButton setTitle:email forState:UIControlStateNormal];
+                [self.emailButton.titleLabel setHidden:YES];
+                [self.emailButton.imageView setTintColor:contactColor];
+                [self.emailButton setEnabled:buttonEnable];
+                
+                [self.phoneButton setTitle:contactNumber forState:UIControlStateNormal];
+                [self.phoneButton.titleLabel setHidden:YES];
+                [self.phoneButton setTintColor:contactColor];
+                [self.phoneButton setEnabled:buttonEnable];
+                
+                [cell addSubview:self.emailButton];
+                [cell addSubview:self.phoneButton];
                 break;
             default:
                 break;
@@ -535,7 +639,7 @@
     }else{
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:@"RequestTableViewCell"];
+                                      reuseIdentifier:@"RequestDetailTableViewCell"];
         //subject textfield
         [cell addSubview:self.subjectTextField];
         //        self.subjectTextField.text= mDelegate_.requestSubject;
@@ -549,20 +653,6 @@
     }
     return cell;
 }
-
-#pragma mark - actionSheet delegate
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-//    switch (buttonIndex) {
-//        case 0:
-//            HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//            HUD_.labelText = @"Processing...";
-//            [self updateRequest];//GET
-//            break;
-//        default:
-//            break;
-//    }
-//    
-//}
 
 #pragma mark - confirm action
 - (IBAction)confirmAction:(id)sender {

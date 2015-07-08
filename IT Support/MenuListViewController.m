@@ -89,8 +89,6 @@
     });
 }
 
-
-
 #pragma mark Table View DataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

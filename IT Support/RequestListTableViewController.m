@@ -670,7 +670,7 @@
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
             [HUD_ hide:YES];
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+//            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Delete Request Error!!"

@@ -232,7 +232,6 @@
     }
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     

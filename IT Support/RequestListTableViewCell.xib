@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
@@ -64,18 +64,11 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Contact Name " translatesAutoresizingMaskIntoConstraints="NO" id="zJQ-Ks-sTJ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Contact Name" translatesAutoresizingMaskIntoConstraints="NO" id="zJQ-Ks-sTJ">
                                 <rect key="frame" x="0.0" y="35" width="21" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="U9t-T5-uMP"/>
                                     <constraint firstAttribute="width" constant="21" id="tx1-9O-2H8"/>
-                                </constraints>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Company Name " translatesAutoresizingMaskIntoConstraints="NO" id="786-Tg-Sz5">
-                                <rect key="frame" x="0.0" y="57" width="21" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="21" id="6C7-Lv-i4a"/>
-                                    <constraint firstAttribute="height" constant="21" id="ad0-DF-PvZ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tf0-sz-4Sx">
@@ -102,6 +95,13 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Company Name" translatesAutoresizingMaskIntoConstraints="NO" id="786-Tg-Sz5">
+                                <rect key="frame" x="0.0" y="57" width="21" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="21" id="6C7-Lv-i4a"/>
+                                    <constraint firstAttribute="height" constant="21" id="ad0-DF-PvZ"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -160,8 +160,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="Company Name " width="21" height="21"/>
-        <image name="Contact Name " width="21" height="21"/>
+        <image name="Company Name" width="21" height="21"/>
+        <image name="Contact Name" width="21" height="21"/>
         <image name="Others" width="33" height="33"/>
     </resources>
 </document>
