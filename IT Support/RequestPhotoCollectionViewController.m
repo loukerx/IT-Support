@@ -153,9 +153,8 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     }else{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
-//        picker.allowsEditing = YES;
-        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         picker.allowsEditing = NO;
+        picker.sourceType = UIImagePickerControllerSourceTypeCamera;
         [self presentViewController:picker animated:YES completion:NULL];
     }
 }
@@ -164,7 +163,7 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 {
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.delegate = self;
-    picker.allowsEditing = YES;
+    picker.allowsEditing = NO;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 
     [self presentViewController:picker animated:YES completion:NULL];
