@@ -60,6 +60,7 @@
     //appThemeColor
     self.logOutButton.backgroundColor = [mDelegate_.appThemeColor colorWithAlphaComponent:1.0f];
     self.TopView.backgroundColor = mDelegate_.appThemeColor;
+//    [self.TopView setAlpha:0.7f];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

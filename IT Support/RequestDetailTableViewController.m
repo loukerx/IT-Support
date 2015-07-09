@@ -65,7 +65,10 @@
     
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    //setting color
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.title = @"Details";
+    
     
     [self initialCustomView];
     [self initialCustomerButton];
@@ -239,14 +242,37 @@
 
 -(void)emailButtonAction:(UIButton*)sender
 {
+    //createdDate
+    NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
+    NSDate *date = [dateFormatter dateFromString:dateStr];
+    
+    [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+    NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    [dateFormatter setTimeZone:pdt];
+    NSString * createDate = [dateFormatter stringFromDate:date];
+    
+    //Title
+    NSString *title = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"Title"]];
+    
+    NSString *to = sender.titleLabel.text;
+    NSString *cc = @"";
+    NSString *subject = [NSString stringWithFormat:@"Request[%@]",title];
+    NSString *body =[NSString stringWithFormat:@"Request Title: %@\nCreated Date: %@\n",title,createDate];
+    
+    NSString* emailStr = [NSString stringWithFormat:@"mailto:%@?cc=%@&subject=%@&body=%@",
+                     to, cc, subject, body];
+    
+    emailStr = [emailStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:emailStr]];
     
     
-//    NSString* str = [NSString stringWithFormat:@"mailto:%@?cc=%@&subject=%@&body=%@",
-//                     to, cc, subject, body];
-//    str = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"mailto:%@",sender.titleLabel.text]]];
     
     
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[NSString stringWithFormat: @"mailto:%@",sender.titleLabel.text]]];
     
 }
 
@@ -328,6 +354,8 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
+    self.scrollView.backgroundColor = [UIColor blackColor];
+    
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollviewSingleTapGesture:)];
     [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
@@ -424,7 +452,7 @@
         }
         
         [self.pageLabel setTextColor:[UIColor whiteColor]];
-        [self.pageLabel setBackgroundColor:[UIColor blackColor]];
+        [self.pageLabel setBackgroundColor:[UIColor clearColor]];
         [self.pageLabel setTextAlignment:NSTextAlignmentCenter];
         [self.pageLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15.0]];
         CGSize textSize = [[self.pageLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.pageLabel font]}];

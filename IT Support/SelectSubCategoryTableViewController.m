@@ -35,7 +35,7 @@
     
     //setting
     self.title = @"Select Subcategory";
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //set subcategory values
     NSString *dicKeyForSubcategory = [NSString stringWithFormat:@"categoryID[%@]",self.parentID];

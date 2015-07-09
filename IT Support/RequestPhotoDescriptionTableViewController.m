@@ -39,9 +39,9 @@
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     firstDisplay_ = YES;
     //setting color
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.deleteBarButtonItem.tintColor = self.enableEditMode?mDelegate_.appThemeColor:[UIColor whiteColor];
+    self.deleteBarButtonItem.tintColor = self.enableEditMode?[UIColor whiteColor]:[UIColor clearColor];
     self.deleteBarButtonItem.enabled = self.enableEditMode;
 
     
@@ -70,9 +70,9 @@
     self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
 //    self.descriptionTextView.layer.cornerRadius = 5.0f;
 //    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
-    //    self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text = @"For additional question, please leave your message.";
-    self.descriptionTextView.textColor = [UIColor lightGrayColor];
+//    self.descriptionTextView.layer.borderWidth = 0.6f;
+//    self.descriptionTextView.text = @"For additional question, please leave your message.";
+    self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
    
     //depends on different push
@@ -84,7 +84,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    if ([self.descriptionTextView.text isEqualToString:@"For additional question, please leave your message."]) {
+    if ([self.descriptionTextView.text isEqualToString:@"For additional description, please leave your message."]) {
         self.descriptionTextView.text = @"";
         self.descriptionTextView.textColor = [UIColor blackColor]; //optional
     }
@@ -94,7 +94,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if ([self.descriptionTextView.text isEqualToString:@""]) {
-        self.descriptionTextView.text = @"For additional question, please leave your message.";
+        self.descriptionTextView.text = @"For additional description, please leave your message.";
         self.descriptionTextView.textColor = [UIColor lightGrayColor]; //optional
     }
     [self.descriptionTextView resignFirstResponder];
@@ -102,7 +102,9 @@
 
 - (void)textViewDidChange:(UITextView *)textView{
     
-    [mDelegate_.mRequestImageDescriptions replaceObjectAtIndex:displayPhotoIndex_ withObject:textView.text];
+    NSString *imageDescription;
+    imageDescription = textView.text;
+    [mDelegate_.mRequestImageDescriptions replaceObjectAtIndex:displayPhotoIndex_ withObject:imageDescription];
 }
 
 #pragma mark - gesture
@@ -182,7 +184,7 @@
         }
         
         [self.pageLabel setTextColor:[UIColor whiteColor]];
-        [self.pageLabel setBackgroundColor:[UIColor blackColor]];
+        [self.pageLabel setBackgroundColor:[UIColor clearColor]];
         [self.pageLabel setTextAlignment:NSTextAlignmentCenter];
         [self.pageLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15.0]];
         CGSize textSize = [[self.pageLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.pageLabel font]}];
@@ -207,9 +209,15 @@
         
         //correct description position
         self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
-     
+        if (self.enableEditMode) {
+            if ([self.descriptionTextView.text isEqualToString:@"N/A"]) {
+                self.descriptionTextView.text = @"For additional description, please leave your message.";
+                self.descriptionTextView.textColor = [UIColor grayColor];
+            }else{
+                self.descriptionTextView.textColor = [UIColor blackColor]; //optional
+            }
+        }
     }
-    
     firstDisplay_ = NO;
 }
 
@@ -224,9 +232,22 @@
     if (mDelegate_.mRequestImages.count>0) {
         self.pageLabel.text = [NSString stringWithFormat:@"%d/%lu",page,(unsigned long)[mDelegate_.mRequestImages count]];
 
+        //populate description from appDelegate
         displayPhotoIndex_ = page - 1;
         self.descriptionTextView.text = mDelegate_.mRequestImageDescriptions[displayPhotoIndex_];
-
+        
+        if (self.enableEditMode) {
+            //value description with correct words
+            //set textview responder by descriptions
+            //set textview text color by descriptions
+            if ([self.descriptionTextView.text isEqualToString:@"N/A"]) {
+                self.descriptionTextView.text = @"For additional description, please leave your message.";
+                self.descriptionTextView.textColor = [UIColor lightGrayColor];
+            }else{
+                self.descriptionTextView.textColor = [UIColor blackColor]; //optional
+            }
+            [self.descriptionTextView resignFirstResponder];
+        }
     }else{
         [self.pageLabel setText:[NSString stringWithFormat:@"N/A"]];
     }

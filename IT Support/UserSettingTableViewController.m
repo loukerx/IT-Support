@@ -41,8 +41,9 @@
     appHelper_ = [[AppHelper alloc]init];
     
     self.title = @"Settings";
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationController.navigationBar.barTintColor = mDelegate_.appThemeColor;
+//    self.navigationController.navigationBar.translucent = NO;
     [self initialCustomView];
     
 }

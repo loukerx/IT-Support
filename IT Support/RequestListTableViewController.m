@@ -68,7 +68,6 @@
     loadMore_.text= @"正在加载...";
     
     
-    
     //refreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -78,6 +77,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
+    
     
     [self initialSettingForView];
     
@@ -90,34 +90,38 @@
     HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     HUD_.labelText = @"Progressing...";
     self.menuBarButtonItem.enabled = NO;
+    
     //table data
     currentRequestID_ = @"";//version 2.0
-//    currentRequestID_ = @"0";//version 1.0
     direction_ = @"0";
     lastLoadingTableDataCount_ = 0;
     tableData_ = [[NSMutableArray alloc]init];
-    searchType_ = mDelegate_.searchType;
-//    [self prepareMoreRequestList:searchType_];//version 1.0
-    [self prepareRequestList:searchType_];//version 2.0
     
-    //setting color
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-
-    //User Mode
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        
-        self.addBarButtonItem.enabled = YES;
-        self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
-    }else{
-        
-        self.addBarButtonItem.enabled = NO;
-        self.addBarButtonItem.tintColor = [UIColor clearColor];
-    }
+    searchType_ = mDelegate_.searchType;
+    [self prepareRequestList:searchType_];//version 2.0
     
     //menu_ list
     menu_ = [[UIView alloc]init];
     menuListView_ = [[MenuListViewController alloc]init];
     menuListView_.superController = self;
+    
+    //setting color
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];//mDelegate_.appThemeColor;
+    [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
+//    [self.navigationController.navigationBar setTranslucent:NO];
+    
+    
+    //User Mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        
+        self.addBarButtonItem.enabled = YES;
+        //        self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
+        
+    }else{
+        
+        self.addBarButtonItem.enabled = NO;
+        self.addBarButtonItem.tintColor = [UIColor clearColor];
+    }
 }
 
 

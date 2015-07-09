@@ -35,7 +35,7 @@
 
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
 }
 

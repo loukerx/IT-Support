@@ -49,7 +49,7 @@
             <objects>
                 <tableViewController id="sVC-Sv-JxW" customClass="SelectCategoryTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="Ife-12-NeQ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -74,7 +74,9 @@
                             <outlet property="delegate" destination="sVC-Sv-JxW" id="WMO-wz-fEb"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="JiR-Gy-99X"/>
+                    <navigationItem key="navigationItem" id="JiR-Gy-99X">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Xnh-XG-39l"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="imO-Ng-ObN" kind="show" identifier="To SubCategory View" id="8lX-aZ-wrr"/>
                     </connections>
@@ -88,7 +90,7 @@
             <objects>
                 <tableViewController id="imO-Ng-ObN" customClass="SelectSubCategoryTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="cIj-f0-hHC">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -118,6 +120,9 @@
                             <outlet property="delegate" destination="imO-Ng-ObN" id="de3-WE-nvK"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="sOq-Pj-Qxe">
+                        <barButtonItem key="backBarButtonItem" title=" " id="snJ-FZ-ggP"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="Iw3-g9-lvE" kind="show" identifier="To Request View" id="XgY-Av-ZQS"/>
                     </connections>
@@ -131,7 +136,7 @@
             <objects>
                 <tableViewController id="Fc2-LW-ckI" customClass="RequestReviewTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qhk-X0-Vkq">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -169,7 +174,7 @@
             <objects>
                 <tableViewController id="Iw3-g9-lvE" customClass="RequestTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Cl5-pU-ADR">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -187,6 +192,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="sKi-yj-FlU">
+                        <barButtonItem key="backBarButtonItem" title=" " id="jGH-cz-aJa"/>
                         <barButtonItem key="rightBarButtonItem" title="Review" id="QMT-tq-0FC">
                             <connections>
                                 <action selector="reviewAction:" destination="Iw3-g9-lvE" id="86q-vv-5Qx"/>
@@ -208,7 +214,7 @@
             <objects>
                 <collectionViewController id="dmb-Wl-eIC" customClass="RequestPhotoCollectionViewController" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="GBv-XH-Tj7">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="xLn-Dj-zge">
@@ -233,6 +239,9 @@
                             <outlet property="delegate" destination="dmb-Wl-eIC" id="l40-Nw-Nae"/>
                         </connections>
                     </collectionView>
+                    <navigationItem key="navigationItem" id="GI3-e1-HYm">
+                        <barButtonItem key="backBarButtonItem" title=" " id="lAk-qE-9iM"/>
+                    </navigationItem>
                     <connections>
                         <segue destination="3j4-Vr-dj2" kind="show" identifier="To RequestPhotoDescription TableView" id="kpd-hp-qL0"/>
                     </connections>
@@ -279,7 +288,7 @@
             <objects>
                 <tableViewController id="3j4-Vr-dj2" customClass="RequestPhotoDescriptionTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="L1k-y0-9Ym">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -316,7 +325,7 @@
             <objects>
                 <tableViewController id="hHD-LB-tF4" customClass="RequestListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="2Hx-1k-Rgw">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -333,6 +342,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="zzh-y9-gMr">
+                        <barButtonItem key="backBarButtonItem" title=" " id="J1J-23-iYC"/>
                         <barButtonItem key="leftBarButtonItem" title="Menu" id="sO5-Jy-gTy">
                             <connections>
                                 <action selector="MenuAction:" destination="hHD-LB-tF4" id="5z9-FO-qRr"/>
@@ -540,14 +550,17 @@
             </objects>
             <point key="canvasLocation" x="3563" y="2881"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Request List Navigation Controller-->
         <scene sceneID="5Pt-1D-weX">
             <objects>
-                <navigationController storyboardIdentifier="MainRequestListStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="Ebh-Gi-FtM" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainRequestListStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="Ebh-Gi-FtM" customClass="RequestListNavigationController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="H7I-1w-2VF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <textAttributes key="titleTextAttributes">
+                            <offsetWrapper key="textShadowOffset" horizontal="0.0" vertical="0.0"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -811,7 +824,7 @@
             <objects>
                 <tableViewController id="F1K-7s-C9L" customClass="RequestDetailTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Nwy-QE-t4c">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
@@ -1112,6 +1125,6 @@
         <image name="Switch Button" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cxg-oB-n2Z"/>
+        <segue reference="kpd-hp-qL0"/>
     </inferredMetricsTieBreakers>
 </document>

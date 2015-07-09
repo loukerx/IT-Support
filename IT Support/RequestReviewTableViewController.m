@@ -40,8 +40,8 @@
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     [self initialCustomView];
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    self.sendBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.title = @"Review";
     
     //populate values
     [self preparePhotosForScrollView];
@@ -95,6 +95,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
+    self.scrollView.backgroundColor = [UIColor blackColor];
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
@@ -148,7 +149,7 @@
         }
 
         [self.pageLabel setTextColor:[UIColor whiteColor]];
-        [self.pageLabel setBackgroundColor:[UIColor blackColor]];
+        [self.pageLabel setBackgroundColor:[UIColor clearColor]];
         [self.pageLabel setTextAlignment:NSTextAlignmentCenter];
         [self.pageLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15.0]];
         CGSize textSize = [[self.pageLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.pageLabel font]}];

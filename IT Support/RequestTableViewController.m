@@ -44,8 +44,8 @@
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
     [self initialCustomView];
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    self.reviewBarButtonItem.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.title = @"More Details";
 //    [self preparePhotosForScrollView];
     
     [self prepareImageView];
@@ -66,8 +66,11 @@
     [super viewWillAppear:animated];
 
     if (mDelegate_.mRequestImages.count>0) {
-        self.imageView.image = mDelegate_.mRequestImages[0];
-        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+//        NSData *imageData = UIImageJPEGRepresentation(mDelegate_.mRequestImages[0], 1.0f);
+//        NSLog(@"Size of Image(kb):%lu",(unsigned long)[imageData length]/1024);
+        self.imageView.image =  mDelegate_.mRequestImages[0];
+//        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
         
     }
 }
@@ -90,9 +93,11 @@
 
     self.imageView = [[UIImageView alloc] initWithImage:nil];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
+    self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+
     if (mDelegate_.mRequestImages.count>0) {
-        self.imageView.image = mDelegate_.mRequestImages[0];
-        self.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        
+        self.imageView.image =  mDelegate_.mRequestImages[0];
 
     }
     
@@ -334,10 +339,14 @@
 {
     self.tableView.tableHeaderView = ({
 //        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0,self.scrollView.bounds.size.height)];
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0,self.imageView.bounds.size.height)];
-        view.backgroundColor = [UIColor blackColor];
 //        [view addSubview:self.scrollView];
+        
+        
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0,self.imageView.bounds.size.height)];
         [view addSubview:self.imageView];
+        
+        view.backgroundColor = [UIColor blackColor];
+        
         
         //lower right corner page number
 //        self.pageLabel = [[UILabel alloc]initWithFrame:CGRectZero];
@@ -348,7 +357,7 @@
 //        }
 //
 //        [self.pageLabel setTextColor:[UIColor whiteColor]];
-//        [self.pageLabel setBackgroundColor:[UIColor blackColor]];
+//        [self.pageLabel setBackgroundColor:[UIColor clearColor]];
 //        [self.pageLabel setTextAlignment:NSTextAlignmentCenter];
 //        [self.pageLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size:15.0]];
 //        CGSize textSize = [[self.pageLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.pageLabel font]}];

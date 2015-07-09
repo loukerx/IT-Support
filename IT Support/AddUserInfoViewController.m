@@ -29,9 +29,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     mDelegate_ = (AppDelegate *) [[UIApplication sharedApplication]delegate];
-    [self.cancelBarButtonItem setTintColor:mDelegate_.appThemeColor];
-    [self.nextBarButtonItem setTintColor:mDelegate_.appThemeColor];
-    
+//    [self.cancelBarButtonItem setTintColor:mDelegate_.appThemeColor];
+//    [self.nextBarButtonItem setTintColor:mDelegate_.appThemeColor];
+    [self.navigationController.navigationBar setTintColor:mDelegate_.appThemeColor];
     
     //test
 //    self.companyNameTextField.text = @"IT Express Pro";

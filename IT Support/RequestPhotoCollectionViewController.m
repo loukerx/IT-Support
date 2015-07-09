@@ -12,7 +12,7 @@
 #import "RequestPhotoDescriptionTableViewController.h"
 
 
-@interface RequestPhotoCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate, UIActionSheetDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface RequestPhotoCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
@@ -71,70 +71,81 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
 }
 
 #pragma mark - ButtonAction
- - (void)addPhotoButton:(id)sender{
+ - (void)addPhotoButton:(UIButton *)sender{
      
      if (mDelegate_.mRequestImages.count>8) {
-//         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                             message:@"Only 9 Photos In One Request"
-//                                                            delegate:nil
-//                                                   cancelButtonTitle:@"OK"
-//                                                   otherButtonTitles:nil];
-//         [alertView show];
+         UIAlertController *alert =
+         [UIAlertController alertControllerWithTitle:@"Error!!"
+                                             message:@"Only 9 Photos In One Request"
+                                      preferredStyle:UIAlertControllerStyleAlert];
          
-         UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                        message:@"Only 9 Photos In One Request"
-                                                                 preferredStyle:UIAlertControllerStyleAlert];
-         
-         UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                          handler:^(UIAlertAction * action) {}];
-         
+         UIAlertAction *okAction =
+         [UIAlertAction actionWithTitle:@"OK"
+                                  style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction *action) {}];
          [alert addAction:okAction];
          [self presentViewController:alert animated:YES completion:nil];
+         
      }else{
-         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:@"Cancel"
-                                                    destructiveButtonTitle:@"Take Photo"
-                                                         otherButtonTitles:@"Select Photo",nil];
-         //    [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
-         actionSheet.tag = 1;
-         [actionSheet showInView:self.view];
+         
+         UIAlertController* alertController =
+         [UIAlertController alertControllerWithTitle:nil
+                                             message:nil
+                                      preferredStyle:UIAlertControllerStyleActionSheet];
+         
+         UIAlertAction* cancelAction =
+         [UIAlertAction actionWithTitle:@"Cancel"
+                                  style:UIAlertActionStyleCancel
+                                handler:^(UIAlertAction * action) {}];
+         UIAlertAction *takePhotoAction =
+         [UIAlertAction actionWithTitle:@"Take Photo"
+                                  style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+          {
+
+              [self takePhoto];
+              
+          }];
+         UIAlertAction *selectPhotoAction =
+         [UIAlertAction actionWithTitle:@"Select Photo"
+                                  style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+          {
+              [self selectPhoto];
+              
+          }];
+         
+         [alertController addAction:cancelAction];
+         [alertController addAction:takePhotoAction];
+         [alertController addAction:selectPhotoAction];
+         
+         UIPopoverPresentationController *popover = alertController.popoverPresentationController;
+         if (popover)
+         {
+             popover.sourceView = sender;
+             popover.sourceRect = sender.bounds;
+             popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+         }
+         
+         
+         [self presentViewController:alertController animated:YES completion:nil];
      }
  }
-
-#pragma mark - actionSheet
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-    switch (buttonIndex) {
-        case 0:
-            [self takePhoto];
-            break;
-        case 1:
-            [self selectPhoto];
-            break;
-        default:
-            break;
-    }
-}
 
 -(void)takePhoto
 {
     // check if the device has a built in camera
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
-//        UIAlertView *myAlertView = [[UIAlertView alloc] initWithTitle:@"Error"
-//                                                              message:@"Device has no camera"
-//                                                             delegate:nil
-//                                                    cancelButtonTitle:@"OK"
-//                                                    otherButtonTitles: nil];
-//        
-//        [myAlertView show];
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Error!!"
+                                            message:@"Device has no camera"
+                                     preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error"
-                                                                       message:@"Device has no camera"
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                                         handler:^(UIAlertAction * action) {}];
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {}];
         
         [alert addAction:okAction];
         [self presentViewController:alert animated:YES completion:nil];
@@ -142,9 +153,9 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     }else{
         UIImagePickerController *picker = [[UIImagePickerController alloc] init];
         picker.delegate = self;
-        picker.allowsEditing = YES;
+//        picker.allowsEditing = YES;
         picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        
+        picker.allowsEditing = NO;
         [self presentViewController:picker animated:YES completion:NULL];
     }
 }
@@ -155,21 +166,25 @@ static NSString * const reuseIdentifier = @"RequestPhotoCell";
     picker.delegate = self;
     picker.allowsEditing = YES;
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    
+
     [self presentViewController:picker animated:YES completion:NULL];
     
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-    
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    //edit this image size to fit imageView [150x200 & 60x80]
-    //....
-    //....
-    [mDelegate_.mRequestImages addObject:chosenImage];
-    [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    //    self.image1.image = chosenImage;
+
+     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+//    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
+    NSData *worstImageData = UIImageJPEGRepresentation(originalImage, 0.1);
+    NSLog(@"Size of Image(kb):%lu",(unsigned long)[worstImageData length]/1024);
+//    NSData *bestImageData = UIImageJPEGRepresentation(originalImage, 1.0);
+//    NSLog(@"Size of Image(kb):%lu",(unsigned long)[bestImageData length]/1024);
+    UIImage *resizedImage = [UIImage imageWithData:worstImageData];
+
+    [mDelegate_.mRequestImages addObject:resizedImage];
+    [mDelegate_.mRequestImageDescriptions addObject:@"N/A"];
+
     [self.collectionView reloadData];
     [picker dismissViewControllerAnimated:YES completion:NULL];
     
