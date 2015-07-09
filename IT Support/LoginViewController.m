@@ -53,10 +53,12 @@
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:NO];
+        [self.forgotPasswordButton setHidden:NO];
         
     }else{
         [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:YES];
+        [self.forgotPasswordButton setHidden:YES];
     }
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
@@ -135,12 +137,14 @@
         mDelegate_.appThemeColor = mDelegate_.supportThemeColor;
         [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:YES];
+        [self.forgotPasswordButton setHidden:YES];
         
     }else{
         //switch to client theme color
         mDelegate_.appThemeColor = mDelegate_.clientThemeColor;
         [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:NO];
+        [self.forgotPasswordButton setHidden:NO];
     }
     
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
