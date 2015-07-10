@@ -109,11 +109,22 @@
             
             
         }else if ([responseStatus isEqualToString:@"0"]) {
-            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
+            
+            
+            if ([errorCode isEqualToString:@"1002"]) {
                 //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:invalidTokenMessage
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Error!!"

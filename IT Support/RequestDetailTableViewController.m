@@ -143,11 +143,22 @@
             
         }else if ([responseStatus isEqualToString:@"0"]) {
           
-            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
+            
+            
+            if ([errorCode isEqualToString:@"1002"]) {
                 //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:invalidTokenMessage
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
 
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Error!!"
@@ -702,7 +713,6 @@
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Processing...";
         [self updateRequest];//PUT 2.0
-//        [self updateRequest1];//GET 1.0
         
     }];
     
@@ -790,11 +800,22 @@
 
         }else if ([responseStatus isEqualToString:@"0"]) {
 
-            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
+            
+            
+            if ([errorCode isEqualToString:@"1002"]) {
                 //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:invalidTokenMessage
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Confirm Fail!!"
@@ -868,12 +889,22 @@
             [self performSegueWithIdentifier:@"Unwind From RequestDetail TableView" sender:self];
 
         }else if ([responseStatus isEqualToString:@"0"]) {
-            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
+            
+            
+            if ([errorCode isEqualToString:@"1002"]) {
                 //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:invalidTokenMessage
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
-            
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Error!!"

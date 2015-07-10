@@ -8,12 +8,14 @@
 
 #import "SignInViewController.h"
 #import "AppDelegate.h"
+#import "AppHelper.h"
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
 
 @interface SignInViewController ()<UIActionSheetDelegate>
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
 }
 
@@ -31,51 +33,53 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appHelper_ = [[AppHelper alloc]init];
     
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
-    //test
-//    self.emailAddressTextField.text = @"hua.yin@itexpresspro.com.au";
-//    self.passwordTextField.text = @"qwe";
-//    self.passwordConfirmTextField.text = @"qwe";
-//    self.companyPhoneTextField.text = @"022234";
-//    self.mobileNumberTextField.text =@"123123";
+
+    //setting color
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
 }
 
 #pragma mark - mandatory field check
 - (BOOL)checkAllField
 {
+    NSString *errorTitle =@"";
+    NSString *errorMessage =@"";
+    
     //check password
     if ([self.passwordTextField.text isEqualToString:self.passwordConfirmTextField.text]) {
         //check all textfield
         if ([self.emailAddressTextField.text length]>0 &&[self.passwordTextField.text length]>0 && [self.passwordConfirmTextField.text length]>0) {
-          
-            return true;
-        }else{
-            UIAlertController* alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                message:@"Please Fill All Blank."
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* okAction =
-            [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action) {}];
+            if ([appHelper_ checkNSStringIsValidEmail:self.emailAddressTextField.text]) {
             
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
+                return true;
+            }else{
+                errorTitle = @"Invalid Email!";
+                errorMessage = @"Please Input A Valid Email Address.";
+            }
+        }else{
+            errorTitle = @"Error!";
+            errorMessage = @"Please Fill All Blank.";
         }
     }else{
-        UIAlertController* alert =
-        [UIAlertController alertControllerWithTitle:@"Password Error"
-                                            message:@"Please Confirm Your Password."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okAction =
-        [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction * action) {}];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        errorTitle = @"Password Error";
+        errorMessage = @"Please Confirm Your Password.";
+
     }
+    UIAlertController* alert =
+    [UIAlertController alertControllerWithTitle:errorTitle
+                                        message:errorMessage
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* okAction =
+    [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                           handler:^(UIAlertAction * action) {}];
+    
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
+    
     return false;
 }
 
@@ -149,7 +153,10 @@
     [manager POST:@"/ITSupportService/API/Client" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         
         [HUD_ hide:YES];
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Status"]];
+        NSLog(@"%@",responseObject);
+        //convert to NSDictionary
+        NSDictionary *responseDictionary = responseObject;
+        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
             
@@ -171,7 +178,9 @@
             [self presentViewController:alert animated:YES completion:nil];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Error!!"

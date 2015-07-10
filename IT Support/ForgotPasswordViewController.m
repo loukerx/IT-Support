@@ -10,10 +10,12 @@
 #import "AppDelegate.h"
 #import "MBProgressHUD.h"
 #import "AFNetworking.h"
+#import "AppHelper.h"
 
 @interface ForgotPasswordViewController ()
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
 }
 
@@ -29,6 +31,8 @@
     [super viewDidLoad];
    
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    appHelper_ = [[AppHelper alloc]init];
+
     
     self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
@@ -44,7 +48,7 @@
 
 - (IBAction)submitAction:(id)sender {
   
-    if ([self.emailTextField.text length]>0) {
+    if ([appHelper_ checkNSStringIsValidEmail:self.emailTextField.text]) {
         UIAlertController* alertController =
         [UIAlertController alertControllerWithTitle:nil
                                             message:nil
@@ -79,7 +83,7 @@
     }else {
         UIAlertController* alert =
         [UIAlertController alertControllerWithTitle:@"Error!!"
-                                            message:@"Please Enter Your Email."
+                                            message:@"Please Enter A Valid Email."
                                      preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction* okAction =
         [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
@@ -141,10 +145,13 @@
             [self presentViewController:alert animated:YES completion:nil];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseObject valueForKey:@"Message"]];
+           
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
             
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+            NSLog(@"%@",errorMessage);
             UIAlertController *alert =
-            [UIAlertController alertControllerWithTitle:@"Error!!"
+            [UIAlertController alertControllerWithTitle:@"Fail!!"
                                                 message:errorMessage
                                          preferredStyle:UIAlertControllerStyleAlert];
             

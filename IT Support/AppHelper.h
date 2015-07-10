@@ -36,8 +36,14 @@ typedef NS_ENUM(NSInteger, RequestStatus){
 //-(NSString*)categoryNameFromCategoryID:(NSString *)categoryID;
 -(UIImage*)imageFromCategoryID:(NSString *)categoryIDString;
 
+//Create radom Code
+- (int)createRandomCode;
+
 //Color HexString
 -(UIColor*)colorWithHexString:(NSString*)hex;
+
+//check email format
+-(BOOL)checkNSStringIsValidEmail:(NSString*)emailString;
 
 
 @end

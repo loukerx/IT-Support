@@ -53,8 +53,8 @@
 		AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD201B0C28EB0020B054 /* SignInViewController.m */; };
 		AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */; };
 		AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */; };
-		AED4A5311B4EA10300D250FA /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED4A5301B4EA10300D250FA /* FBSDKCoreKit.framework */; };
-		AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */; };
+		AED41F641B4F4F6100DB9522 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED41F631B4F4F6100DB9522 /* FBSDKCoreKit.framework */; };
+		AED41F661B4F5E5A00DB9522 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED41F651B4F5E5A00DB9522 /* AppHelper.m */; };
 		AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */; };
 		AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
@@ -162,9 +162,9 @@
 		AED1AD251B0C64990020B054 /* RequestListTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestListTableViewCell.h; sourceTree = "<group>"; };
 		AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestListTableViewCell.m; sourceTree = "<group>"; };
 		AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestListTableViewCell.xib; sourceTree = "<group>"; };
-		AED4A5301B4EA10300D250FA /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AED41F631B4F4F6100DB9522 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AED41F651B4F5E5A00DB9522 /* AppHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
 		AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
-		AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
 		AED5D3791B3CE53100C33FC0 /* ConnectServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectServerViewController.h; sourceTree = "<group>"; };
 		AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectServerViewController.m; sourceTree = "<group>"; };
 		AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserInfoViewController.h; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED4A5311B4EA10300D250FA /* FBSDKCoreKit.framework in Frameworks */,
+				AED41F641B4F4F6100DB9522 /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -387,7 +387,7 @@
 			children = (
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AED4A5301B4EA10300D250FA /* FBSDKCoreKit.framework */,
+				AED41F631B4F4F6100DB9522 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -465,7 +465,7 @@
 			children = (
 				AE5CDC1A1B01DF1B0035C366 /* Image */,
 				AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */,
-				AED4CF2B1B0D80A700C8F9A7 /* AppHelper.m */,
+				AED41F651B4F5E5A00DB9522 /* AppHelper.m */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -646,7 +646,6 @@
 				AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */,
 				AE5CDC161B01DC210035C366 /* MBProgressHUD.m in Sources */,
 				AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */,
-				AED4CF2C1B0D80A700C8F9A7 /* AppHelper.m in Sources */,
 				AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */,
 				AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */,
 				AE5CDC061B01DC1A0035C366 /* AFNetworkReachabilityManager.m in Sources */,
@@ -656,6 +655,7 @@
 				AE5CDC0C1B01DC1A0035C366 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */,
 				AE5CDBB71B019ED30035C366 /* main.m in Sources */,
+				AED41F661B4F5E5A00DB9522 /* AppHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -948,6 +948,11 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -983,6 +988,11 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

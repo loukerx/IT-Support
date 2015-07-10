@@ -146,19 +146,23 @@
         
         
         //Client Mode
-        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-            
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.userInteractionEnabled = YES;
-            cell.selectionStyle =UITableViewCellSelectionStyleDefault;
-            
-        }else{//Support Mode
-            
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.userInteractionEnabled = NO;
-            cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        }
+//        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+//            
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            cell.userInteractionEnabled = YES;
+//            cell.selectionStyle =UITableViewCellSelectionStyleDefault;
+//            
+//        }else{//Support Mode
+//            
+//            cell.accessoryType = UITableViewCellAccessoryNone;
+//            cell.userInteractionEnabled = NO;
+//            cell.selectionStyle =UITableViewCellSelectionStyleNone;
+//        }
         
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled = YES;
+        cell.selectionStyle =UITableViewCellSelectionStyleDefault;
         
         switch (indexPath.row) {
             case 0:
@@ -338,19 +342,27 @@
             //unregister remote notification
             NSLog(@"Unregister For Remote Notification");
             [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-//            mDelegate_.loginIsRoot = NO;
-//
-//            [self performSegueWithIdentifier:@"To Login View" sender:self];
    
             [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             
         }else if ([responseStatus isEqualToString:@"0"]) {
             
-            if ([[responseDictionary valueForKey:@"ErrorCode"] isEqualToString:@"1001"]) {
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
+
+            
+            if ([errorCode isEqualToString:@"1002"]) {
                 //log out
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
+                                                                    message:invalidTokenMessage
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Ok"
+                                                          otherButtonTitles:nil];
+                [alertView show];
                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
-                NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
                 
                 UIAlertController *alert =
                 [UIAlertController alertControllerWithTitle:@"Error!!"

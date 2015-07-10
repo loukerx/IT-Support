@@ -23,6 +23,8 @@ static float const cellHeightRatio = 0.625f;
 #define userTypeClient @"0"
 #define userTypeSupport @"1"
 
+#define invalidTokenMessage @"Login session out of date, please log in again."
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

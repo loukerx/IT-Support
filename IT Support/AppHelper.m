@@ -273,6 +273,14 @@
     return image;
 }
 
+#pragma mark - Create radom Code
+- (int)createRandomCode
+{
+    int fromNumber = 1000;
+    int toNumber = 9999;
+    int randomNumber = (arc4random()%(toNumber-fromNumber))+fromNumber;
+    return randomNumber;
+}
 
 #pragma mark - colorWithHexString
 -(UIColor*)colorWithHexString:(NSString*)hex//#FF3B30
@@ -311,6 +319,20 @@
                            alpha:1.0f];
 }
 
+#pragma mark - check
+-(BOOL)checkNSStringIsValidEmail:(NSString *)emailString
+{
+    if (emailString.length>0) {
+        BOOL stricterFilter = YES; // Discussion http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/
+        NSString *stricterFilterString = @"^[A-Z0-9a-z\\._%+-]+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2,4}$";
+        NSString *laxString = @"^.+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*$";
+        NSString *emailRegex = stricterFilter ? stricterFilterString : laxString;
+        NSPredicate *emailTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegex];
+        return [emailTest evaluateWithObject:emailString];
+    }
 
+    return NO;
+
+}
 
 @end

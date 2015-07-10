@@ -25,9 +25,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *switchUserButton;
-@property (weak, nonatomic) IBOutlet UIImageView *iconImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
+
 
 @end
 
@@ -40,25 +41,17 @@
     
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     
-    //logo
-    CGFloat width = self.view.frame.size.width*0.5;
-    CGFloat height = width*0.435;
-    CGFloat x = self.view.frame.size.width*0.25;
-    CGFloat y = self.view.frame.size.height*0.25 - height*0.25;
-    CGRect newFrame = CGRectMake(x, y, width, height);
-    [self.iconImageView setFrame:newFrame];
-    [self.iconImageView layoutIfNeeded];
     
     //setting color & loginButton info & user mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:NO];
-        [self.forgotPasswordButton setHidden:NO];
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
         
     }else{
         [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:YES];
-        [self.forgotPasswordButton setHidden:YES];
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
     }
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
@@ -137,14 +130,13 @@
         mDelegate_.appThemeColor = mDelegate_.supportThemeColor;
         [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:YES];
-        [self.forgotPasswordButton setHidden:YES];
-        
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
     }else{
         //switch to client theme color
         mDelegate_.appThemeColor = mDelegate_.clientThemeColor;
         [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
         [self.signInButton setHidden:NO];
-        [self.forgotPasswordButton setHidden:NO];
+        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
     }
     
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
@@ -213,7 +205,9 @@
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"0"]) {
             
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
+            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
+            
+            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
             
             UIAlertController *alert =
             [UIAlertController alertControllerWithTitle:@"Check your username or password!!"
