@@ -617,19 +617,19 @@
         BOOL buttonEnable = NO;
         UIColor *contactColor = [UIColor grayColor];
         
-        
-        
-//        if (![mDelegate_.searchType isEqualToString:@"Active"]) {
-        
             //client 显示 support name,company
             //support 显示 client name,company
             if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-                buttonEnable = YES;
-                contactColor = mDelegate_.supportThemeColor;
-                contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
-                companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
-                contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@""];
-                email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@""];
+                
+                if (![mDelegate_.searchType isEqualToString:@"Active"]) {
+                    buttonEnable = YES;
+                    contactColor = mDelegate_.supportThemeColor;
+                    contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
+                    companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
+                    contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@""];
+                    email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@""];
+                }
+           
             }else{
                 buttonEnable = YES;
                 contactColor = mDelegate_.clientThemeColor;
@@ -637,9 +637,7 @@
                 companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]?:@"N/A"];
                 contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]?:@""];
                 email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]?:@""];
-            }
-//        }
-        
+            }        
         
         switch (indexPath.row) {
                 
