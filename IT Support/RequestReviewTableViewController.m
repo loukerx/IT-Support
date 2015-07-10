@@ -351,6 +351,7 @@
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         
+        NSLog(@"%@",responseObject);
         NSDictionary *responseDictionary = responseObject;
         NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
         

@@ -617,8 +617,10 @@
         BOOL buttonEnable = NO;
         UIColor *contactColor = [UIColor grayColor];
         
-        if (![mDelegate_.searchType isEqualToString:@"Active"]) {
-            
+        
+        
+//        if (![mDelegate_.searchType isEqualToString:@"Active"]) {
+        
             //client 显示 support name,company
             //support 显示 client name,company
             if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
@@ -636,7 +638,7 @@
                 contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]?:@""];
                 email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]?:@""];
             }
-        }
+//        }
         
         
         switch (indexPath.row) {
