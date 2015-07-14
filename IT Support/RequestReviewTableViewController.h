@@ -15,6 +15,9 @@
 @property (strong, nonatomic) NSString *requestTitle;
 @property (strong, nonatomic) NSString *requestDescription;
 @property (strong, nonatomic) NSString *requestPrice;
+//add 2015 07 13
+@property (strong, nonatomic) NSDate *requestDeadline;
+@property (nonatomic) BOOL negotiable;
 
 - (IBAction)sendAction:(UIBarButtonItem *)sender;
 

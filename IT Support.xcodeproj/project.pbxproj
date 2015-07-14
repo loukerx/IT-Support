@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00448D1B46374B0068F806 /* libsqlite3.dylib */; };
 		AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE00448F1B46375F0068F806 /* Bolts.framework */; };
+		AE2B27701B54870000BC9FC8 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE2B276F1B54870000BC9FC8 /* FBSDKCoreKit.framework */; };
 		AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */; };
 		AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */; };
 		AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */; };
@@ -54,7 +55,6 @@
 		AED1AD281B0C64990020B054 /* RequestListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD261B0C64990020B054 /* RequestListTableViewCell.m */; };
 		AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */; };
 		AED41F661B4F5E5A00DB9522 /* AppHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = AED41F651B4F5E5A00DB9522 /* AppHelper.m */; };
-		AED589861B4FC3C30047A1A9 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AED589851B4FC3C30047A1A9 /* FBSDKCoreKit.framework */; };
 		AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */; };
 		AED8C65E1B12C59100CC9831 /* AddUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED8C65D1B12C59100CC9831 /* AddUserInfoViewController.m */; };
 		AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDA27341B0309420007DE11 /* SelectCategoryTableViewController.m */; };
@@ -82,6 +82,7 @@
 /* Begin PBXFileReference section */
 		AE00448D1B46374B0068F806 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		AE00448F1B46375F0068F806 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/Bolts.framework"; sourceTree = "<group>"; };
+		AE2B276F1B54870000BC9FC8 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AE306A651B099AD70058E9E2 /* PhotoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCollectionViewCell.h; sourceTree = "<group>"; };
 		AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCollectionViewCell.m; sourceTree = "<group>"; };
 		AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -164,7 +165,6 @@
 		AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RequestListTableViewCell.xib; sourceTree = "<group>"; };
 		AED41F651B4F5E5A00DB9522 /* AppHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppHelper.m; sourceTree = "<group>"; };
 		AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppHelper.h; sourceTree = "<group>"; };
-		AED589851B4FC3C30047A1A9 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AED5D3791B3CE53100C33FC0 /* ConnectServerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectServerViewController.h; sourceTree = "<group>"; };
 		AED5D37A1B3CE53100C33FC0 /* ConnectServerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectServerViewController.m; sourceTree = "<group>"; };
 		AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddUserInfoViewController.h; sourceTree = "<group>"; };
@@ -195,7 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AED589861B4FC3C30047A1A9 /* FBSDKCoreKit.framework in Frameworks */,
+				AE2B27701B54870000BC9FC8 /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -387,7 +387,7 @@
 			children = (
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AED589851B4FC3C30047A1A9 /* FBSDKCoreKit.framework */,
+				AE2B276F1B54870000BC9FC8 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -958,6 +958,21 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -993,6 +1008,21 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

@@ -40,8 +40,9 @@
 @end
 
 #define requestSection 0
-#define contactSection 1
-#define titleSection 2
+#define priceSection 1
+#define contactSection 2
+#define titleSection 3
 
 
 @implementation RequestDetailTableViewController
@@ -95,7 +96,6 @@
             self.switchStatusBarButtonItem.enabled = NO;
         }
     }
-    
 }
 
 #pragma mark - Retriving Photo Data
@@ -199,15 +199,15 @@
     CGRect subjectTextFieldFrame = CGRectMake(10, 10, self.view.frame.size.width - 20, 45);
     self.subjectTextField = [[UITextField alloc] initWithFrame:subjectTextFieldFrame];
     //    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
-    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
+//    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
     self.subjectTextField.textColor = [UIColor blackColor];
     self.subjectTextField.font = [UIFont systemFontOfSize:16.0f];
-    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
+//    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
-    self.subjectTextField.textAlignment = NSTextAlignmentLeft;
+    self.subjectTextField.textAlignment = NSTextAlignmentCenter;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"Title"]];
+    self.subjectTextField.text=[NSString stringWithFormat:@"Title:%@",[self.requestObject valueForKey:@"Title"]];
     self.subjectTextField.enabled = NO;
     
     
@@ -215,12 +215,12 @@
     CGRect textViewFrame = CGRectMake(10.0f, 60.0f, self.view.frame.size.width - 20, 160.0f);
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
     //    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
-    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
+//    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
     self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
-    self.descriptionTextView.layer.cornerRadius = 5.0f;
-    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
-    self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text =[NSString stringWithFormat:@"Description:\n\n%@",[self.requestObject valueForKey:@"Description"]];
+//    self.descriptionTextView.layer.cornerRadius = 5.0f;
+//    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
+//    self.descriptionTextView.layer.borderWidth = 0.6f;
+    self.descriptionTextView.text =[NSString stringWithFormat:@"Description:\n%@",[self.requestObject valueForKey:@"Description"]];
     self.descriptionTextView.editable = NO;
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
@@ -509,7 +509,7 @@
 
 
 -(CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 2)
+    if (indexPath.section == titleSection)
         return 230;
     
     return self.tableView.rowHeight;//44
@@ -521,13 +521,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == requestSection) {
-        return 4;
+        return 3;
+    }else if (section == priceSection){
+        return 3;
     }else if(section == contactSection){
         return 3;
     }
@@ -542,13 +544,15 @@
     //- Created Date
     //- Subcategory
     //- status
+    //-------------section priceSection 1
     //- Price
-    //-------------section contactSection 1
+    //- PriceType
+    //- Deadline
+    //-------------section contactSection 2
     //- Support Name
     //- Support company
-    //- mobile
-    //- Email
-    //-------------section 2
+    //- mobile & Email
+    //-------------section titleSection 3
     //- Subject
     //- Description
     UITableViewCell *cell=nil;
@@ -579,8 +583,7 @@
 //        UIImage *statusImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
     
         
-        //price
-        NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];
+
         switch (indexPath.row) {
                 
             case 0:
@@ -597,13 +600,62 @@
                 cell.textLabel.text = @"Status:";
                 cell.detailTextLabel.text =  statusString;
                 break;
-            case 3:
+            default:
+                break;
+        }
+    }else if(indexPath.section == priceSection){
+       
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"RequestDetailTableViewCell"];
+        //-------------section priceSection 1
+        //- Price
+        //- PriceType
+        //- Deadline
+        
+        //price
+        NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];
+        
+        //PriceType NO 0 = fixed; YES 1 = negotiable;
+        NSString *priceType =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"PriceType"]];
+        if ([priceType isEqualToString:@"1"]) {
+            priceType = @"Negotiable";
+        }else{
+            priceType = @"Fixed";
+        }
+        
+        //deadline
+        NSString *dateStr = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestDeadline"]];
+        
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'"];
+        NSDate *date = [dateFormatter dateFromString:dateStr];
+        
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [dateFormatter setTimeZone:pdt];
+        NSString * deadlineDate = [dateFormatter stringFromDate:date];
+        
+        switch (indexPath.row) {
+            case 0:
                 cell.textLabel.text = @"Price";
                 cell.detailTextLabel.text = price;
+                break;
+            
+            case 1:
+                cell.textLabel.text = @"PriceType";
+                cell.detailTextLabel.text = priceType;
+                break;
+            
+            case 2:
+                cell.textLabel.text = @"Deadline";
+                cell.detailTextLabel.text = deadlineDate;
                 break;
             default:
                 break;
         }
+        
+        
     }else if(indexPath.section == contactSection){
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
@@ -649,14 +701,6 @@
                 cell.textLabel.text = @"Company Name";
                 cell.detailTextLabel.text = companyName;
                 break;
-//            case 2:
-//                cell.textLabel.text = @"Contact Number";
-//                cell.detailTextLabel.text = contactNumber;
-//                break;
-//            case 3:
-//                cell.textLabel.text = @"Email";
-//                cell.detailTextLabel.text = email;
-//                break;
             case 2:
                 [self.emailButton setTitle:email forState:UIControlStateNormal];
                 [self.emailButton.titleLabel setHidden:YES];

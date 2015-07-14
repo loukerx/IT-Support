@@ -58,15 +58,15 @@
     CGRect subjectTextFieldFrame = CGRectMake(10, 10, self.view.frame.size.width - 20, 45);
     self.subjectTextField = [[UITextField alloc] initWithFrame:subjectTextFieldFrame];
 //    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
-    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
+//    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
     self.subjectTextField.textColor = [UIColor blackColor];
     self.subjectTextField.font = [UIFont systemFontOfSize:16.0f];
-    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
+//    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
-    self.subjectTextField.textAlignment = NSTextAlignmentLeft;
+    self.subjectTextField.textAlignment = NSTextAlignmentCenter;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=self.requestTitle;//[NSString stringWithFormat:@"%@",mDelegate_.requestSubject];
+    self.subjectTextField.text= [NSString stringWithFormat:@"Title: %@",self.requestTitle];
     self.subjectTextField.enabled = NO;
 
     
@@ -74,12 +74,12 @@
     CGRect textViewFrame = CGRectMake(10.0f, 60.0f, self.view.frame.size.width - 20, 160.0f);
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
     //    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
-    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
+//    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
     self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
-    self.descriptionTextView.layer.cornerRadius = 5.0f;
-    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
-    self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text = self.requestDescription;//[NSString stringWithFormat:@"Description:\n\n%@",mDelegate_.requestDescription];
+//    self.descriptionTextView.layer.cornerRadius = 5.0f;
+//    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
+//    self.descriptionTextView.layer.borderWidth = 0.6f;
+    self.descriptionTextView.text = [NSString stringWithFormat:@"Description:\n%@",self.requestDescription];
     self.descriptionTextView.editable = NO;
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
@@ -209,7 +209,7 @@
     if (section == 1) {
         return 1;
     }
-    return 3;
+    return 5;
 }
 
 
@@ -220,6 +220,8 @@
     //- Category
     //- Subcategory
     //- Price
+    //- Negotiable
+    //- Deadline
     //-------------section 1
     //- Subject
     //- Description
@@ -230,22 +232,39 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestReviewTableViewCell"];
         
+        //deadline
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+        [dateFormatter setTimeZone:pdt];
+
+        NSString *deadline = [dateFormatter stringFromDate:self.requestDeadline];
+        
+        //negotiable
+        NSString *negotiable = self.negotiable?@"Negotiable":@"Fixed";
+        
+        
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Category:";
-                //                 [cell.textLabel setFont:[UIFont systemFontOfSize:20]];
-                //                 [cell.textLabel adjustsFontSizeToFitWidth];
                 cell.detailTextLabel.text = mDelegate_.requestCategory;
                 break;
             case 1:
                 cell.textLabel.text = @"Subcategory:";
-                //                 [cell.textLabel setFont:[UIFont systemFontOfSize:20]];
-                //                 [cell.textLabel adjustsFontSizeToFitWidth];
                 cell.detailTextLabel.text = mDelegate_.requestSubCategory;
                 break;
             case 2:
                 cell.textLabel.text = @"Given Price:";
                 cell.detailTextLabel.text = self.requestPrice;
+                break;
+            case 3:
+                cell.textLabel.text = @"PriceType:";
+                cell.detailTextLabel.text = negotiable;
+                break;
+            case 4:
+                cell.textLabel.text = @"Deadline:";
+                cell.detailTextLabel.text = deadline;
                 break;
                 
             default:
@@ -383,6 +402,7 @@
             NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
             
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+                    NSLog(@"%@",errorMessage);
                NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
             
             
@@ -472,13 +492,20 @@
                                                          error:&error];
     NSString *descriptionJsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
+    //requestDeadline & priceType
+    NSDate *requestDeadline = self.requestDeadline;
+    //NO 0 = fixed; YES 1 = negotiable;
+    NSString *priceType = self.negotiable?@"1":@"0";
+    
     NSDictionary *parameters = @{@"clientID" : clientID,
                                  @"categoryID" : categoryID,
                                  @"price" : price,
                                  @"title": title,
                                  @"description" : description,
                                  @"priority" : priority,
-                                 @"picDescriptions" :descriptionJsonString
+                                 @"picDescriptions" :descriptionJsonString,
+                                 @"requestDeadline" :requestDeadline,
+                                 @"priceType" : priceType
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
@@ -518,6 +545,7 @@
             NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
             
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+            NSLog(@"%@",errorMessage);
                NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
             
             

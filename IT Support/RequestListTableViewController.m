@@ -611,7 +611,9 @@
 
 
 #pragma mark - TableView Delegate
-#pragma mark - Delete Request [Client][Active]
+//Delete Request [Client][Active]
+
+
 // Override to support conditional editing of the table view.
 // This only needs to be implemented if you are going to be returning NO
 // for some items. By default, all items are editable.
@@ -681,6 +683,7 @@
             NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
             
             NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
+                    NSLog(@"%@",errorMessage);
                NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
             
             

@@ -134,10 +134,10 @@
         <scene sceneID="JrL-8u-Wzv">
             <objects>
                 <tableViewController id="Fc2-LW-ckI" customClass="RequestReviewTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Qhk-X0-Vkq">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Qhk-X0-Vkq">
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RequestDetailTableViewCell" id="f5m-wB-SDS">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -1118,6 +1118,6 @@
         <image name="Switch Button" width="50" height="50"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="kpd-hp-qL0"/>
+        <segue reference="cxg-oB-n2Z"/>
     </inferredMetricsTieBreakers>
 </document>

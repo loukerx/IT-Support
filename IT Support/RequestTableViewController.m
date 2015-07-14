@@ -10,10 +10,13 @@
 #import "AppDelegate.h"
 #import "RequestReviewTableViewController.h"
 
-@interface RequestTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate>
+@interface RequestTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate, UIActionSheetDelegate>
 {
-        AppDelegate *mDelegate_;
-        CGFloat scrollViewHeight_;
+    AppDelegate *mDelegate_;
+    CGFloat scrollViewHeight_;
+    NSDate *requestDeadline_;
+    //0 = fixed; 1 = negotiable;
+    BOOL negotiable_;
 }
 
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -24,12 +27,22 @@
 @property (strong, nonatomic) UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *reviewBarButtonItem;
 
+//datepicker
+@property (strong, nonatomic) UIDatePicker *datePicker;
+@property (strong, nonatomic) UITextField *dateTextField;
+
 
 @end
 
 #define categorySection 0
-#define priceSection 1
-#define titleSection 2
+#define availableFundsSection 1
+
+#define priceSection 2
+#define priceRow 0
+#define deadlineRow 1
+#define negotiableRow 2
+
+#define titleSection 3
 #define tableRowHeight 44.0f
 #define textfieldHeight tableRowHeight - 6
 
@@ -39,7 +52,8 @@
     [super viewDidLoad];
     
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     
     //setting
     scrollViewHeight_ = self.view.frame.size.width * cellHeightRatio;
@@ -50,16 +64,17 @@
     
     [self prepareImageView];
     [self populateTableViewHeader];
-
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    //0 = fixed; 1 = negotiable;
+    negotiable_ = NO;//fixed
+    [self showDatePicker];
+    
     
     //dismissKeyboard
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
-    
-    [self.tableView addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+//                                   initWithTarget:self
+//                                   action:@selector(dismissKeyboard)];
+//    
+//    [self.tableView addGestureRecognizer:tap];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -146,15 +161,15 @@
     //price textField
     CGRect priceTextFieldFrame = CGRectMake(0, 0, 80, textfieldHeight);
     self.priceTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
-    self.priceTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
-    self.priceTextField.backgroundColor = mDelegate_.textFieldColor;
-    self.priceTextField.textColor = [UIColor blackColor];
+//    self.priceTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
+//    self.priceTextField.backgroundColor = mDelegate_.textFieldColor;
+    self.priceTextField.textColor = [UIColor grayColor];
     self.priceTextField.font = [UIFont systemFontOfSize:16.0f];
-    self.priceTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.priceTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.priceTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
+//    self.priceTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.priceTextField.returnKeyType = UIReturnKeyDone;
     self.priceTextField.keyboardType = UIKeyboardTypeNumberPad;
-    self.priceTextField.textAlignment = NSTextAlignmentCenter;
+    self.priceTextField.textAlignment = NSTextAlignmentRight;
     self.priceTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
     //    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -269,6 +284,7 @@
 -(void)handleSingleTapGesture:(UITapGestureRecognizer *)recognizer {
     
     NSLog(@"Push To RequestPhoto View");
+    [self.view endEditing:YES];
     [self performSegueWithIdentifier:@"To RequestPhoto View" sender:self];
 }
 
@@ -404,12 +420,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section == 1) {
+    if (section == priceSection) {
         return 3;
     }
     return 2;
@@ -418,13 +434,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Configure the cell...
-    //-------------section 0
+    //-------------section 0 categorySection
     //- Category
     //- Subcategory
-    //-------------section 1
+    //-------------section 1 availableFundsSection
     //- Available Funds
     //- Account Balance
-    //-------------section 2
+    //-------------section 2 priceSection
+    //- Your Price
+    //- Negotiable
+    //- Deadline
+    //-------------section 3 titleSection
     //- Subject
     //- Description
     UITableViewCell *cell=nil;
@@ -433,8 +453,9 @@
         
          cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                            reuseIdentifier:@"RequestTableViewCell"];
-
-         switch (indexPath.row) {
+ 
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        switch (indexPath.row) {
              case 0:
                  cell.textLabel.text = @"Category:";
 //                 [cell.textLabel setFont:[UIFont systemFontOfSize:20]];
@@ -451,10 +472,10 @@
              default:
                  break;
          }
-    }else if (indexPath.section == priceSection){
+    }else if (indexPath.section == availableFundsSection){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
-        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
         NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
         NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
         
@@ -467,9 +488,32 @@
                 cell.textLabel.text = @"Account Balance:";
                 cell.detailTextLabel.text = accountBalance;
                 break;
-            case 2:
+            default:
+                break;
+        }
+    }else if (indexPath.section == priceSection){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"RequestTableViewCell"];
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.userInteractionEnabled = YES;
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        
+//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        
+        switch (indexPath.row) {
+            case 0:
                 cell.textLabel.text = @"Your Price:";
+//                [cell addSubview:self.priceTextField];
                 cell.accessoryView = self.priceTextField;
+                break;
+            case 1:
+                cell.textLabel.text = @"Deadline:";
+                [cell addSubview:self.dateTextField];
+//                cell.accessoryView = self.dateTextField;
+//                cell.detailTextLabel.text = accountBalance;
+                break;
+            case 2:
+                cell.textLabel.text = @"Negotiable:";
                 break;
                 
             default:
@@ -477,9 +521,13 @@
         }
     }else{
 
-         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                            reuseIdentifier:@"RequestTableViewCell"];
-         switch (indexPath.row) {
+        
+        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        
+        switch (indexPath.row) {
              case 0:
                  //subject textfield
                  [cell addSubview:self.subjectTextField];
@@ -498,23 +546,94 @@
     return cell;
 }
 
-#pragma mark tableview delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-//    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-//    mDelegate_.requestSubCategory = cell.textLabel.text;
-//    [self performSegueWithIdentifier:@"To Request View" sender:self];
+
+#pragma mark - Select Row
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [self.view endEditing:YES];
+    
+    if (indexPath.section == priceSection) {
+        if (indexPath.row == priceRow) {
+            [self.priceTextField becomeFirstResponder];
+        }
+        if (indexPath.row == deadlineRow) {
+
+            [self.dateTextField becomeFirstResponder];
+            
+        }else if(indexPath.row == negotiableRow){
+          
+            //0 = fixed; 1 = negotiable;
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            if (cell.accessoryType != UITableViewCellAccessoryCheckmark) {
+                negotiable_ = YES;//negotiable
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }else{
+                negotiable_ = NO;//fixed
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+        }
+    }
 }
 
+-(void)showDatePicker
+{
+    CGRect priceTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
+    self.dateTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
+//    self.dateTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
+//    self.dateTextField.backgroundColor = mDelegate_.textFieldColor;
+    self.dateTextField.textColor = [UIColor blackColor];
+    self.dateTextField.font = [UIFont systemFontOfSize:16.0f];
+    self.dateTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
+//    self.dateTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//    self.dateTextField.returnKeyType = UIReturnKeyDone;
+//    self.dateTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.dateTextField.textAlignment = NSTextAlignmentRight;
+    self.dateTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+
+    
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    [self.dateTextField setInputView:self.datePicker];
+    
+    //uitoolbar
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, 320, 44)]; //初始化
+    [toolBar setTintColor:[UIColor blackColor]]; //设置颜色
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(ShowSelectedDate)];
+    
+    [toolBar setItems:[NSArray arrayWithObjects:doneBtn, nil]];
+    [self.dateTextField setInputAccessoryView:toolBar];
+}
+
+-(void)ShowSelectedDate
+{
+   
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+
+    requestDeadline_ = self.datePicker.date;
+    
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
+    [dateFormatter setTimeZone:pdt];
+  
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:deadlineRow//THE_ITEM_TO_SELECT
+                                                 inSection:priceSection];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];
+//    self.dateTextField.text = [dateFormatter stringFromDate:requestDeadline_];
+    
+    [self.dateTextField resignFirstResponder];
+}
 
 #pragma mark - Navigation
 - (IBAction)reviewAction:(id)sender {
     [self dismissKeyboard];
     NSString *priceCheck = self.priceTextField.text;
-    if ([priceCheck isEqualToString:@""]) {
+    NSDate *deadlineCheck = requestDeadline_;
+    if ([priceCheck isEqualToString:@""] || deadlineCheck == nil) {
         UIAlertController *alert =
         [UIAlertController alertControllerWithTitle:@"Error"
-                                            message:@"Please input a price"
+                                            message:@"Please Fill All Fields"
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *okAction =
@@ -545,6 +664,11 @@
         }
 
         rrtvc.requestPrice = self.priceTextField.text;
+      
+        //2015.07.13
+//        requestDeadline_ =[NSDate date];
+        rrtvc.requestDeadline = requestDeadline_;
+        rrtvc.negotiable = negotiable_;
     }
 }
 
