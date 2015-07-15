@@ -129,7 +129,7 @@
     //Title TextField
     CGRect subjectTextFieldFrame = CGRectMake(10, 10, self.view.frame.size.width - 20, textfieldHeight);
     self.subjectTextField = [[UITextField alloc] initWithFrame:subjectTextFieldFrame];
-    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
+    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Title：［35 characters］" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
     self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
     self.subjectTextField.textColor = [UIColor blackColor];
     self.subjectTextField.font = [UIFont systemFontOfSize:16.0f];
@@ -149,7 +149,7 @@
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
     self.descriptionTextView.returnKeyType = UIReturnKeyDone;
     self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
-    self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
+    self.descriptionTextView.font = [UIFont systemFontOfSize:16.0f];
     self.descriptionTextView.layer.cornerRadius = 5.0f;
     self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
     self.descriptionTextView.layer.borderWidth = 0.6f;
@@ -161,7 +161,7 @@
     //price textField
     CGRect priceTextFieldFrame = CGRectMake(0, 0, 80, textfieldHeight);
     self.priceTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
-//    self.priceTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
+    self.priceTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$$$" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
 //    self.priceTextField.backgroundColor = mDelegate_.textFieldColor;
     self.priceTextField.textColor = [UIColor grayColor];
     self.priceTextField.font = [UIFont systemFontOfSize:16.0f];
@@ -264,7 +264,7 @@
     }
     
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
-    return newLength <= 30;
+    return newLength <= 35;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -593,6 +593,7 @@
     
     self.datePicker = [[UIDatePicker alloc] init];
     self.datePicker.datePickerMode = UIDatePickerModeDate;
+//    self.datePicker.date = [NSDate date];
     [self.dateTextField setInputView:self.datePicker];
     
     //uitoolbar
@@ -606,23 +607,39 @@
 
 -(void)ShowSelectedDate
 {
-   
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-
     requestDeadline_ = self.datePicker.date;
     
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-    [dateFormatter setTimeZone:pdt];
-  
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:deadlineRow//THE_ITEM_TO_SELECT
-                                                 inSection:priceSection];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];
-//    self.dateTextField.text = [dateFormatter stringFromDate:requestDeadline_];
-    
-    [self.dateTextField resignFirstResponder];
+    if ([requestDeadline_ compare:[NSDate date]] != NSOrderedAscending) {
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:deadlineRow//THE_ITEM_TO_SELECT
+                                                     inSection:priceSection];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];
+        [self.dateTextField resignFirstResponder];
+    }else{
+        UIAlertController *alert =
+        [UIAlertController alertControllerWithTitle:@"Date Error!"
+                                            message:@"Please select a date after today."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction =
+        [UIAlertAction actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                               handler:^(UIAlertAction *action) {
+                               }];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        //clear requestDeadline_
+        requestDeadline_ = nil;
+    }
+
 }
 
 #pragma mark - Navigation
@@ -647,7 +664,6 @@
     }else{
         [self performSegueWithIdentifier:@"To RequestReview TableView" sender:self];
     }
-
 }
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation

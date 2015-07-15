@@ -201,13 +201,13 @@
     //    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
 //    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
     self.subjectTextField.textColor = [UIColor blackColor];
-    self.subjectTextField.font = [UIFont systemFontOfSize:16.0f];
+    self.subjectTextField.font = [UIFont boldSystemFontOfSize:15.0f];
 //    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
 //    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentCenter;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text=[NSString stringWithFormat:@"Title:%@",[self.requestObject valueForKey:@"Title"]];
+    self.subjectTextField.text=[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"Title"]];
     self.subjectTextField.enabled = NO;
     
     
@@ -216,11 +216,12 @@
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
     //    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
 //    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
-    self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
+    self.descriptionTextView.textColor = [UIColor lightGrayColor];
+    self.descriptionTextView.font = [UIFont systemFontOfSize:14.0f];
 //    self.descriptionTextView.layer.cornerRadius = 5.0f;
 //    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
 //    self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text =[NSString stringWithFormat:@"Description:\n%@",[self.requestObject valueForKey:@"Description"]];
+    self.descriptionTextView.text =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"Description"]];
     self.descriptionTextView.editable = NO;
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
@@ -565,12 +566,12 @@
         NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
         NSDate *date = [dateFormatter dateFromString:dateStr];
         
         [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        [dateFormatter setTimeZone:pdt];
         NSString * createDate = [dateFormatter stringFromDate:date];
         
         //category
@@ -624,16 +625,17 @@
         }
         
         //deadline
-        NSString *dateStr = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestDeadline"]];
+        //添加.111 为了正常转换时区
+        NSString *dateStr = [NSString stringWithFormat:@"%@.111",[self.requestObject valueForKey:@"RequestDeadline"]];
         
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'"];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
         NSDate *date = [dateFormatter dateFromString:dateStr];
         
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        [dateFormatter setTimeZone:pdt];
         NSString * deadlineDate = [dateFormatter stringFromDate:date];
         
         switch (indexPath.row) {

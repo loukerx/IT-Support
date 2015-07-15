@@ -552,12 +552,12 @@
         NSString *dateStr =[NSString stringWithFormat:@"%@",[requestObject valueForKey:@"CreateDate"]];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
+        
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
         NSDate *date = [dateFormatter dateFromString:dateStr];
-
+        
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        [dateFormatter setTimeZone:pdt];
         NSString * createDate = [dateFormatter stringFromDate:date];
 
         cell.titleLabel.text = title;

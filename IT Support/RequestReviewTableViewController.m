@@ -60,13 +60,13 @@
 //    self.subjectTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Subject" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
 //    self.subjectTextField.backgroundColor = mDelegate_.textFieldColor;
     self.subjectTextField.textColor = [UIColor blackColor];
-    self.subjectTextField.font = [UIFont systemFontOfSize:16.0f];
+    self.subjectTextField.font = [UIFont boldSystemFontOfSize:15.0f];
 //    self.subjectTextField.borderStyle = UITextBorderStyleRoundedRect;
 //    self.subjectTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 //    self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentCenter;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    self.subjectTextField.text= [NSString stringWithFormat:@"Title: %@",self.requestTitle];
+    self.subjectTextField.text= [NSString stringWithFormat:@"%@",self.requestTitle];
     self.subjectTextField.enabled = NO;
 
     
@@ -75,11 +75,12 @@
     self.descriptionTextView = [[UITextView alloc] initWithFrame:textViewFrame];
     //    self.descriptionTextView.returnKeyType = UIReturnKeyDone;
 //    self.descriptionTextView.backgroundColor = mDelegate_.textFieldColor;
-    self.descriptionTextView.font = [UIFont systemFontOfSize:17.0f];
+    self.descriptionTextView.font = [UIFont systemFontOfSize:14.0f];
+    self.descriptionTextView.textColor = [UIColor lightGrayColor];
 //    self.descriptionTextView.layer.cornerRadius = 5.0f;
 //    self.descriptionTextView.layer.borderColor = [mDelegate_.textViewBoardColor CGColor];
 //    self.descriptionTextView.layer.borderWidth = 0.6f;
-    self.descriptionTextView.text = [NSString stringWithFormat:@"Description:\n%@",self.requestDescription];
+    self.descriptionTextView.text = [NSString stringWithFormat:@"%@",self.requestDescription];
     self.descriptionTextView.editable = NO;
     self.descriptionTextView.textColor = [UIColor blackColor];
     self.descriptionTextView.delegate = self;
@@ -234,10 +235,8 @@
         
         //deadline
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSTimeZone *pdt = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];
-        [dateFormatter setTimeZone:pdt];
+        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
 
         NSString *deadline = [dateFormatter stringFromDate:self.requestDeadline];
         

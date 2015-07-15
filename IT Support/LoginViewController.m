@@ -19,15 +19,31 @@
     
     //keyboard animation
     BOOL keyboardISVisible_;
+    CGFloat inputViewOriginalY_;
 }
 
+//textfield image
+@property (weak, nonatomic) IBOutlet UIImageView *usernameImage;
+@property (weak, nonatomic) IBOutlet UIImageView *passwordImage;
+
+
+//textfield
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+
+
+//button
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *switchUserButton;
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
+
+
+//background
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+//animation
+@property (weak, nonatomic) IBOutlet UIView *loginInputView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *loginInputViewCenterY;
 
 
 @end
@@ -57,7 +73,8 @@
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
-    
+    [self.usernameImage setTintColor:mDelegate_.appThemeColor];
+    [self.passwordImage setTintColor:mDelegate_.appThemeColor];
     
     //setting guesture & textfield delegate
     self.emailTextField.delegate = self;
@@ -81,8 +98,15 @@
     }
     
     self.emailTextField.text = mDelegate_.userEmail;
-
+    
 }
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    inputViewOriginalY_ = self.loginInputView.frame.origin.y;
+}
+
 
 
 #pragma mark - mandatory field check
@@ -138,11 +162,13 @@
         [self.signInButton setHidden:NO];
         [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
     }
-    
+    //set color
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+    [self.usernameImage setTintColor:mDelegate_.appThemeColor];
+    [self.passwordImage setTintColor:mDelegate_.appThemeColor];
     
     self.emailTextField.text = @"";//@"hua.yin@itexpresspro.com.au";
     self.passwordTextField.text = @"";//@"qwe";
@@ -300,7 +326,7 @@
     [self.view endEditing:YES];
 }
 
-#pragma mark - notification textfield animation
+#pragma mark - textfield animation
 -(void)keyboardFrameDidChange:(NSNotification *)notification
 {
     
@@ -309,39 +335,85 @@
     
     //keyboard displays 10 poins below login button
     const int distance = 10;
-    CGFloat bottomMargin = self.view.frame.size.height - self.loginButton.frame.origin.y - self.loginButton.frame.size.height - distance;
+    CGFloat bottomMargin = self.view.frame.size.height - self.loginInputView.frame.origin.y - self.loginInputView.frame.size.height - distance;
     
-    //whether or not to move the view
+    //do or do not to move the view
     CGFloat animationDistance = keyboardHeight - bottomMargin;
+
+    //new frame & constrant
+    CGRect newFrame = self.loginInputView.frame;
+
+    CGFloat newConstant = self.loginInputViewCenterY.constant;
     
-    CGRect newFrame = self.view.frame;
-   
-        if (newFrame.origin.y == 0 && animationDistance > 0) {
-            newFrame.origin.y -= animationDistance;
-            [self.switchUserButton setHidden:YES];
-        }
-        
-        if (newFrame.origin.y < 0 && newFrame.size.height == keyboardEndFrame.origin.y) {
-            newFrame.origin.y = 0;
-            [self.switchUserButton setHidden:NO];
-        }
-        
-        NSTimeInterval animationDuration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] integerValue];
-        
-        [UIView animateWithDuration:animationDuration
-                              delay:0
-                            options:UIViewAnimationOptionCurveLinear
-                         animations:^{
-                             self.view.frame = newFrame;
-                         } completion:nil];
+    //move loginInputView
+    if (newFrame.origin.y == inputViewOriginalY_ && animationDistance > 0) {
+        newFrame.origin.y -= animationDistance;
+        newConstant += animationDistance;
+    }
+    
+    //move loginInputView back to Original Position
+    if (newFrame.origin.y != inputViewOriginalY_ && self.view.frame.size.height == keyboardEndFrame.origin.y) {
+        newFrame.origin.y = inputViewOriginalY_;
+        newConstant = 0;
+    }
+    
+    NSTimeInterval animationDuration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] integerValue];
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear//UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         //have to update both frame and constraint
+                         [self.loginInputViewCenterY setConstant: newConstant];
+                         self.loginInputView.frame = newFrame;
+
+                     } completion:nil];
 }
+
+//-(void)keyboardFrameDidChange2:(NSNotification *)notification
+//{
+//    
+//    CGRect keyboardEndFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+//    CGFloat keyboardHeight = keyboardEndFrame.size.height;
+//    
+//    //keyboard displays 10 poins below login button
+//    const int distance = 10;
+//    CGFloat bottomMargin = self.view.frame.size.height - self.loginButton.frame.origin.y - self.loginButton.frame.size.height - distance;
+//    
+//    //do or do not to move the view
+//    CGFloat animationDistance = keyboardHeight - bottomMargin;
+//    
+//    CGRect newFrame = self.view.frame;
+//   
+//        if (newFrame.origin.y == 0 && animationDistance > 0) {
+//            newFrame.origin.y -= animationDistance;
+////            [self.switchUserButton setHidden:YES];
+//        }
+//        
+//        if (newFrame.origin.y < 0 && newFrame.size.height == keyboardEndFrame.origin.y) {
+//            newFrame.origin.y = 0;
+////            [self.switchUserButton setHidden:NO];
+//        }
+//        
+//        NSTimeInterval animationDuration = [[[notification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] integerValue];
+//        
+//        [UIView animateWithDuration:animationDuration
+//                              delay:0
+//                            options:UIViewAnimationOptionCurveLinear//UIViewAnimationOptionCurveEaseInOut
+//                         animations:^{
+//                             self.view.frame = newFrame;
+//                         } completion:nil];
+//}
 
 #pragma mark - textfield delegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-        [self.switchUserButton setHidden:YES];
+    [self.switchUserButton setHidden:YES];
+    [self.forgotPasswordButton setHidden:YES];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
-        [self.switchUserButton setHidden:NO];
+    
+    [self.switchUserButton setHidden:NO];
+    [self.forgotPasswordButton setHidden:NO];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
