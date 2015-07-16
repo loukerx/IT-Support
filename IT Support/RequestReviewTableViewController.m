@@ -96,7 +96,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor blackColor];
+    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"noImage"]];
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
@@ -117,6 +117,7 @@
         CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
         
         self.scrollView.contentSize =  CGSizeMake( width * photos.count,0);
+        self.scrollView.backgroundColor = mDelegate_.scrollViewBackgroundColor;
         
         int count = 0;
         
@@ -353,11 +354,13 @@
                 NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
                 NSString *UUIDStr = [UUIDString stringByReplacingOccurrencesOfString:@"-" withString:@""];
                 NSString *tempPhotoFileName = [NSString stringWithFormat: @"%@.%@", UUIDStr,@"jpg"];
-                NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
-//                NSString *name = [NSString stringWithFormat:@"%@",nameArray[index]];
+//                NSData *bestImageData = UIImageJPEGRepresentation(image, 1.0);
+//                NSLog(@"Size of Image(kb):%lu",(unsigned long)[bestImageData length]/1024);
+                NSData *worstImageData = UIImageJPEGRepresentation(image, 0.1);
+                NSLog(@"Size of Image(kb):%lu",(unsigned long)[worstImageData length]/1024);
                 NSString *name = [NSString stringWithFormat:@"%d", index];
                 //send Photo Data
-                [formData appendPartWithFileData:bestImageData
+                [formData appendPartWithFileData:worstImageData
                                             name:name//description tag
                                         fileName:tempPhotoFileName
                                         mimeType:@"image/jpeg"];

@@ -126,7 +126,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    
+    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"noImage"]];
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
@@ -148,6 +148,7 @@
         CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
         
         self.scrollView.contentSize =  CGSizeMake( width * photos.count,0);
+        self.scrollView.backgroundColor = mDelegate_.scrollViewBackgroundColor;
         
         int count = 0;
         

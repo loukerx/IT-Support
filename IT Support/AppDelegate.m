@@ -83,6 +83,8 @@
     self.textViewBoardColor = [UIColor colorWithRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1];
     self.menuTextColor =  [appHelper_ colorWithHexString:@"3E444B"]; //[UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f]; //3E444B
     self.footerTextColor = [UIColor colorWithRed:0.298 green:0.337 blue:0.423 alpha:1.000];
+    self.scrollViewBackgroundColor = [appHelper_ colorWithHexString:@"AAAAAA"];
+    
     
     //setting font
     self.menuTextFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:20.0];//[UIFont fontWithName:@"HelveticaNeue" size:20.0];

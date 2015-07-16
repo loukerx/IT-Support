@@ -49,11 +49,11 @@
 
 - (IBAction)sendNotification:(id)sender {
     
-        [self prepareScrollViewContent];
+//        [self prepareScrollViewContent];
 
 //    [self restfulConfirmTest];
 
-//    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
+    [self performSegueWithIdentifier:@"To Test2 View" sender:self];
     
 }
 

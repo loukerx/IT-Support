@@ -27,9 +27,11 @@
                                 </state>
                                 <connections>
                                     <action selector="sendNotification:" destination="hri-sy-CoA" eventType="touchUpInside" id="PSV-g4-x7C"/>
+                                    <segue destination="roB-wv-B07" kind="presentation" identifier="To Test2 View" modalTransitionStyle="crossDissolve" id="dWB-fv-bB8"/>
                                 </connections>
                             </button>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Vc4-Dp-VPg" firstAttribute="leading" secondItem="Bt3-Zh-E3p" secondAttribute="leading" constant="20" id="ARZ-gw-M1l"/>
                             <constraint firstItem="Vc4-Dp-VPg" firstAttribute="top" secondItem="Bt3-Zh-E3p" secondAttribute="top" constant="120" id="GiY-ce-gdh"/>
@@ -612,13 +614,46 @@
             </objects>
             <point key="canvasLocation" x="-219" y="1332"/>
         </scene>
-        <!--Page View Controller-->
-        <scene sceneID="0c6-sN-YCC">
+        <!--Update Pages View Controller-->
+        <scene sceneID="7J9-df-Sog">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="pageCurl" navigationOrientation="horizontal" spineLocation="min" id="XyA-lb-Xuz" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uPF-LI-XlX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="UpdatePagesViewStoryboardID" id="cnR-6D-Yyz" customClass="UpdatePagesViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pfy-EY-Lnu"/>
+                        <viewControllerLayoutGuide type="bottom" id="mt1-xa-c6t"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vpc-v6-TaG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D02-I9-bcz">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="ynM-Xf-Uqq">
+                                <rect key="frame" x="280" y="533" width="39" height="37"/>
+                                <color key="pageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </pageControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="D02-I9-bcz" firstAttribute="leading" secondItem="vpc-v6-TaG" secondAttribute="leading" id="UqX-gc-YJ5"/>
+                            <constraint firstAttribute="trailing" secondItem="D02-I9-bcz" secondAttribute="trailing" id="YBx-ck-cjv"/>
+                            <constraint firstItem="D02-I9-bcz" firstAttribute="top" secondItem="pfy-EY-Lnu" secondAttribute="bottom" constant="-20" id="YL2-k8-caM"/>
+                            <constraint firstAttribute="centerX" secondItem="ynM-Xf-Uqq" secondAttribute="centerX" id="cs7-6T-FGe"/>
+                            <constraint firstAttribute="bottom" secondItem="D02-I9-bcz" secondAttribute="bottom" id="lKj-VD-Ym2"/>
+                            <constraint firstItem="mt1-xa-c6t" firstAttribute="top" secondItem="ynM-Xf-Uqq" secondAttribute="bottom" constant="30" id="w4z-RD-WgL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="pageControl" destination="ynM-Xf-Uqq" id="Lki-mg-mAD"/>
+                        <outlet property="scrollView" destination="D02-I9-bcz" id="rNU-Wd-BnQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TqW-hg-fP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-207" y="2145"/>
+            <point key="canvasLocation" x="-219" y="2125"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="ZRx-kG-6f2">
@@ -905,7 +940,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k8Z-vq-ZPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1340" y="2145"/>
+            <point key="canvasLocation" x="1354" y="2125"/>
         </scene>
         <!--Request Detail Table View Controller-->
         <scene sceneID="3Ha-W3-rV8">
@@ -1187,7 +1222,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KFB-ST-hwV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="560" y="2145"/>
+            <point key="canvasLocation" x="560" y="2125"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4DV-XQ-l2o">

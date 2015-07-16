@@ -366,8 +366,7 @@
     self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor blackColor];
-    
+    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"noImage"]];
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollviewSingleTapGesture:)];
     [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
@@ -414,13 +413,11 @@
                 
                 //save image array
                 if (image == nil) {
-                    UIImage *defaultImage = [UIImage imageNamed:@"Default Image"];
+                    UIImage *defaultImage = [UIImage imageNamed:@"noImage"];
                     image = defaultImage;
-//                    [mDelegate_.mRequestImages addObject:defaultImage];
                     [photosArray_ addObject:defaultImage];
                 }else{
-                
-//                    [mDelegate_.mRequestImages addObject:image];
+                    self.scrollView.backgroundColor = mDelegate_.scrollViewBackgroundColor;
                     [photosArray_ addObject:image];
                 }
                 dispatch_sync(dispatch_get_main_queue(), ^(void) {

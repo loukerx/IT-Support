@@ -36,19 +36,19 @@
 
     
     //test
-//    [appHelper_ initialViewController:@"TestStoryboardView"];
 //    [appHelper_ initialViewController:@"TestNavigationControllerID"];
+    [appHelper_ initialViewController:@"UpdatePagesViewStoryboardID"];
     
     //initialise a view controller
-    if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
-        
-        [self initialProgressView];
-        [self userLogin];
-        
-    }else{
-
-        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
-    }
+//    if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
+//        
+//        [self initialProgressView];
+//        [self userLogin];
+//        
+//    }else{
+//
+//        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+//    }
 }
 
 - (void)setupTimerWithTimer{
@@ -60,8 +60,9 @@
 }
 
 - (void)updateTimer{
+    //预计6秒左右
     if (self.progressView.progress <0.98) {
-        float newProgress = [self.progressView progress] + 0.01;
+        float newProgress = [self.progressView progress] + 0.014;
         [self.progressView setProgress:newProgress animated:YES];
     }
 }

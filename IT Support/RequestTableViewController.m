@@ -85,35 +85,23 @@
 //        NSData *imageData = UIImageJPEGRepresentation(mDelegate_.mRequestImages[0], 1.0f);
 //        NSLog(@"Size of Image(kb):%lu",(unsigned long)[imageData length]/1024);
         self.imageView.image =  mDelegate_.mRequestImages[0];
+        self.imageView.backgroundColor = mDelegate_.scrollViewBackgroundColor;
 //        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
         
     }
 }
+
+
 #pragma mark - prepare ImageView
 -(void)prepareImageView{
-    
-    //test
-//        [mDelegate_.mRequestImages removeAllObjects];
-//    for (int num=1;num<3; num++) {
-//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-//        
-//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-//    }
-//    NSString *UUIDString = [[[NSUUID alloc] init] UUIDString];
-//    mDelegate_.requestDescription =[NSString stringWithFormat:@"test description, %@", UUIDString];
-//    mDelegate_.requestSubject = [NSString stringWithFormat:@"Subject,%@", UUIDString];
-//;
-//    
-    
 
-    self.imageView = [[UIImageView alloc] initWithImage:nil];
+    self.imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"camera_grey"]];
     self.imageView.frame = CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_);
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     if (mDelegate_.mRequestImages.count>0) {
         
         self.imageView.image =  mDelegate_.mRequestImages[0];
-
     }
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleSingleTapGesture:)];
@@ -121,7 +109,6 @@
     [self.imageView addGestureRecognizer:singleTapGestureRecognizer];
     
 }
-
 
 
 -(void)initialCustomView{
@@ -523,8 +510,7 @@
 
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                            reuseIdentifier:@"RequestTableViewCell"];
-        
-        
+
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         
         switch (indexPath.row) {
@@ -533,7 +519,6 @@
                  [cell addSubview:self.subjectTextField];
                  break;
              case 1:
-                 
                  //description textview
                  [cell addSubview:self.descriptionTextView];
                  break;
@@ -579,21 +564,15 @@
 {
     CGRect priceTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
     self.dateTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
-//    self.dateTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"$1xx" attributes:@{NSForegroundColorAttributeName: [UIColor lightGrayColor], }];
-//    self.dateTextField.backgroundColor = mDelegate_.textFieldColor;
     self.dateTextField.textColor = [UIColor blackColor];
     self.dateTextField.font = [UIFont systemFontOfSize:16.0f];
     self.dateTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
-//    self.dateTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-//    self.dateTextField.returnKeyType = UIReturnKeyDone;
-//    self.dateTextField.keyboardType = UIKeyboardTypeNumberPad;
     self.dateTextField.textAlignment = NSTextAlignmentRight;
     self.dateTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
     
     self.datePicker = [[UIDatePicker alloc] init];
     self.datePicker.datePickerMode = UIDatePickerModeDate;
-//    self.datePicker.date = [NSDate date];
     [self.dateTextField setInputView:self.datePicker];
     
     //uitoolbar

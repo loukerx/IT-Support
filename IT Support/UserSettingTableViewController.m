@@ -82,8 +82,10 @@
     // Return the number of rows in the section.
     if (section == 0) {
         return 3;
-    }else if (section == 2 || section == 1){
+    }else if (section == 1){
         return 2;
+    }else if (section == 2){
+        return 4;
     }
     return 1;
 }
@@ -103,6 +105,8 @@
     //- change password
     //-------------section 2
     //- share on Facebook
+    //- complain
+    //- tips
     //- about
     //-------------section 3
     //- logout

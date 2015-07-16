@@ -12,7 +12,7 @@
 
 static NSString *const AWSLinkURL = @"http://54.153.139.38";//version 0.1
 
-static float const cellHeightRatio = 0.625f;
+static float const cellHeightRatio = 0.75f;
 
 #define clientMode @"Client Mode"
 #define supportMode @"Support Mode"
@@ -86,7 +86,7 @@ static float const cellHeightRatio = 0.625f;
 @property (strong, nonatomic) UIColor *textViewBoardColor;
 @property (strong, nonatomic) UIColor *menuTextColor;
 @property (strong, nonatomic) UIColor *footerTextColor;
-
+@property (strong, nonatomic) UIColor *scrollViewBackgroundColor;
 //font
 @property (strong, nonatomic) UIFont *menuTextFont;
 
