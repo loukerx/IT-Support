@@ -85,7 +85,7 @@
     }else if (section == 1){
         return 2;
     }else if (section == 2){
-        return 4;
+        return 2;
     }
     return 1;
 }
@@ -105,8 +105,6 @@
     //- change password
     //-------------section 2
     //- share on Facebook
-    //- complain
-    //- tips
     //- about
     //-------------section 3
     //- logout
@@ -185,6 +183,13 @@
 
 
     }else if(indexPath.section == AboutSection){
+        
+        //-------------section 2
+        //- share on Facebook
+        //- feedback
+        //- tips
+        //- about
+        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:cellidentify];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -198,6 +203,7 @@
         shareButton.shareContent = content;
         
         switch (indexPath.row) {
+                
             case 0:
                 //Share on Facebook
                 cell.textLabel.text = @"Share on Facebook";

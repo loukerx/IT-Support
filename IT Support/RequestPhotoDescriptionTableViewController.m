@@ -122,11 +122,19 @@
 
 -(void)preparePhotosForScrollView
 {
+    //setting frame
+    CGRect tmpFrame = self.view.bounds;
+    CGFloat width = tmpFrame.size.width;
+    CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
     
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"noImage"]];
+    
+    UIImageView *noImageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noImage"]];
+    noImageview.frame = CGRectMake(0, 0, width, height);
+    noImageview.contentMode = UIViewContentModeScaleAspectFit;
+    [self.scrollView addSubview:noImageview];
     
     NSMutableArray *photos = [[NSMutableArray alloc]init];
     
@@ -142,10 +150,13 @@
     }
     
     if (photos.count>0) {
+  
+        [noImageview removeFromSuperview];
+        
         //setting frame
-        CGRect tmpFrame = self.view.bounds;
-        CGFloat width = tmpFrame.size.width;
-        CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
+//        CGRect tmpFrame = self.view.bounds;
+//        CGFloat width = tmpFrame.size.width;
+//        CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
         
         self.scrollView.contentSize =  CGSizeMake( width * photos.count,0);
         self.scrollView.backgroundColor = mDelegate_.scrollViewBackgroundColor;

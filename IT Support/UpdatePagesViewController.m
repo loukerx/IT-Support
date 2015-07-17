@@ -66,11 +66,10 @@
 #pragma mark - guesture
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
     
-//    if (updateImages_.count == self.pageControl.currentPage) {
-//        
+    if (updateImages_.count == self.pageControl.currentPage + 1) {
+        
        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
-//
-//    }
+    }
 }
 
 

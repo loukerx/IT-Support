@@ -399,6 +399,7 @@
                         <segue destination="wOq-zL-PLH" kind="presentation" identifier="To Login View" id="xXn-f6-RwB"/>
                         <segue destination="goB-SL-Cbk" kind="show" identifier="To UpdatePassword View" id="NIk-ab-J8a"/>
                         <segue destination="EpY-5Z-qhu" kind="show" identifier="To Update ContactNumber View" id="6oF-Wy-XBz"/>
+                        <segue destination="QGR-zT-9tb" kind="show" identifier="To About View" id="SBK-xe-w0N"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qvt-Cz-TbO" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -484,6 +485,32 @@
             </objects>
             <point key="canvasLocation" x="3563" y="2145"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="5MQ-A1-hGL">
+            <objects>
+                <tableViewController id="QGR-zT-9tb" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="7cS-7r-meg">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="NSz-n4-acf">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NSz-n4-acf" id="RYS-oi-vOi">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="QGR-zT-9tb" id="YMs-hA-IfT"/>
+                            <outlet property="delegate" destination="QGR-zT-9tb" id="esg-i2-auy"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PTJ-MV-n8M" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2852" y="2976"/>
+        </scene>
         <!--Update Contact Number View Controller-->
         <scene sceneID="3RS-ld-5e1">
             <objects>
@@ -549,7 +576,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QkZ-N2-f4h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3563" y="2881"/>
+            <point key="canvasLocation" x="3571" y="2976"/>
         </scene>
         <!--Request List Navigation Controller-->
         <scene sceneID="5Pt-1D-weX">
@@ -907,7 +934,7 @@
                                     <constraint firstAttribute="height" constant="45" id="3LH-6d-K6c"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Submit">
+                                <state key="normal" title="Reset Password">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1241,23 +1268,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="veP-dK-zPR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4353" y="-313"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="UY3-WU-fLD">
-            <objects>
-                <viewController id="XbO-2k-76y" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lgT-in-Hz0"/>
-                        <viewControllerLayoutGuide type="bottom" id="i4d-kz-93R"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ExZ-sq-c1r">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="G0v-PB-UOH" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>

@@ -346,16 +346,16 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
- if ([segue.identifier isEqualToString:@"To RequestPhotoDescription TableView"])
- {
-     //calculate start position on scrollview
-     CGFloat x =  self.scrollView.contentOffset.x;
-     CGFloat width = self.scrollView.frame.size.width;
-     
-     RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
-     rpdtvc.displayPhotoIndex = roundf(x/width);
-     rpdtvc.enableEditMode = NO;
- }
+    if ([segue.identifier isEqualToString:@"To RequestPhotoDescription TableView"])
+    {
+         //calculate start position on scrollview
+         CGFloat x =  self.scrollView.contentOffset.x;
+         CGFloat width = self.scrollView.frame.size.width;
+         
+         RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
+         rpdtvc.displayPhotoIndex = roundf(x/width);
+         rpdtvc.enableEditMode = NO;
+    }
 
 }
 
@@ -363,10 +363,19 @@
 
 -(void)preparePhotosForScrollView
 {
-    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, scrollViewHeight_)];
+    
+    CGRect tmpFrame = self.view.bounds;
+    CGFloat width = tmpFrame.size.width;
+    CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
+    
+    self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, width, height)];
     self.scrollView.pagingEnabled = YES;
     self.scrollView.delegate = self;
-    self.scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"noImage"]];
+    
+    UIImageView *noImageview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"noImage"]];
+    noImageview.frame = CGRectMake(0, 0, width, height);
+    noImageview.contentMode = UIViewContentModeScaleAspectFit;
+    [self.scrollView addSubview:noImageview];
     
     UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollviewSingleTapGesture:)];
     [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
@@ -393,10 +402,13 @@
     }
     
     if (photosURL.count>0) {
+        
+        [noImageview removeFromSuperview];
+        
         //setting frame
-        CGRect tmpFrame = self.view.bounds;
-        CGFloat width = tmpFrame.size.width;
-        CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
+//        CGRect tmpFrame = self.view.bounds;
+//        CGFloat width = tmpFrame.size.width;
+//        CGFloat height = scrollViewHeight_;//self.scrollView.bounds.size.height;
         
         self.scrollView.contentSize =  CGSizeMake( width * photosURL.count,0);
         

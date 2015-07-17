@@ -44,13 +44,14 @@
 		AE5CDC121B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC001B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m */; };
 		AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC021B01DC1A0035C366 /* UIWebView+AFNetworking.m */; };
 		AE5CDC161B01DC210035C366 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC151B01DC210035C366 /* MBProgressHUD.m */; };
+		AE6C22781B58A5F8004E801B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */; };
+		AE6C227B1B58EA41004E801B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6C227A1B58EA41004E801B /* AboutTableViewController.m */; };
 		AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEBA64CF1B56483500E2B131 /* QuartzCore.framework */; };
 		AEBA92071B0B24A400447AA1 /* RequestListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */; };
 		AEBA920A1B0B257C00447AA1 /* MenuListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEBA92091B0B257C00447AA1 /* MenuListViewController.xib */; };
 		AEBA920D1B0B258D00447AA1 /* MenuListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA920C1B0B258D00447AA1 /* MenuListViewController.m */; };
 		AEBA92111B0B28CE00447AA1 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92101B0B28CE00447AA1 /* LoginViewController.m */; };
 		AEBA92151B0B2C8E00447AA1 /* RequestDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */; };
-		AECC47FC1B572618007BE0A7 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AECC47FB1B572618007BE0A7 /* FBSDKCoreKit.framework */; };
 		AECC47FF1B5737C4007BE0A7 /* UpdatePagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AECC47FE1B5737C4007BE0A7 /* UpdatePagesViewController.m */; };
 		AECE68361B4CE7D700386ABC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AECE68351B4CE7D700386ABC /* Images.xcassets */; };
 		AED1AD211B0C28EB0020B054 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AED1AD201B0C28EB0020B054 /* SignInViewController.m */; };
@@ -149,6 +150,9 @@
 		AE5CDC021B01DC1A0035C366 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		AE5CDC141B01DC210035C366 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		AE5CDC151B01DC210035C366 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AE6C22791B58EA41004E801B /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
+		AE6C227A1B58EA41004E801B /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		AEBA64CF1B56483500E2B131 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AEBA92051B0B24A400447AA1 /* RequestListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestListTableViewController.h; sourceTree = "<group>"; };
 		AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestListTableViewController.m; sourceTree = "<group>"; };
@@ -159,7 +163,6 @@
 		AEBA92101B0B28CE00447AA1 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		AEBA92131B0B2C8E00447AA1 /* RequestDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestDetailTableViewController.h; sourceTree = "<group>"; };
 		AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestDetailTableViewController.m; sourceTree = "<group>"; };
-		AECC47FB1B572618007BE0A7 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AECC47FD1B5737C4007BE0A7 /* UpdatePagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdatePagesViewController.h; sourceTree = "<group>"; };
 		AECC47FE1B5737C4007BE0A7 /* UpdatePagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdatePagesViewController.m; sourceTree = "<group>"; };
 		AECE68351B4CE7D700386ABC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -201,7 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */,
-				AECC47FC1B572618007BE0A7 /* FBSDKCoreKit.framework in Frameworks */,
+				AE6C22781B58A5F8004E801B /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -394,7 +397,7 @@
 				AEBA64CF1B56483500E2B131 /* QuartzCore.framework */,
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AECC47FB1B572618007BE0A7 /* FBSDKCoreKit.framework */,
+				AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -448,6 +451,8 @@
 				AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */,
 				AEDD2ED11B3B991C000BCCA7 /* UpdateContactNumberViewController.h */,
 				AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */,
+				AE6C22791B58EA41004E801B /* AboutTableViewController.h */,
+				AE6C227A1B58EA41004E801B /* AboutTableViewController.m */,
 			);
 			name = "Menu Setting";
 			sourceTree = "<group>";
@@ -640,6 +645,7 @@
 				AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */,
 				AE5CDC071B01DC1A0035C366 /* AFSecurityPolicy.m in Sources */,
 				AECC47FF1B5737C4007BE0A7 /* UpdatePagesViewController.m in Sources */,
+				AE6C227B1B58EA41004E801B /* AboutTableViewController.m in Sources */,
 				AE5CDBBA1B019ED30035C366 /* AppDelegate.m in Sources */,
 				AE5CDC041B01DC1A0035C366 /* AFHTTPRequestOperationManager.m in Sources */,
 				AE5CDC081B01DC1A0035C366 /* AFURLConnectionOperation.m in Sources */,
@@ -1016,6 +1022,11 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1051,6 +1062,11 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,
