@@ -27,10 +27,12 @@
 @end
 
 #define ChangePasswordSection 1
-#define AboutSection 2
-#define LogOutSection 3
 #define contactNumberRow 0
 #define changePasswordRow 1
+#define AboutSection 2
+#define aboutRow 1
+#define LogOutSection 3
+
 
 @implementation UserSettingTableViewController
 
@@ -211,7 +213,10 @@
                 break;
             case 1:
                 cell.textLabel.text = @"About";
-                cell.detailTextLabel.text = mDelegate_.appVersion;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.userInteractionEnabled = YES;
+                cell.selectionStyle =UITableViewCellSelectionStyleDefault;
+                //                cell.detailTextLabel.text = mDelegate_.appVersion;
                 break;
             default:
                 break;
@@ -258,6 +263,10 @@
         }
 
         
+    }else if (indexPath.section == AboutSection){
+        if (indexPath.row == aboutRow) {
+            [self performSegueWithIdentifier:@"To About View" sender:self];
+        }
     }else if (indexPath.section == LogOutSection) {
 
 //        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil

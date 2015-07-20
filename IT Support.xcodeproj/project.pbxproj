@@ -12,6 +12,10 @@
 		AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */; };
 		AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */; };
 		AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */; };
+		AE46C3AF1B5C68CC001EBBAC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */; };
+		AE46C3B21B5CA919001EBBAC /* TermsAndPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46C3B11B5CA919001EBBAC /* TermsAndPolicyViewController.m */; };
+		AE46C3B41B5CB0E9001EBBAC /* Privacy Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE46C3B31B5CB0E9001EBBAC /* Privacy Policy.txt */; };
+		AE46C3B71B5CB29C001EBBAC /* Terms of Use.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE46C3B61B5CB29C001EBBAC /* Terms of Use.txt */; };
 		AE58EF181B0585D400372A5F /* RequestPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58EF171B0585D400372A5F /* RequestPhotoCollectionViewController.m */; };
 		AE58EF1B1B05A59E00372A5F /* RequestPhotoDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58EF1A1B05A59E00372A5F /* RequestPhotoDescriptionViewController.m */; };
 		AE58EF211B05BBC600372A5F /* image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF1C1B05BBC600372A5F /* image1.jpg */; };
@@ -44,7 +48,6 @@
 		AE5CDC121B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC001B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m */; };
 		AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC021B01DC1A0035C366 /* UIWebView+AFNetworking.m */; };
 		AE5CDC161B01DC210035C366 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC151B01DC210035C366 /* MBProgressHUD.m */; };
-		AE6C22781B58A5F8004E801B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */; };
 		AE6C227B1B58EA41004E801B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6C227A1B58EA41004E801B /* AboutTableViewController.m */; };
 		AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEBA64CF1B56483500E2B131 /* QuartzCore.framework */; };
 		AEBA92071B0B24A400447AA1 /* RequestListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */; };
@@ -90,6 +93,11 @@
 		AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
 		AE306A6C1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPhotoDescriptionTableViewController.h; sourceTree = "<group>"; };
 		AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPhotoDescriptionTableViewController.m; sourceTree = "<group>"; };
+		AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		AE46C3B01B5CA919001EBBAC /* TermsAndPolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndPolicyViewController.h; sourceTree = "<group>"; };
+		AE46C3B11B5CA919001EBBAC /* TermsAndPolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndPolicyViewController.m; sourceTree = "<group>"; };
+		AE46C3B31B5CB0E9001EBBAC /* Privacy Policy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Privacy Policy.txt"; sourceTree = "<group>"; };
+		AE46C3B61B5CB29C001EBBAC /* Terms of Use.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Terms of Use.txt"; sourceTree = "<group>"; };
 		AE58EF161B0585D400372A5F /* RequestPhotoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPhotoCollectionViewController.h; sourceTree = "<group>"; };
 		AE58EF171B0585D400372A5F /* RequestPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPhotoCollectionViewController.m; sourceTree = "<group>"; };
 		AE58EF191B05A59E00372A5F /* RequestPhotoDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPhotoDescriptionViewController.h; sourceTree = "<group>"; };
@@ -150,7 +158,6 @@
 		AE5CDC021B01DC1A0035C366 /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
 		AE5CDC141B01DC210035C366 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		AE5CDC151B01DC210035C366 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AE6C22791B58EA41004E801B /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		AE6C227A1B58EA41004E801B /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		AEBA64CF1B56483500E2B131 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -204,7 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */,
-				AE6C22781B58A5F8004E801B /* FBSDKCoreKit.framework in Frameworks */,
+				AE46C3AF1B5C68CC001EBBAC /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -256,6 +263,15 @@
 			name = "Request Photo";
 			sourceTree = "<group>";
 		};
+		AE46C3B51B5CB0F1001EBBAC /* Terms & Policy */ = {
+			isa = PBXGroup;
+			children = (
+				AE46C3B31B5CB0E9001EBBAC /* Privacy Policy.txt */,
+				AE46C3B61B5CB29C001EBBAC /* Terms of Use.txt */,
+			);
+			name = "Terms & Policy";
+			sourceTree = "<group>";
+		};
 		AE5CDBA81B019ED30035C366 = {
 			isa = PBXGroup;
 			children = (
@@ -278,6 +294,7 @@
 		AE5CDBB31B019ED30035C366 /* IT Support */ = {
 			isa = PBXGroup;
 			children = (
+				AE46C3B51B5CB0F1001EBBAC /* Terms & Policy */,
 				AE5CDC171B01DC270035C366 /* 3rd Party */,
 				AE5CDBB81B019ED30035C366 /* AppDelegate.h */,
 				AE5CDBB91B019ED30035C366 /* AppDelegate.m */,
@@ -397,7 +414,7 @@
 				AEBA64CF1B56483500E2B131 /* QuartzCore.framework */,
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AE6C22771B58A5F8004E801B /* FBSDKCoreKit.framework */,
+				AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -453,6 +470,8 @@
 				AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */,
 				AE6C22791B58EA41004E801B /* AboutTableViewController.h */,
 				AE6C227A1B58EA41004E801B /* AboutTableViewController.m */,
+				AE46C3B01B5CA919001EBBAC /* TermsAndPolicyViewController.h */,
+				AE46C3B11B5CA919001EBBAC /* TermsAndPolicyViewController.m */,
 			);
 			name = "Menu Setting";
 			sourceTree = "<group>";
@@ -608,11 +627,13 @@
 			files = (
 				AE58EF251B05BBC600372A5F /* image5.jpg in Resources */,
 				AE5CDBC31B019ED30035C366 /* Main.storyboard in Resources */,
+				AE46C3B71B5CB29C001EBBAC /* Terms of Use.txt in Resources */,
 				AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */,
 				AE5CDBC81B019ED30035C366 /* LaunchScreen.xib in Resources */,
 				AECE68361B4CE7D700386ABC /* Images.xcassets in Resources */,
 				AE58EF241B05BBC600372A5F /* image4.jpg in Resources */,
 				AE58EF211B05BBC600372A5F /* image1.jpg in Resources */,
+				AE46C3B41B5CB0E9001EBBAC /* Privacy Policy.txt in Resources */,
 				AE58EF221B05BBC600372A5F /* image2.jpg in Resources */,
 				AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */,
 				AE58EF231B05BBC600372A5F /* image3.jpg in Resources */,
@@ -640,6 +661,7 @@
 				AEBA920D1B0B258D00447AA1 /* MenuListViewController.m in Sources */,
 				AE5CDC121B01DC1A0035C366 /* UIRefreshControl+AFNetworking.m in Sources */,
 				AE5CDC0E1B01DC1A0035C366 /* UIAlertView+AFNetworking.m in Sources */,
+				AE46C3B21B5CA919001EBBAC /* TermsAndPolicyViewController.m in Sources */,
 				AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */,
 				AE5CDBBD1B019ED30035C366 /* IT_Support.xcdatamodeld in Sources */,
 				AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */,
@@ -1027,6 +1049,11 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1062,6 +1089,11 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,
