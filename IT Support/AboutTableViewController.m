@@ -83,8 +83,6 @@
     
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
-    
-    
     switch (indexPath.row) {
         case 0:
             //change contact number
@@ -118,20 +116,23 @@
 }
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    
-    //- Feedback
-    //- Privacy policy
-    //- Terms of use
-    //- About
-//    if (indexPath.section == ChangePasswordSection) {
-        if (indexPath.row == feedbackRow) {
-            [self emailButtonAction];
-        }else if(indexPath.row == privacyPolicyRow) {
-            [self performSegueWithIdentifier:@"To TermsAndPolicy View" sender:self];
-        }else if (indexPath.row == TermsOFUseRow){
-            [self performSegueWithIdentifier:@"To TermsAndPolicy View" sender:self];
-        }
+
+//- Feedback
+//- Tips
+//- Privacy policy
+//- Terms of use
+//- About
+//if (indexPath.section == ChangePasswordSection) {
+    if (indexPath.row == feedbackRow) {
+        [self emailButtonAction];
+    }else if(indexPath.row == tipsRow){
+        mDelegate_.tipsOn = YES;
+        [self performSegueWithIdentifier:@"To Update Pages View" sender:self];
+    }else if(indexPath.row == privacyPolicyRow) {
+        [self performSegueWithIdentifier:@"To TermsAndPolicy View" sender:self];
+    }else if (indexPath.row == TermsOFUseRow){
+        [self performSegueWithIdentifier:@"To TermsAndPolicy View" sender:self];
+    }
 //    }
 }
 

@@ -508,6 +508,7 @@
                     </tableView>
                     <connections>
                         <segue destination="LCp-4h-JW4" kind="show" identifier="To TermsAndPolicy View" id="ALv-F1-5fi"/>
+                        <segue destination="cnR-6D-Yyz" kind="presentation" identifier="To Update Pages View" id="rN0-CD-YDM"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PTJ-MV-n8M" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -47,6 +47,8 @@
     //login view is root
 //    self.loginIsRoot = YES;
     
+    self.tipsOn = NO;
+    
     //setting client
     //test number
     self.clientID = @"N/A";

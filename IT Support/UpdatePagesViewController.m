@@ -67,8 +67,14 @@
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
     
 //    if (updateImages_.count == self.pageControl.currentPage + 1) {
-    
-       [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+    if (mDelegate_.tipsOn) {
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+        mDelegate_.tipsOn = NO;//default value
+    }else{
+        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+    }
+
 //    }
 }
 
