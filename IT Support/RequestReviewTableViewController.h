@@ -18,6 +18,7 @@
 //add 2015 07 13
 @property (strong, nonatomic) NSDate *requestDeadline;
 @property (nonatomic) BOOL negotiable;
+@property (nonatomic) BOOL preferPhone;
 
 - (IBAction)sendAction:(UIBarButtonItem *)sender;
 

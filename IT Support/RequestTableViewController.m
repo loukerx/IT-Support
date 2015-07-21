@@ -10,13 +10,17 @@
 #import "AppDelegate.h"
 #import "RequestReviewTableViewController.h"
 
-@interface RequestTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate, UIActionSheetDelegate>
+@interface RequestTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UITextFieldDelegate, UIActionSheetDelegate, UIPickerViewDataSource,UIPickerViewDelegate>
 {
     AppDelegate *mDelegate_;
     CGFloat scrollViewHeight_;
     NSDate *requestDeadline_;
     //0 = fixed; 1 = negotiable;
     BOOL negotiable_;
+    NSArray *priceTypeArray_;
+    //0 = By Email; 1 = By Phone;
+    BOOL preferPhone_;
+    NSArray *preferredContactArray_;
 }
 
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -28,23 +32,50 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *reviewBarButtonItem;
 
 //datepicker
-@property (strong, nonatomic) UIDatePicker *datePicker;
+@property (strong, nonatomic) UIDatePicker *datePickerView;
 @property (strong, nonatomic) UITextField *dateTextField;
+@property (strong, nonatomic) UIPickerView *priceTypePickerView;
+@property (strong, nonatomic) UITextField *priceTypeTextField;
+@property (strong, nonatomic) UIPickerView *preferredContactPickerView;
+@property (strong, nonatomic) UITextField *preferredContactTextField;
 
 
 @end
 
+//section & row
 #define categorySection 0
+
 #define availableFundsSection 1
 
+
+//-------------section 2 priceSection
+//- Your Price
+//- Price Type
+//-------------section 3 preferContactMethodSection
+//- PreferredContactMethod
+//- Deadline
 #define priceSection 2
 #define priceRow 0
-#define deadlineRow 1
-#define negotiableRow 2
+#define priceTypeRow 1
 
-#define titleSection 3
+#define preferContactMethodSection 3
+#define preferContactMethodRow 0
+#define deadlineRow 1
+
+
+#define titleSection 4
+
+//height
 #define tableRowHeight 44.0f
 #define textfieldHeight tableRowHeight - 6
+
+//tag
+#define priceTypePickerViewTag 1001
+#define preferredContactPickerViewTag 1002
+
+
+
+
 
 @implementation RequestTableViewController
 
@@ -64,9 +95,17 @@
     
     [self prepareImageView];
     [self populateTableViewHeader];
+   
+    
+    
+    //set Picker View
+    [self initialDatePicker];
     //0 = fixed; 1 = negotiable;
     negotiable_ = NO;//fixed
-    [self showDatePicker];
+    [self initialPriceTypePicker];
+    //0 = By Email; 1 = By Phone;
+    preferPhone_ = NO;//By Email
+    [self initialPreferredContactPicker];
     
     
     //dismissKeyboard
@@ -125,8 +164,8 @@
     self.subjectTextField.returnKeyType = UIReturnKeyDone;
     self.subjectTextField.textAlignment = NSTextAlignmentLeft;
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-
-//    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.subjectTextField];
     self.subjectTextField.tag = 101;
     self.subjectTextField.delegate = self;
@@ -256,6 +295,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    //dismissKeyboard
     [self.view endEditing:YES];
     return NO;
 }
@@ -407,14 +447,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    if (section == priceSection) {
-        return 3;
-    }
+//    if (section == priceSection) {
+//        return 3;
+//    }else if (section == preferContactMethodSection){
+//        return 1;
+//    }
     return 2;
 }
 
@@ -429,9 +471,11 @@
     //- Account Balance
     //-------------section 2 priceSection
     //- Your Price
-    //- Negotiable
+    //- PriceType
+    //-------------section 3 preferContactMethodSection
+    //- PreferredContactMethod
     //- Deadline
-    //-------------section 3 titleSection
+    //-------------section 4 titleSection
     //- Subject
     //- Description
     UITableViewCell *cell=nil;
@@ -481,31 +525,43 @@
     }else if (indexPath.section == priceSection){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        cell.userInteractionEnabled = YES;
+
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        
-//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Your Price:";
-//                [cell addSubview:self.priceTextField];
                 cell.accessoryView = self.priceTextField;
                 break;
             case 1:
-                cell.textLabel.text = @"Deadline:";
-                [cell addSubview:self.dateTextField];
-//                cell.accessoryView = self.dateTextField;
-//                cell.detailTextLabel.text = accountBalance;
+                cell.textLabel.text = @"Price Type:";
+                cell.detailTextLabel.text = @"Fixed";
+                [cell addSubview:self.priceTypeTextField];
                 break;
-            case 2:
-                cell.textLabel.text = @"Negotiable:";
-                break;
-                
             default:
                 break;
         }
+    }else if(indexPath.section == preferContactMethodSection){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"RequestTableViewCell"];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        switch (indexPath.row) {
+            case 0:
+                cell.textLabel.text = @"Prefer Contact:";
+                cell.detailTextLabel.text = @"By Email";
+                [cell addSubview:self.preferredContactTextField];
+                break;
+            case 1:
+                cell.textLabel.text = @"Deadline:";
+                cell.detailTextLabel.text = @"Select a Date";
+                [cell addSubview:self.dateTextField];
+                break;
+            default:
+                break;
+        }
+
     }else{
 
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -540,40 +596,156 @@
     if (indexPath.section == priceSection) {
         if (indexPath.row == priceRow) {
             [self.priceTextField becomeFirstResponder];
-        }
-        if (indexPath.row == deadlineRow) {
+        }else if(indexPath.row == priceTypeRow){
+            
+            [self.priceTypeTextField becomeFirstResponder];
 
+        }
+    }else if (indexPath.section == preferContactMethodSection){
+        if (indexPath.row == preferContactMethodRow) {
+            
+            [self.preferredContactTextField becomeFirstResponder];
+        }else if (indexPath.row == deadlineRow) {
+            
             [self.dateTextField becomeFirstResponder];
             
-        }else if(indexPath.row == negotiableRow){
-          
-            //0 = fixed; 1 = negotiable;
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            if (cell.accessoryType != UITableViewCellAccessoryCheckmark) {
-                negotiable_ = YES;//negotiable
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            }else{
-                negotiable_ = NO;//fixed
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
         }
+        
+
+    }
+}
+#pragma mark - UIPickerView
+-(void)initialPriceTypePicker
+{
+    // Initialize Data
+    priceTypeArray_ = @[@"Fixed", @"Negotiable"];
+    
+    // Connect data
+    self.priceTypePickerView = [[UIPickerView alloc] init];
+    self.priceTypePickerView.dataSource = self;
+    self.priceTypePickerView.delegate = self;
+    self.priceTypePickerView.tag = priceTypePickerViewTag;
+    
+    
+    CGRect priceTypeTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
+    self.priceTypeTextField = [[UITextField alloc] initWithFrame:priceTypeTextFieldFrame];
+    self.priceTypeTextField.borderStyle = UITextBorderStyleNone;
+    
+    //add picker view to InputView
+    [self.priceTypeTextField setInputView:self.priceTypePickerView];
+    
+    //uitoolbar
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, 320, 44)]; //初始化
+    [toolBar setTintColor:[UIColor blackColor]]; //设置颜色
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismissKeyboard)];
+    
+    [toolBar setItems:[NSArray arrayWithObjects:doneBtn, nil]];
+    [self.priceTypeTextField setInputAccessoryView:toolBar];
+    
+}
+
+-(void)initialPreferredContactPicker
+{
+    // Initialize Data
+    preferredContactArray_ = @[@"By Email", @"By Phone"];
+    
+    // Connect data
+    self.preferredContactPickerView = [[UIPickerView alloc] init];
+    self.preferredContactPickerView.dataSource = self;
+    self.preferredContactPickerView.delegate = self;
+    self.preferredContactPickerView.tag = preferredContactPickerViewTag;
+    
+    
+    CGRect preferedContactTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
+    self.preferredContactTextField = [[UITextField alloc] initWithFrame:preferedContactTextFieldFrame];
+    self.preferredContactTextField.borderStyle = UITextBorderStyleNone;
+    
+    //add picker view to InputView
+    [self.preferredContactTextField setInputView:self.preferredContactPickerView];
+    
+    
+    //uitoolbar
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, 320, 44)]; //初始化
+    [toolBar setTintColor:[UIColor blackColor]]; //设置颜色
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismissKeyboard)];
+    
+    [toolBar setItems:[NSArray arrayWithObjects:doneBtn, nil]];
+    [self.preferredContactTextField setInputAccessoryView:toolBar];
+}
+
+#pragma mark - UIPicker DataSouce
+// The number of columns of data
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+// The number of rows of data
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    if (pickerView.tag == priceTypePickerViewTag) {
+        return priceTypeArray_.count;
+    }else{// if (pickerView.tag == preferredContactPickerViewTag){
+        return preferredContactArray_.count;
     }
 }
 
--(void)showDatePicker
+// The data to return for the row and component (column) that's being passed in
+- (NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView.tag == priceTypePickerViewTag) {
+       return priceTypeArray_[row];
+    }else{// if (pickerView.tag == preferredContactPickerViewTag){
+        return preferredContactArray_[row];
+    }
+
+}
+
+#pragma mark - UIPicker Delegate
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+  
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+    if (pickerView.tag == priceTypePickerViewTag) {
+        //0 = Fixed; 1 = Negotiable;
+//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+//        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        NSString *priceTypeString = priceTypeArray_[row];
+        cell.detailTextLabel.text = priceTypeString;
+        if (row == 0) {
+            negotiable_ = NO;
+        }else{
+            negotiable_ = YES;
+        }
+        
+    }else if (pickerView.tag == preferredContactPickerViewTag){
+        //0 = By Email; 1 = By Phone;
+        NSString *preferredContactString = preferredContactArray_[row];
+        cell.detailTextLabel.text = preferredContactString;
+        if (row == 0) {
+            preferPhone_ = NO;
+        }else{
+            preferPhone_ = YES;
+        }
+        
+    }
+}
+
+
+
+#pragma mark - DatePicker
+-(void)initialDatePicker
 {
     CGRect priceTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
     self.dateTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
-    self.dateTextField.textColor = [UIColor blackColor];
-    self.dateTextField.font = [UIFont systemFontOfSize:16.0f];
     self.dateTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
-    self.dateTextField.textAlignment = NSTextAlignmentRight;
-    self.dateTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 
     
-    self.datePicker = [[UIDatePicker alloc] init];
-    self.datePicker.datePickerMode = UIDatePickerModeDate;
-    [self.dateTextField setInputView:self.datePicker];
+    self.datePickerView = [[UIDatePicker alloc] init];
+    self.datePickerView.datePickerMode = UIDatePickerModeDate;
+    [self.dateTextField setInputView:self.datePickerView];
     
     //uitoolbar
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, 320, 44)]; //初始化
@@ -586,7 +758,7 @@
 
 -(void)ShowSelectedDate
 {
-    requestDeadline_ = self.datePicker.date;
+    requestDeadline_ = self.datePickerView.date;
     
     if ([requestDeadline_ compare:[NSDate date]] != NSOrderedAscending) {
         
@@ -595,11 +767,11 @@
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
         
         
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:deadlineRow//THE_ITEM_TO_SELECT
-                                                     inSection:priceSection];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];
         [self.dateTextField resignFirstResponder];
+        
     }else{
         UIAlertController *alert =
         [UIAlertController alertControllerWithTitle:@"Date Error!"
@@ -664,6 +836,7 @@
 //        requestDeadline_ =[NSDate date];
         rrtvc.requestDeadline = requestDeadline_;
         rrtvc.negotiable = negotiable_;
+        rrtvc.preferPhone = preferPhone_;
     }
 }
 

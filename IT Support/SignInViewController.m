@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *passwordConfirmTextField;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *termsLabel;
 
 @end
 
@@ -41,6 +42,8 @@
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
 }
+
+
 
 #pragma mark - mandatory field check
 - (BOOL)checkAllField

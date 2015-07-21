@@ -541,7 +541,7 @@
     }else if (section == priceSection){
         return 3;
     }else if(section == contactSection){
-        return 3;
+        return 4;
     }
     return 1;
 }
@@ -561,6 +561,7 @@
     //-------------section contactSection 2
     //- Support Name
     //- Support company
+    //- PreferredContactMethod
     //- mobile & Email
     //-------------section titleSection 3
     //- Subject
@@ -672,35 +673,51 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                 reuseIdentifier:@"RequestDetailTableViewCell"];
         //-------------section 1
-        //- Support Name
-        //- Support company
+        //- contact Name
+        //- contact company
+        //- PreferredContactMethod
         //- mobile
         //- Email
-        NSString *contactName =@"N/A",*companyName =@"N/A",*contactNumber =@"",*email=@"";
+        NSString *contactName =@"N/A",*companyName =@"N/A",*prefer =@"N/A", *contactNumber =@"",*email=@"";
         BOOL buttonEnable = NO;
         UIColor *contactColor = [UIColor grayColor];
         
-            //client 显示 support name,company
-            //support 显示 client name,company
-            if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-                
-                if (![mDelegate_.searchType isEqualToString:@"Active"]) {
-                    buttonEnable = YES;
-                    contactColor = mDelegate_.supportThemeColor;
-                    contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
-                    companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
-                    contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@""];
-                    email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@""];
-                }
-           
-            }else{
+        //0 = By Email; 1 = By Phone;
+        prefer = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"PreferredContactMethod"]];
+
+        
+        //client 显示 support name,company
+        //support 显示 client name,company
+        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+            
+            if (![mDelegate_.searchType isEqualToString:@"Active"]) {
                 buttonEnable = YES;
-                contactColor = mDelegate_.clientThemeColor;
-                contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactName"]?:@"N/A"];
-                companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]?:@"N/A"];
-                contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]?:@""];
-                email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]?:@""];
-            }        
+                contactColor = mDelegate_.supportThemeColor;
+                contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactName"]?:@"N/A"];
+                companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportCompanyName"]?:@"N/A"];
+                contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportContactNumber"]?:@""];
+                email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"SupportEmail"]?:@""];
+      
+            }
+            prefer = @"N/A";
+            
+        }else{
+            buttonEnable = YES;
+            contactColor = mDelegate_.clientThemeColor;
+            contactName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactName"]?:@"N/A"];
+            companyName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientCompanyName"]?:@"N/A"];
+
+            contactNumber = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientContactNumber"]?:@""];
+            email = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"ClientEmail"]?:@""];
+            
+            if ([prefer isEqualToString:@"0"]) {
+                prefer = @"By Email";
+            }else if ([prefer isEqualToString:@"1"]){
+                prefer = @"By Phone";
+            }else{
+                prefer = @"N/A";
+            }
+        }        
         
         switch (indexPath.row) {
                 
@@ -713,6 +730,10 @@
                 cell.detailTextLabel.text = companyName;
                 break;
             case 2:
+                cell.textLabel.text = @"Prefer Contact";
+                cell.detailTextLabel.text = prefer;
+                break;
+            case 3:
                 [self.emailButton setTitle:email forState:UIControlStateNormal];
                 [self.emailButton.titleLabel setHidden:YES];
                 [self.emailButton.imageView setTintColor:contactColor];

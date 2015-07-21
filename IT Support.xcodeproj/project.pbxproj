@@ -12,7 +12,6 @@
 		AE306A681B099AD70058E9E2 /* PhotoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A661B099AD70058E9E2 /* PhotoCollectionViewCell.m */; };
 		AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */; };
 		AE306A6E1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */; };
-		AE46C3AF1B5C68CC001EBBAC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */; };
 		AE46C3B21B5CA919001EBBAC /* TermsAndPolicyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE46C3B11B5CA919001EBBAC /* TermsAndPolicyViewController.m */; };
 		AE46C3B41B5CB0E9001EBBAC /* Privacy Policy.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE46C3B31B5CB0E9001EBBAC /* Privacy Policy.txt */; };
 		AE46C3B71B5CB29C001EBBAC /* Terms of Use.txt in Resources */ = {isa = PBXBuildFile; fileRef = AE46C3B61B5CB29C001EBBAC /* Terms of Use.txt */; };
@@ -71,6 +70,7 @@
 		AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */; };
 		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
 		AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */; };
+		AEE39A481B5DBC2C00A2057A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
 		AEE684261B032D36005F9AE7 /* RequestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684251B032D36005F9AE7 /* RequestTableViewController.m */; };
 /* End PBXBuildFile section */
@@ -93,7 +93,6 @@
 		AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoCollectionViewCell.xib; sourceTree = "<group>"; };
 		AE306A6C1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPhotoDescriptionTableViewController.h; sourceTree = "<group>"; };
 		AE306A6D1B09D43A0058E9E2 /* RequestPhotoDescriptionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPhotoDescriptionTableViewController.m; sourceTree = "<group>"; };
-		AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AE46C3B01B5CA919001EBBAC /* TermsAndPolicyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TermsAndPolicyViewController.h; sourceTree = "<group>"; };
 		AE46C3B11B5CA919001EBBAC /* TermsAndPolicyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TermsAndPolicyViewController.m; sourceTree = "<group>"; };
 		AE46C3B31B5CB0E9001EBBAC /* Privacy Policy.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "Privacy Policy.txt"; sourceTree = "<group>"; };
@@ -199,6 +198,7 @@
 		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		AEDDA5321B1846BA008213BE /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEE684211B03255A005F9AE7 /* SelectSubCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectSubCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectSubCategoryTableViewController.m; sourceTree = "<group>"; };
 		AEE684241B032D36005F9AE7 /* RequestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestTableViewController.h; sourceTree = "<group>"; };
@@ -211,7 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */,
-				AE46C3AF1B5C68CC001EBBAC /* FBSDKCoreKit.framework in Frameworks */,
+				AEE39A481B5DBC2C00A2057A /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -414,7 +414,7 @@
 				AEBA64CF1B56483500E2B131 /* QuartzCore.framework */,
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AE46C3AE1B5C68CC001EBBAC /* FBSDKCoreKit.framework */,
+				AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -1054,6 +1054,16 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1089,6 +1099,16 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

@@ -217,7 +217,7 @@
     if (section == 1) {
         return 1;
     }
-    return 5;
+    return 6;
 }
 
 
@@ -229,6 +229,7 @@
     //- Subcategory
     //- Price
     //- Negotiable
+    //- Prefer
     //- Deadline
     //-------------section 1
     //- Subject
@@ -248,8 +249,9 @@
         NSString *deadline = [dateFormatter stringFromDate:self.requestDeadline];
         
         //negotiable
-        NSString *negotiable = self.negotiable?@"Negotiable":@"Fixed";
-        
+        NSString *priceType = self.negotiable?@"Negotiable":@"Fixed";
+        //preferred contact method
+        NSString *preferContactMethod = self.preferPhone?@"By Phone":@"By Email";
         
         switch (indexPath.row) {
             case 0:
@@ -266,13 +268,16 @@
                 break;
             case 3:
                 cell.textLabel.text = @"PriceType:";
-                cell.detailTextLabel.text = negotiable;
+                cell.detailTextLabel.text = priceType;
                 break;
             case 4:
+                cell.textLabel.text = @"Prefer Contact:";
+                cell.detailTextLabel.text = preferContactMethod;
+                break;
+            case 5:
                 cell.textLabel.text = @"Deadline:";
                 cell.detailTextLabel.text = deadline;
                 break;
-                
             default:
                 break;
         }
@@ -504,6 +509,7 @@
     NSDate *requestDeadline = self.requestDeadline;
     //NO 0 = fixed; YES 1 = negotiable;
     NSString *priceType = self.negotiable?@"1":@"0";
+    NSString *preferredContactMethod = self.preferPhone?@"1":@"0";
     
     NSDictionary *parameters = @{@"clientID" : clientID,
                                  @"categoryID" : categoryID,
@@ -513,7 +519,8 @@
                                  @"priority" : priority,
                                  @"picDescriptions" :descriptionJsonString,
                                  @"requestDeadline" :requestDeadline,
-                                 @"priceType" : priceType
+                                 @"priceType" : priceType,
+                                 @"preferredContactMethod": preferredContactMethod
                                  };
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];

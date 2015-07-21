@@ -174,10 +174,10 @@
         <scene sceneID="tIR-k7-noH">
             <objects>
                 <tableViewController id="Iw3-g9-lvE" customClass="RequestTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Cl5-pU-ADR">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Cl5-pU-ADR">
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RequestTableViewCell" id="DLF-EO-O6c">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -418,7 +418,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Old Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="W9B-Ka-MfK">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Old Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="W9B-Ka-MfK">
                                 <rect key="frame" x="15" y="74" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="J6X-V9-Sgy"/>
@@ -426,7 +426,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Ty-c6-Qoh">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="6Ty-c6-Qoh">
                                 <rect key="frame" x="15" y="124" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="G8G-nT-eea"/>
@@ -434,7 +434,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="jrb-27-2g2">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="jrb-27-2g2">
                                 <rect key="frame" x="15" y="174" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="wSg-i3-kFy"/>
@@ -442,7 +442,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5y-3h-dRi">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5y-3h-dRi">
                                 <rect key="frame" x="15" y="239" width="570" height="45"/>
                                 <color key="backgroundColor" red="0.1085391473" green="0.86679292929999996" blue="0.25508166989999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -492,7 +492,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="7cS-7r-meg">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AboutTableViewCell" id="NSz-n4-acf">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -563,7 +563,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Xfr-Ut-h3w">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Xfr-Ut-h3w">
                                 <rect key="frame" x="15" y="72" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="uVK-KO-W1S"/>
@@ -571,7 +571,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIs-LO-lt8">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MIs-LO-lt8">
                                 <rect key="frame" x="15" y="189" width="570" height="45"/>
                                 <color key="backgroundColor" red="0.1085391473" green="0.86679292929999996" blue="0.25508166989999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -586,7 +586,7 @@
                                     <action selector="submitAction:" destination="EpY-5Z-qhu" eventType="touchUpInside" id="s15-zU-AlG"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kHu-Cv-HuB">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kHu-Cv-HuB">
                                 <rect key="frame" x="15" y="125" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="bNz-jS-FaB"/>
@@ -959,7 +959,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email [Username]" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T83-Ey-4Wl">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email [Username]" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="T83-Ey-4Wl">
                                 <rect key="frame" x="15" y="74" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="SPv-Hy-kJF"/>
@@ -967,7 +967,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4g-Ov-YhM">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p4g-Ov-YhM">
                                 <rect key="frame" x="15" y="139" width="570" height="45"/>
                                 <color key="backgroundColor" red="0.1085391473" green="0.86679292929999996" blue="0.25508166989999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -1093,7 +1093,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address [Username]" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RI5-sL-58w">
-                                <rect key="frame" x="15" y="74" width="570" height="45"/>
+                                <rect key="frame" x="15" y="30" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="F0b-6s-ByV"/>
                                 </constraints>
@@ -1101,7 +1101,7 @@
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ipw-3b-nB3">
-                                <rect key="frame" x="15" y="124" width="570" height="45"/>
+                                <rect key="frame" x="15" y="80" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="q8D-1s-iFy"/>
                                 </constraints>
@@ -1109,7 +1109,7 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MmH-Bh-aqK">
-                                <rect key="frame" x="15" y="239" width="570" height="45"/>
+                                <rect key="frame" x="15" y="195" width="570" height="45"/>
                                 <color key="backgroundColor" red="0.1085391473" green="0.86679292929999996" blue="0.25508166989999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="1ej-SV-Q5Q"/>
@@ -1124,23 +1124,35 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nw4-b1-o5D">
-                                <rect key="frame" x="15" y="174" width="570" height="45"/>
+                                <rect key="frame" x="15" y="130" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="KHt-yf-acW"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfo-j5-yuB" userLabel="Terms Label">
+                                <rect key="frame" x="20" y="549" width="560" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="e27-oS-vcT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="sfo-j5-yuB" secondAttribute="trailing" constant="20" id="4WR-pf-4wp"/>
                             <constraint firstItem="nw4-b1-o5D" firstAttribute="top" secondItem="ipw-3b-nB3" secondAttribute="bottom" constant="5" id="7b3-1L-i7R"/>
                             <constraint firstAttribute="trailing" secondItem="ipw-3b-nB3" secondAttribute="trailing" constant="15" id="BnF-wr-xn8"/>
                             <constraint firstItem="MmH-Bh-aqK" firstAttribute="leading" secondItem="hqw-jC-oBf" secondAttribute="leading" constant="15" id="D0g-45-JTf"/>
                             <constraint firstItem="ipw-3b-nB3" firstAttribute="top" secondItem="RI5-sL-58w" secondAttribute="bottom" constant="5" id="EVC-Qt-THj"/>
                             <constraint firstItem="nw4-b1-o5D" firstAttribute="leading" secondItem="hqw-jC-oBf" secondAttribute="leading" constant="15" id="Fgu-ZJ-JTj"/>
+                            <constraint firstItem="TEC-l1-HGI" firstAttribute="top" secondItem="sfo-j5-yuB" secondAttribute="bottom" constant="30" id="Fzw-4d-P2J"/>
                             <constraint firstItem="RI5-sL-58w" firstAttribute="top" secondItem="Gjq-pC-Zpu" secondAttribute="bottom" constant="10" id="JAl-Cw-nKM"/>
                             <constraint firstAttribute="trailing" secondItem="RI5-sL-58w" secondAttribute="trailing" constant="15" id="VUo-tQ-wRN"/>
+                            <constraint firstItem="sfo-j5-yuB" firstAttribute="leading" secondItem="hqw-jC-oBf" secondAttribute="leading" constant="20" id="ZpO-si-wDO"/>
                             <constraint firstAttribute="trailing" secondItem="nw4-b1-o5D" secondAttribute="trailing" constant="15" id="bBT-bY-h0z"/>
                             <constraint firstItem="MmH-Bh-aqK" firstAttribute="top" secondItem="nw4-b1-o5D" secondAttribute="bottom" constant="20" id="bBZ-Wj-OUo"/>
                             <constraint firstItem="RI5-sL-58w" firstAttribute="leading" secondItem="hqw-jC-oBf" secondAttribute="leading" constant="15" id="jfk-04-9lu"/>
@@ -1154,6 +1166,7 @@
                         <outlet property="passwordConfirmTextField" destination="nw4-b1-o5D" id="iZ9-XU-ynz"/>
                         <outlet property="passwordTextField" destination="ipw-3b-nB3" id="dwr-on-qC6"/>
                         <outlet property="submitButton" destination="MmH-Bh-aqK" id="luk-kz-QvW"/>
+                        <outlet property="termsLabel" destination="sfo-j5-yuB" id="OI8-k8-g6J"/>
                         <segue destination="mN4-f6-9fO" kind="unwind" identifier="Unwind From SignIn View" unwindAction="unwindToLogin:" id="cKS-sh-hct"/>
                     </connections>
                 </viewController>
@@ -1174,7 +1187,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GNB-UQ-PyZ">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Company Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="GNB-UQ-PyZ">
                                 <rect key="frame" x="15" y="74" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="Yxm-pX-YHj"/>
@@ -1182,7 +1195,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EHk-gg-3Ch">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Number" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="EHk-gg-3Ch">
                                 <rect key="frame" x="15" y="184" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="JPT-wm-qxT"/>
@@ -1190,7 +1203,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ym0-lh-0jE">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Contact Name" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ym0-lh-0jE">
                                 <rect key="frame" x="15" y="131" width="570" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="YdC-bY-c1J"/>
