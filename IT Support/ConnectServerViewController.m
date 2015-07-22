@@ -62,7 +62,7 @@
 - (void)updateTimer{
     //预计6秒左右
     if (self.progressView.progress <0.98) {
-        float newProgress = [self.progressView progress] + 0.014;
+        float newProgress = [self.progressView progress] + 0.018;
         [self.progressView setProgress:newProgress animated:YES];
     }
 }

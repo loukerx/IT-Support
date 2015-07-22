@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="EventBoardCell" rowHeight="105" id="1Ds-kl-jR6" userLabel="EventBoardCell" customClass="EventBoardTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="392" height="105"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Ds-kl-jR6" id="Wb7-cn-rUs">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c64-gn-eUh">
+                        <rect key="frame" x="20" y="21" width="372" height="83.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo </string>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Due:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vea-Rg-Ca0">
+                        <rect key="frame" x="25" y="0.0" width="367" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="wAC-PR-ufS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oKy-Ho-fsH" userLabel="Color Bar View">
+                        <rect key="frame" x="0.0" y="0.0" width="15" height="104.5"/>
+                        <color key="backgroundColor" red="0.1085391473" green="0.86679292929999996" blue="0.25508166989999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="15" id="fDB-BK-UXU"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Vea-Rg-Ca0" secondAttribute="trailing" id="7bG-9p-VLB"/>
+                    <constraint firstItem="oKy-Ho-fsH" firstAttribute="leading" secondItem="Wb7-cn-rUs" secondAttribute="leading" id="9Mt-B4-a1h"/>
+                    <constraint firstAttribute="bottom" secondItem="c64-gn-eUh" secondAttribute="bottom" id="GHQ-rQ-33p"/>
+                    <constraint firstAttribute="bottom" secondItem="oKy-Ho-fsH" secondAttribute="bottom" id="O7I-Ux-iUQ"/>
+                    <constraint firstItem="Vea-Rg-Ca0" firstAttribute="top" secondItem="Wb7-cn-rUs" secondAttribute="top" id="doP-3A-d7E"/>
+                    <constraint firstItem="oKy-Ho-fsH" firstAttribute="top" secondItem="Wb7-cn-rUs" secondAttribute="top" id="fJm-DX-XGk"/>
+                    <constraint firstItem="c64-gn-eUh" firstAttribute="leading" secondItem="oKy-Ho-fsH" secondAttribute="trailing" constant="5" id="rKL-rk-SZ8"/>
+                    <constraint firstItem="Vea-Rg-Ca0" firstAttribute="leading" secondItem="oKy-Ho-fsH" secondAttribute="trailing" constant="10" id="riW-NV-1ks"/>
+                    <constraint firstAttribute="trailing" secondItem="c64-gn-eUh" secondAttribute="trailing" id="tzK-ZR-ofO"/>
+                    <constraint firstItem="c64-gn-eUh" firstAttribute="top" secondItem="Vea-Rg-Ca0" secondAttribute="bottom" id="zmY-9S-Qrq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="descriptionTextView" destination="c64-gn-eUh" id="c9n-7a-g6Y"/>
+                <outlet property="dueDayLabel" destination="Vea-Rg-Ca0" id="HVK-s9-Hrm"/>
+                <outlet property="userColorView" destination="oKy-Ho-fsH" id="fiC-4k-ooT"/>
+            </connections>
+            <point key="canvasLocation" x="314" y="353.5"/>
+        </tableViewCell>
+    </objects>
+</document>

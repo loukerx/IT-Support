@@ -478,12 +478,25 @@
     //-------------section 4 titleSection
     //- Subject
     //- Description
-    UITableViewCell *cell=nil;
+    
+//    static NSString *simpleTableIdentifier = @"SimpleTableItem";
+//
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+//    
+
+    
+//    UITableViewCell *cell=nil;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RequestTableViewCell"];
     
     if(indexPath.section == categorySection){
         
-         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                           reuseIdentifier:@"RequestTableViewCell"];
+        
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                          reuseIdentifier:@"RequestTableViewCell"];
+        }
+        
+
  
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         switch (indexPath.row) {
@@ -738,8 +751,8 @@
 #pragma mark - DatePicker
 -(void)initialDatePicker
 {
-    CGRect priceTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
-    self.dateTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
+    CGRect dateTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
+    self.dateTextField = [[UITextField alloc] initWithFrame:dateTextFieldFrame];
     self.dateTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
 
     

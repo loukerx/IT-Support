@@ -73,11 +73,7 @@
     [self.tableView selectRowAtIndexPath:selection
                            animated:NO
                      scrollPosition:UITableViewScrollPositionNone];
-    
-    //check user status
-//    if (mDelegate_.mMobileNumber.length>0) {
-//        [self.logInButton setTitle:@"Log Out" forState:UIControlStateNormal];
-//    }
+
 }
 
 -(void)createTableViewHeader
@@ -176,26 +172,6 @@
     
     [cell.textLabel setTextColor:mDelegate_.appThemeColor];
     
-    //get navigation controller
-    
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-
-    
-////    [self performSegueWithIdentifier:@"Test Push" sender:self];
-//    MainNavigationViewController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"contentController"];
-////    DEMONavigationController *navigationController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentController"];
-////    
-//    // add view controller on navigation controller
-//    RentTypeTableViewController *rentTypeTableViewController = [storyboard instantiateViewControllerWithIdentifier:@"rentType"];
-//    navigationController.viewControllers = @[rentTypeTableViewController];
-//    
-//    
-////testing
-//    [((MainViewController *)self.superController) addChildViewController:navigationController];
-//    mDelegate_.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
-//    mDelegate_.window.rootViewController = navigationController;
-    
-    
     [((RequestListTableViewController*)self.superController)hideMenuListViewController:cell.textLabel.text];
 }
 
@@ -250,24 +226,5 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 }
 
 
-#pragma mark - actionSheet delegate
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
-//    switch (buttonIndex) {
-//        case 0:
-//            //CLEAR NSUserDefaults local variables
-//            [[NSUserDefaults standardUserDefaults] setObject:@""
-//                                                      forKey:@"userEmail"];
-//            [[NSUserDefaults standardUserDefaults] setObject:@""
-//                                                      forKey:@"userPassword"];
-//            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-//            
-//            //hide menu list view controller
-//            [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Log Out"];
-//            break;
-//        default:
-//            break;
-//    }
-//    
-//}
 
 @end

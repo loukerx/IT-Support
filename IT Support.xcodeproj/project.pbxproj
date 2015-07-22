@@ -68,9 +68,13 @@
 		AEDD2ED01B3B8B46000BCCA7 /* UpdatePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ECF1B3B8B46000BCCA7 /* UpdatePasswordViewController.m */; };
 		AEDD2ED31B3B991C000BCCA7 /* UpdateContactNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */; };
 		AEDD2ED61B3BA0F1000BCCA7 /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */; };
+		AEDD3D481B5F0BFB006847DC /* EventBoardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD3D471B5F0BFB006847DC /* EventBoardTableViewController.m */; };
+		AEDD3D4C1B5F0C88006847DC /* EventBoardTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEDD3D4B1B5F0C88006847DC /* EventBoardTableViewCell.xib */; };
+		AEDD3D4F1B5F0CCA006847DC /* EventBoardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD3D4E1B5F0CCA006847DC /* EventBoardTableViewCell.m */; };
+		AEDD3D551B5F2ED4006847DC /* NewEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD3D541B5F2ED4006847DC /* NewEventViewController.m */; };
 		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
+		AEDF724D1B5F62B000376294 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */; };
 		AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */; };
-		AEE39A481B5DBC2C00A2057A /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
 		AEE684261B032D36005F9AE7 /* RequestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684251B032D36005F9AE7 /* RequestTableViewController.m */; };
 /* End PBXBuildFile section */
@@ -195,10 +199,17 @@
 		AEDD2ED21B3B991C000BCCA7 /* UpdateContactNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdateContactNumberViewController.m; sourceTree = "<group>"; };
 		AEDD2ED41B3BA0F1000BCCA7 /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordViewController.h; sourceTree = "<group>"; };
 		AEDD2ED51B3BA0F1000BCCA7 /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordViewController.m; sourceTree = "<group>"; };
+		AEDD3D461B5F0BFB006847DC /* EventBoardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventBoardTableViewController.h; sourceTree = "<group>"; };
+		AEDD3D471B5F0BFB006847DC /* EventBoardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventBoardTableViewController.m; sourceTree = "<group>"; };
+		AEDD3D4B1B5F0C88006847DC /* EventBoardTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventBoardTableViewCell.xib; sourceTree = "<group>"; };
+		AEDD3D4D1B5F0CCA006847DC /* EventBoardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventBoardTableViewCell.h; sourceTree = "<group>"; };
+		AEDD3D4E1B5F0CCA006847DC /* EventBoardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventBoardTableViewCell.m; sourceTree = "<group>"; };
+		AEDD3D531B5F2ED4006847DC /* NewEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewEventViewController.h; sourceTree = "<group>"; };
+		AEDD3D541B5F2ED4006847DC /* NewEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewEventViewController.m; sourceTree = "<group>"; };
 		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		AEDDA5321B1846BA008213BE /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
-		AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEE684211B03255A005F9AE7 /* SelectSubCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectSubCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectSubCategoryTableViewController.m; sourceTree = "<group>"; };
 		AEE684241B032D36005F9AE7 /* RequestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestTableViewController.h; sourceTree = "<group>"; };
@@ -211,7 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */,
-				AEE39A481B5DBC2C00A2057A /* FBSDKCoreKit.framework in Frameworks */,
+				AEDF724D1B5F62B000376294 /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -235,6 +246,7 @@
 				AEBA92091B0B257C00447AA1 /* MenuListViewController.xib */,
 				AE306A671B099AD70058E9E2 /* PhotoCollectionViewCell.xib */,
 				AED1AD271B0C64990020B054 /* RequestListTableViewCell.xib */,
+				AEDD3D4B1B5F0C88006847DC /* EventBoardTableViewCell.xib */,
 				AE5CDBC61B019ED30035C366 /* LaunchScreen.xib */,
 			);
 			name = View;
@@ -414,7 +426,7 @@
 				AEBA64CF1B56483500E2B131 /* QuartzCore.framework */,
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AEE39A471B5DBC2C00A2057A /* FBSDKCoreKit.framework */,
+				AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -449,10 +461,15 @@
 			isa = PBXGroup;
 			children = (
 				AED1AD1B1B0C027A0020B054 /* RequestListCell */,
+				AEDD3D501B5F0CCE006847DC /* EventBoardCell */,
 				AEBA92051B0B24A400447AA1 /* RequestListTableViewController.h */,
 				AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */,
 				AEBA92131B0B2C8E00447AA1 /* RequestDetailTableViewController.h */,
 				AEBA92141B0B2C8E00447AA1 /* RequestDetailTableViewController.m */,
+				AEDD3D461B5F0BFB006847DC /* EventBoardTableViewController.h */,
+				AEDD3D471B5F0BFB006847DC /* EventBoardTableViewController.m */,
+				AEDD3D531B5F2ED4006847DC /* NewEventViewController.h */,
+				AEDD3D541B5F2ED4006847DC /* NewEventViewController.m */,
 			);
 			name = "Display Request";
 			sourceTree = "<group>";
@@ -544,6 +561,15 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		AEDD3D501B5F0CCE006847DC /* EventBoardCell */ = {
+			isa = PBXGroup;
+			children = (
+				AEDD3D4D1B5F0CCA006847DC /* EventBoardTableViewCell.h */,
+				AEDD3D4E1B5F0CCA006847DC /* EventBoardTableViewCell.m */,
+			);
+			name = EventBoardCell;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -626,6 +652,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE58EF251B05BBC600372A5F /* image5.jpg in Resources */,
+				AEDD3D4C1B5F0C88006847DC /* EventBoardTableViewCell.xib in Resources */,
 				AE5CDBC31B019ED30035C366 /* Main.storyboard in Resources */,
 				AE46C3B71B5CB29C001EBBAC /* Terms of Use.txt in Resources */,
 				AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */,
@@ -666,6 +693,7 @@
 				AE5CDBBD1B019ED30035C366 /* IT_Support.xcdatamodeld in Sources */,
 				AEDA27351B0309420007DE11 /* SelectCategoryTableViewController.m in Sources */,
 				AE5CDC071B01DC1A0035C366 /* AFSecurityPolicy.m in Sources */,
+				AEDD3D481B5F0BFB006847DC /* EventBoardTableViewController.m in Sources */,
 				AECC47FF1B5737C4007BE0A7 /* UpdatePagesViewController.m in Sources */,
 				AE6C227B1B58EA41004E801B /* AboutTableViewController.m in Sources */,
 				AE5CDBBA1B019ED30035C366 /* AppDelegate.m in Sources */,
@@ -696,9 +724,11 @@
 				AED5D37B1B3CE53100C33FC0 /* ConnectServerViewController.m in Sources */,
 				AE5CDC061B01DC1A0035C366 /* AFNetworkReachabilityManager.m in Sources */,
 				AE5CDC0A1B01DC1A0035C366 /* AFURLResponseSerialization.m in Sources */,
+				AEDD3D4F1B5F0CCA006847DC /* EventBoardTableViewCell.m in Sources */,
 				AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */,
 				AE5CDC0B1B01DC1A0035C366 /* AFURLSessionManager.m in Sources */,
 				AE5CDC0C1B01DC1A0035C366 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				AEDD3D551B5F2ED4006847DC /* NewEventViewController.m in Sources */,
 				AEDAA0F31B295146007F5B86 /* UserSettingTableViewController.m in Sources */,
 				AE5CDBB71B019ED30035C366 /* main.m in Sources */,
 				AED41F661B4F5E5A00DB9522 /* AppHelper.m in Sources */,
@@ -1064,6 +1094,31 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1099,6 +1154,31 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,

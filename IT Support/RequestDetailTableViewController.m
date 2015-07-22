@@ -16,6 +16,7 @@
 #import "RequestListTableViewController.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "EventBoardTableViewController.h"
 
 @interface RequestDetailTableViewController ()<UIScrollViewDelegate,UITableViewDelegate,UITableViewDataSource,UITextViewDelegate,UIActionSheetDelegate>
 {
@@ -40,6 +41,8 @@
 @end
 
 #define requestSection 0
+#define deadlineRow 3
+
 #define priceSection 1
 #define contactSection 2
 #define titleSection 3
@@ -341,23 +344,6 @@
     }
 }
 
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    if ([segue.identifier isEqualToString:@"To RequestPhotoDescription TableView"])
-    {
-         //calculate start position on scrollview
-         CGFloat x =  self.scrollView.contentOffset.x;
-         CGFloat width = self.scrollView.frame.size.width;
-         
-         RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
-         rpdtvc.displayPhotoIndex = roundf(x/width);
-         rpdtvc.enableEditMode = NO;
-    }
-
-}
 
 #pragma mark - scrollview & tableHeaderView
 
@@ -537,9 +523,9 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == requestSection) {
-        return 3;
+        return 4;
     }else if (section == priceSection){
-        return 3;
+        return 2;
     }else if(section == contactSection){
         return 4;
     }
@@ -554,24 +540,33 @@
     //- Created Date
     //- Subcategory
     //- status
+    //- Deadline
     //-------------section priceSection 1
     //- Price
     //- PriceType
-    //- Deadline
     //-------------section contactSection 2
-    //- Support Name
-    //- Support company
+    //- contact Name
+    //- contact company
     //- PreferredContactMethod
     //- mobile & Email
     //-------------section titleSection 3
-    //- Subject
-    //- Description
+    //- Subject; Description
+    
     UITableViewCell *cell=nil;
     
     if(indexPath.section == requestSection){
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestDetailTableViewCell"];
+        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        cell.userInteractionEnabled = NO;
+        //-------------section requestSection 0
+        //- Created Date
+        //- Subcategory
+        //- status
+        //- Deadline
+        
         //createdDate
         NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
         
@@ -594,7 +589,17 @@
 //        UIImage *statusImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@",statusString]];
     
         
+        //deadline
+        //添加.111 为了正常转换时区
+        NSString *deadlineStr = [NSString stringWithFormat:@"%@.111",[self.requestObject valueForKey:@"RequestDeadline"]];
 
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
+        NSDate *date2 = [dateFormatter dateFromString:deadlineStr];
+        
+        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+        NSString * deadlineDate = [dateFormatter stringFromDate:date2];
+        
+        
         switch (indexPath.row) {
                 
             case 0:
@@ -611,6 +616,16 @@
                 cell.textLabel.text = @"Status:";
                 cell.detailTextLabel.text =  statusString;
                 break;
+                
+            case 3:
+                cell.textLabel.text = @"Deadline";
+                cell.detailTextLabel.text = deadlineDate;
+                if (![mDelegate_.searchType isEqualToString:@"Active"]) {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle =UITableViewCellSelectionStyleDefault;
+                    cell.userInteractionEnabled = YES;
+                }
+                break;
             default:
                 break;
         }
@@ -618,10 +633,13 @@
        
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestDetailTableViewCell"];
+        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        cell.userInteractionEnabled = NO;
         //-------------section priceSection 1
         //- Price
         //- PriceType
-        //- Deadline
+
         
         //price
         NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];
@@ -634,20 +652,6 @@
             priceType = @"Fixed";
         }
         
-        //deadline
-        //添加.111 为了正常转换时区
-        NSString *dateStr = [NSString stringWithFormat:@"%@.111",[self.requestObject valueForKey:@"RequestDeadline"]];
-        
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-        
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
-        NSDate *date = [dateFormatter dateFromString:dateStr];
-        
-        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSString * deadlineDate = [dateFormatter stringFromDate:date];
-        
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Price";
@@ -658,26 +662,25 @@
                 cell.textLabel.text = @"PriceType";
                 cell.detailTextLabel.text = priceType;
                 break;
-            
-            case 2:
-                cell.textLabel.text = @"Deadline";
-                cell.detailTextLabel.text = deadlineDate;
-                break;
+
             default:
                 break;
         }
         
         
     }else if(indexPath.section == contactSection){
-        
+
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                 reuseIdentifier:@"RequestDetailTableViewCell"];
-        //-------------section 1
+        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        
+        //-------------section contactSection 2
         //- contact Name
         //- contact company
         //- PreferredContactMethod
-        //- mobile
-        //- Email
+        //- mobile & Email
+        
         NSString *contactName =@"N/A",*companyName =@"N/A",*prefer =@"N/A", *contactNumber =@"",*email=@"";
         BOOL buttonEnable = NO;
         UIColor *contactColor = [UIColor grayColor];
@@ -755,6 +758,13 @@
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:@"RequestDetailTableViewCell"];
+        
+        cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        cell.userInteractionEnabled = NO;
+        
+        //-------------section titleSection 3
+        //- Subject; Description
+        
         //subject textfield
         [cell addSubview:self.subjectTextField];
         //        self.subjectTextField.text= mDelegate_.requestSubject;
@@ -767,6 +777,37 @@
         
     }
     return cell;
+}
+
+#pragma mark - Select Row
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.section == requestSection && indexPath.row == deadlineRow ) {
+        [self performSegueWithIdentifier:@"To EventBoard TableView" sender:self];
+    }
+    
+}
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if ([segue.identifier isEqualToString:@"To RequestPhotoDescription TableView"])
+    {
+        //calculate start position on scrollview
+        CGFloat x =  self.scrollView.contentOffset.x;
+        CGFloat width = self.scrollView.frame.size.width;
+        
+        RequestPhotoDescriptionTableViewController *rpdtvc = [segue destinationViewController];
+        rpdtvc.displayPhotoIndex = roundf(x/width);
+        rpdtvc.enableEditMode = NO;
+    }
+    
+    if ([[segue identifier] isEqualToString:@"To EventBoard TableView"]) {
+        
+        //        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        EventBoardTableViewController *ebtvc = [segue destinationViewController];
+        ebtvc.requestObject = self.requestObject; //[tableData_ objectAtIndex:indexPath.row];
+        
+    }
 }
 
 #pragma mark - confirm action

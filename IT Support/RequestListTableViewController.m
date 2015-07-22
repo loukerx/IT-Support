@@ -78,7 +78,6 @@
     self.tableView.dataSource = self;
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
-    
     [self initialSettingForView];
     
 }
@@ -289,127 +288,6 @@
     }];
 }
 
-
-//#pragma mark retrieving data 1.0
-//-(void)prepareMoreRequestList:(NSString *)searchType
-//{
-//    //navigationbar title
-//    self.title = searchType;
-//    mDelegate_.searchType = searchType;
-//    
-//    NSLog(@"retrieving requests data...");
-//    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-//    
-//    //URL:Client http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Client?ClientID=ClientID&curID=CurID&direction=Direction&searchCondition=SearchCondition
-//    
-//    //URL:Support http://ec2-54-79-39-165.ap-southeast-2.compute.amazonaws.com/ITSupportService/API/Request/Support?curID=CurID&direction=Direction&searchCondition=SearchCondition
-//    
-//    //default "curID" is "currentRequestID" = 0
-//    NSString *curID = currentRequestID_;
-//    NSString *direction = direction_;
-//    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
-//    
-//    
-//    NSString *getMethod = @"";
-//    NSDictionary *parameters;
-//    //user mode
-//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//        
-//        NSString *clientID = mDelegate_.clientID;
-//        parameters = @{@"clientID" : clientID,
-//                       @"CurID" : curID,
-//                       @"Direction": direction,
-//                       @"SearchCondition" : searchCondition
-//                       };
-//        getMethod = @"/ITSupportService/API/Request/Client";
-//    }else{
-//        parameters = @{@"CurID" : curID,
-//                       @"Direction": direction,
-//                       @"SearchCondition" : searchCondition
-//                       };
-//        getMethod = @"/ITSupportService/API/Request/Support";
-//    }
-//    
-//    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-//    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//    
-//    //clientID 放在parameters中
-//    [manager GET:getMethod parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
-//        [HUD_ hide:YES];
-//        self.menuBarButtonItem.enabled = YES;
-//        //convert to NSDictionary
-//        NSDictionary *responseDictionary = responseObject;
-//        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
-//        
-//        // 1 == success, 0 == fail
-//        if ([responseStatus isEqualToString:@"0"]) {
-//            
-//            NSString *errorMessage =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Message"]];
-////            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error!!"
-////                                                                message:errorMessage
-////                                                               delegate:nil
-////                                                      cancelButtonTitle:@"OK"
-////                                                      otherButtonTitles:nil];
-////            [alertView show];
-//            
-//            
-//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error!!"
-//                                                                           message:errorMessage
-//                                                                    preferredStyle:UIAlertControllerStyleAlert];
-//            
-//            UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-//                                                             handler:^(UIAlertAction * action) {}];
-//            [alert addAction:okAction];
-//            [self presentViewController:alert animated:YES completion:nil];
-//            
-//            
-//        }else if ([responseStatus isEqualToString:@"1"]) {
-//    
-//            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-//            tempArray = [responseDictionary valueForKey:@"Result"];
-//            //0 is load earlier data
-//            if ([direction_ isEqualToString:@"0"]) {
-//                
-//                for (NSDictionary *dic in tempArray) {
-//                    [tableData_ addObject:dic];
-//                }
-//
-//            }else if ([direction_ isEqualToString:@"1"]){
-//                //1 is load next data
-//                for (NSDictionary *dic in tempArray) {
-//                    [tableData_ insertObject:dic atIndex:0];
-//                }
-//            }
-//            
-//            [self.tableView reloadData];
-//
-//            [loadMore_ setText:@"All Loaded."];
-//            NSLog(@"Retreved Request List Data");
-//        }
-//    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//        [HUD_ hide:YES];
-//        self.menuBarButtonItem.enabled = YES;
-////        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error Retrieving Request"
-////                                                            message:[error localizedDescription]
-////                                                           delegate:nil
-////                                                  cancelButtonTitle:@"OK"
-////                                                  otherButtonTitles:nil];
-////        [alertView show];
-//        
-//        
-//        
-//        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Error Retrieving Request"
-//                                                                       message:[error localizedDescription]
-//                                                                preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-//                                                         handler:^(UIAlertAction * action) {}];
-//        
-//        [alert addAction:okAction];
-//        [self presentViewController:alert animated:YES completion:nil];
-//    }];
-//}
-
 #pragma mark - Menu List
 - (IBAction)MenuAction:(id)sender {
     [self showMenuListViewController];
@@ -503,7 +381,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-     return [tableData_ count] + 1;
+    return [tableData_ count] + 1;
 }
 
 
