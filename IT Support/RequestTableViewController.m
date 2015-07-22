@@ -121,12 +121,9 @@
 
     if (mDelegate_.mRequestImages.count>0) {
         
-//        NSData *imageData = UIImageJPEGRepresentation(mDelegate_.mRequestImages[0], 1.0f);
-//        NSLog(@"Size of Image(kb):%lu",(unsigned long)[imageData length]/1024);
         self.imageView.image =  mDelegate_.mRequestImages[0];
         self.imageView.backgroundColor = mDelegate_.scrollViewBackgroundColor;
-//        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-        
+
     }
 }
 
@@ -479,25 +476,12 @@
     //- Subject
     //- Description
     
-//    static NSString *simpleTableIdentifier = @"SimpleTableItem";
-//
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-//    
+    UITableViewCell *cell=nil;
 
-    
-//    UITableViewCell *cell=nil;
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"RequestTableViewCell"];
-    
     if(indexPath.section == categorySection){
         
-        
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                          reuseIdentifier:@"RequestTableViewCell"];
-        }
-        
-
- 
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                      reuseIdentifier:@"RequestTableViewCell"];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         switch (indexPath.row) {
              case 0:
@@ -520,6 +504,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:@"RequestTableViewCell"];
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
+        
         NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
         NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
         
@@ -541,6 +526,8 @@
 
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         
+        NSString *priceType = self.priceTypeTextField.text;
+        
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Your Price:";
@@ -548,7 +535,7 @@
                 break;
             case 1:
                 cell.textLabel.text = @"Price Type:";
-                cell.detailTextLabel.text = @"Fixed";
+                cell.detailTextLabel.text = priceType;
                 [cell addSubview:self.priceTypeTextField];
                 break;
             default:
@@ -559,16 +546,18 @@
                                       reuseIdentifier:@"RequestTableViewCell"];
         
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        NSString *preferredContactMethod = self.preferredContactTextField.text;
+        NSString *dateString = self.dateTextField.text;
+        
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"Prefer Contact:";
-                cell.detailTextLabel.text = @"By Email";
+                cell.detailTextLabel.text = preferredContactMethod;
                 [cell addSubview:self.preferredContactTextField];
                 break;
             case 1:
                 cell.textLabel.text = @"Deadline:";
-                cell.detailTextLabel.text = @"Select a Date";
+                cell.detailTextLabel.text = dateString;//@"Select a Date";
                 [cell addSubview:self.dateTextField];
                 break;
             default:
@@ -643,6 +632,7 @@
     CGRect priceTypeTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
     self.priceTypeTextField = [[UITextField alloc] initWithFrame:priceTypeTextFieldFrame];
     self.priceTypeTextField.borderStyle = UITextBorderStyleNone;
+    self.priceTypeTextField.text = @"Fixed";
     
     //add picker view to InputView
     [self.priceTypeTextField setInputView:self.priceTypePickerView];
@@ -667,11 +657,12 @@
     self.preferredContactPickerView.dataSource = self;
     self.preferredContactPickerView.delegate = self;
     self.preferredContactPickerView.tag = preferredContactPickerViewTag;
-    
+
     
     CGRect preferedContactTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
     self.preferredContactTextField = [[UITextField alloc] initWithFrame:preferedContactTextFieldFrame];
     self.preferredContactTextField.borderStyle = UITextBorderStyleNone;
+    self.preferredContactTextField.text = @"By Email";
     
     //add picker view to InputView
     [self.preferredContactTextField setInputView:self.preferredContactPickerView];
@@ -723,10 +714,9 @@
 
     if (pickerView.tag == priceTypePickerViewTag) {
         //0 = Fixed; 1 = Negotiable;
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         NSString *priceTypeString = priceTypeArray_[row];
         cell.detailTextLabel.text = priceTypeString;
+        self.priceTypeTextField.text = priceTypeString;
         if (row == 0) {
             negotiable_ = NO;
         }else{
@@ -737,6 +727,7 @@
         //0 = By Email; 1 = By Phone;
         NSString *preferredContactString = preferredContactArray_[row];
         cell.detailTextLabel.text = preferredContactString;
+        self.preferredContactTextField.text = preferredContactString;
         if (row == 0) {
             preferPhone_ = NO;
         }else{
@@ -754,7 +745,7 @@
     CGRect dateTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
     self.dateTextField = [[UITextField alloc] initWithFrame:dateTextFieldFrame];
     self.dateTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
-
+    self.dateTextField.text = @"Select a Date";
     
     self.datePickerView = [[UIDatePicker alloc] init];
     self.datePickerView.datePickerMode = UIDatePickerModeDate;
@@ -783,6 +774,7 @@
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];
+        self.dateTextField.text = [dateFormatter stringFromDate:requestDeadline_];
         [self.dateTextField resignFirstResponder];
         
     }else{
