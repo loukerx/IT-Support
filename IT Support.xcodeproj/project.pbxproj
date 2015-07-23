@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -73,8 +73,8 @@
 		AEDD3D4F1B5F0CCA006847DC /* EventBoardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD3D4E1B5F0CCA006847DC /* EventBoardTableViewCell.m */; };
 		AEDD3D551B5F2ED4006847DC /* NewEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDD3D541B5F2ED4006847DC /* NewEventViewController.m */; };
 		AEDDA5331B1846BA008213BE /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEDDA5321B1846BA008213BE /* ImageViewController.m */; };
-		AEDF724D1B5F62B000376294 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */; };
 		AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */; };
+		AEE3E96E1B606F7600BFB318 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEE3E96D1B606F7600BFB318 /* FBSDKCoreKit.framework */; };
 		AEE684231B03255A005F9AE7 /* SelectSubCategoryTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */; };
 		AEE684261B032D36005F9AE7 /* RequestTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEE684251B032D36005F9AE7 /* RequestTableViewController.m */; };
 /* End PBXBuildFile section */
@@ -208,8 +208,8 @@
 		AEDD3D541B5F2ED4006847DC /* NewEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewEventViewController.m; sourceTree = "<group>"; };
 		AEDDA5311B1846BA008213BE /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
 		AEDDA5321B1846BA008213BE /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
-		AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		AEE3E96D1B606F7600BFB318 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../002 3rd Party Library/005 FacebookSDK/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		AEE684211B03255A005F9AE7 /* SelectSubCategoryTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectSubCategoryTableViewController.h; sourceTree = "<group>"; };
 		AEE684221B03255A005F9AE7 /* SelectSubCategoryTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectSubCategoryTableViewController.m; sourceTree = "<group>"; };
 		AEE684241B032D36005F9AE7 /* RequestTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestTableViewController.h; sourceTree = "<group>"; };
@@ -222,7 +222,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */,
-				AEDF724D1B5F62B000376294 /* FBSDKCoreKit.framework in Frameworks */,
+				AEE3E96E1B606F7600BFB318 /* FBSDKCoreKit.framework in Frameworks */,
 				AE0044901B46375F0068F806 /* Bolts.framework in Frameworks */,
 				AE00448E1B46374B0068F806 /* libsqlite3.dylib in Frameworks */,
 				AEDFA7F21B38D0480086C816 /* FBSDKShareKit.framework in Frameworks */,
@@ -426,7 +426,7 @@
 				AEBA64CF1B56483500E2B131 /* QuartzCore.framework */,
 				AE00448F1B46375F0068F806 /* Bolts.framework */,
 				AE00448D1B46374B0068F806 /* libsqlite3.dylib */,
-				AEDF724C1B5F62B000376294 /* FBSDKCoreKit.framework */,
+				AEE3E96D1B606F7600BFB318 /* FBSDKCoreKit.framework */,
 				AEDFA7F01B38D0480086C816 /* FBSDKShareKit.framework */,
 			);
 			name = Framework;
@@ -628,7 +628,7 @@
 				};
 			};
 			buildConfigurationList = AE5CDBAC1B019ED30035C366 /* Build configuration list for PBXProject "IT Support" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -1119,6 +1119,11 @@
 					Party,
 					Library/005,
 					FacebookSDK,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 				);
 				INFOPLIST_FILE = "IT Support/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1154,6 +1159,11 @@
 					"$(PROJECT_DIR)/IT",
 					Support/Facebook,
 					sdk,
+					/Users/yinh/Documents/002,
+					3rd,
+					Party,
+					Library/005,
+					FacebookSDK,
 					/Users/yinh/Documents/002,
 					3rd,
 					Party,
