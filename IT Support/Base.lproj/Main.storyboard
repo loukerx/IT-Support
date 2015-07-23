@@ -638,7 +638,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1A4-lX-bMD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="541" y="592"/>
+            <point key="canvasLocation" x="560" y="592"/>
         </scene>
         <!--Connect Server View Controller-->
         <scene sceneID="7bT-uo-P8J">
@@ -721,7 +721,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TqW-hg-fP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-219" y="2125"/>
+            <point key="canvasLocation" x="-219" y="2145"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="ZRx-kG-6f2">
@@ -742,7 +742,7 @@
                                     <constraint firstAttribute="height" constant="30" id="JpC-pd-oXG"/>
                                     <constraint firstAttribute="width" constant="70" id="UPz-Wm-2Ey"/>
                                 </constraints>
-                                <state key="normal" title="Sign In">
+                                <state key="normal" title="Sign Up">
                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1008,7 +1008,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k8Z-vq-ZPK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1354" y="2125"/>
+            <point key="canvasLocation" x="1380" y="2145"/>
         </scene>
         <!--Request Detail Table View Controller-->
         <scene sceneID="3Ha-W3-rV8">
@@ -1429,7 +1429,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KFB-ST-hwV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="560" y="2125"/>
+            <point key="canvasLocation" x="560" y="2145"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="4DV-XQ-l2o">

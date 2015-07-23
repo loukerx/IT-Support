@@ -107,7 +107,6 @@
     //setting color
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];//mDelegate_.appThemeColor;
     [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
-//    [self.navigationController.navigationBar setTranslucent:NO];
     
     
     //User Mode

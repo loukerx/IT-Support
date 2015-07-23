@@ -770,7 +770,6 @@
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
         
-        
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         cell.detailTextLabel.text = [dateFormatter stringFromDate:requestDeadline_];

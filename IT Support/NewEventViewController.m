@@ -21,7 +21,6 @@
     NSDate *dueDate_;
 }
 
-
 @property (weak, nonatomic) IBOutlet UITextField *dueDayTextField;
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 
@@ -70,10 +69,6 @@
 #pragma mark - DatePicker
 -(void)initialDatePicker
 {
-//    CGRect priceTextFieldFrame = CGRectMake(0, 0, 0, textfieldHeight);
-//    self.dueDayTextField = [[UITextField alloc] initWithFrame:priceTextFieldFrame];
-//    self.dueDayTextField.borderStyle = UITextBorderStyleNone;//UITextBorderStyleRoundedRect;
-    
     
     self.datePickerView = [[UIDatePicker alloc] init];
     self.datePickerView.datePickerMode = UIDatePickerModeDate;
@@ -99,9 +94,6 @@
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
         
         self.dueDayTextField.text = [dateFormatter stringFromDate:dueDate_];
-//        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-//        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-//        cell.detailTextLabel.text = [dateFormatter stringFromDate:dueDate_];
         [self.dueDayTextField resignFirstResponder];
         
     }else{
@@ -122,7 +114,6 @@
         //clear requestDeadline_
         dueDate_ = nil;
     }
-    
 }
 
 #pragma mark - Button Action
@@ -213,7 +204,6 @@
     NSString *requestID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestID"]];
     NSString *description = self.descriptionTextView.text;
     
-    //requestDeadline & priceType
     NSDate *dueDate = dueDate_;
 
     

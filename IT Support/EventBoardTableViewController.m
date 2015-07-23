@@ -233,17 +233,19 @@
     //due day
     //添加.111 为了正常转换时区
     NSString *dateStr = [NSString stringWithFormat:@"%@.111",[dataObject valueForKey:@"EventDueDate"]];
-
+    
+    //localTimeZone
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-    
     [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
-    NSDate *date = [dateFormatter dateFromString:dateStr];
+    NSDate *date = [dateFormatter dateFromString:dateStr];//结果TimeZone是 UTC
     
-    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-    NSString * dueDayText =[NSString stringWithFormat:@"Due: %@", [dateFormatter stringFromDate:date]];
     
-
+    // Set up an NSDateFormatter for UTC time zone
+    NSDateFormatter* formatterUtc = [[NSDateFormatter alloc] init];
+    [formatterUtc setDateFormat:@"dd/MM/yyyy"];
+    [formatterUtc setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    NSString * dueDayText =[NSString stringWithFormat:@"Due: %@", [formatterUtc stringFromDate:date]];
     
     
     //populate a cell

@@ -37,18 +37,18 @@
     
     //test
 //    [appHelper_ initialViewController:@"TestNavigationControllerID"];
-    [appHelper_ initialViewController:@"UpdatePagesViewStoryboardID"];
+//    [appHelper_ initialViewController:@"UpdatePagesViewStoryboardID"];
     
     //initialise a view controller
-//    if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
-//        
-//        [self initialProgressView];
-//        [self userLogin];
-//        
-//    }else{
-//
-//        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
-//    }
+    if (mDelegate_.userEmail.length>0 && mDelegate_.userPassword.length >0) {
+        
+        [self initialProgressView];
+        [self userLogin];
+        
+    }else{
+
+        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+    }
 }
 
 - (void)setupTimerWithTimer{

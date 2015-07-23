@@ -566,19 +566,25 @@
         //- Subcategory
         //- status
         //- Deadline
+
         
         //createdDate
         NSString *dateStr =[NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"CreateDate"]];
         
+        //localTimeZone
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
-        
         [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
-        NSDate *date = [dateFormatter dateFromString:dateStr];
+        NSDate *date = [dateFormatter dateFromString:dateStr];//UTC
         
-        [dateFormatter setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
-        NSString * createDate = [dateFormatter stringFromDate:date];
         
+        // Set up an NSDateFormatter for UTC time zone
+        NSDateFormatter* formatterUtc = [[NSDateFormatter alloc] init];
+        [formatterUtc setDateFormat:@"dd/MM/yyyy HH:mm:ss"];
+        [formatterUtc setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        NSString * createDate = [formatterUtc stringFromDate:date];
+        
+
         //category
         NSString *categoryName = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryName"]];
 //        NSString *parentID = [NSString stringWithFormat:@"%@",[self.requestObject valueForKey:@"RequestCategoryParentID"]];
@@ -593,11 +599,10 @@
         //添加.111 为了正常转换时区
         NSString *deadlineStr = [NSString stringWithFormat:@"%@.111",[self.requestObject valueForKey:@"RequestDeadline"]];
 
-        [dateFormatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'.'zzz"];
         NSDate *date2 = [dateFormatter dateFromString:deadlineStr];
         
-        [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-        NSString * deadlineDate = [dateFormatter stringFromDate:date2];
+        [formatterUtc setDateFormat:@"dd/MM/yyyy"];
+        NSString *deadlineDate = [formatterUtc stringFromDate:date2];
         
         
         switch (indexPath.row) {
