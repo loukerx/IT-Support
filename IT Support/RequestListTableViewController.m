@@ -25,6 +25,9 @@
     
     //data
     NSMutableArray *tableData_;
+    //no project
+    BOOL noProjectCheck_;
+    UIImageView *noProjectView_;
     //load more
     NSString *currentRequestID_;
     NSString *direction_;//时间查询：0 向前; 1 向后;
@@ -68,10 +71,19 @@
     loadMore_.text= @"正在加载...";
     
     
+    //no project
+    noProjectCheck_ = NO;
+    
+    noProjectView_ = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NoProject"]];
+    noProjectView_.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    noProjectView_.contentMode = UIViewContentModeScaleAspectFit;
+    
     //refreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
+    
+
     
     //tableview delegate
     self.tableView.delegate = self;
@@ -79,6 +91,7 @@
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
     
     [self initialSettingForView];
+    
     
 }
 
@@ -132,13 +145,11 @@
         currentRequestID_ = [NSString stringWithFormat:@"%@", [dic valueForKey:@"RequestID"]];
     }else{
         currentRequestID_ = @"";//version 2.0
-//        currentRequestID_ = @"0";//version 1.0
     }
 
     direction_ = @"1";
     lastLoadingTableDataCount_ = 0;
     self.menuBarButtonItem.enabled = NO;
-//    [self prepareMoreRequestList:searchType_];//version 1.0
     [self prepareRequestList:searchType_];//version 2.0
     [refreshControl endRefreshing];
 }
@@ -190,15 +201,7 @@
     
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
 
-
-    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-//   NSString *newString = [@"test;11111" stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    NSData *utf8Data = [@"test;11111" dataUsingEncoding:NSUTF8StringEncoding];
-//    NSString *dataString = [NSString stringWithFormat:@"%@",utf8Data];
-//    [manager.requestSerializer setValue:newString forHTTPHeaderField:@"Authorization"];
-    
-    
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:mDelegate_.userEmail password:mDelegate_.userToken];
     
     
@@ -262,10 +265,10 @@
                     [tableData_ insertObject:dic atIndex:0];
                 }
             }
-            
+            noProjectCheck_ = YES;
             [self.tableView reloadData];
             
-            [loadMore_ setText:@"All Loaded."];
+//            [loadMore_ setText:@"All Loaded."];
             NSLog(@"Retrieved Request List Data");
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -337,7 +340,6 @@
         
         searchType_ = displayMode;
         currentRequestID_ = @"";//version 2.0
-//        currentRequestID_ = @"0";//version 1.0
         direction_ = @"0";
         lastLoadingTableDataCount_ = 0;
         tableData_ = [[NSMutableArray alloc]init];
@@ -346,7 +348,6 @@
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Progressing...";
         self.menuBarButtonItem.enabled = NO;
-//        [self prepareMoreRequestList:searchType_];//version 1.0
         [self prepareRequestList:searchType_];//version 2.0
         
 //        tableData_ = [[NSMutableArray alloc] init];
@@ -461,7 +462,6 @@
         
     }else{
         //add load more indicate on this cell;
-        
         cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
         if(cell==nil){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
@@ -475,11 +475,18 @@
             
             direction_ = @"0";
 
-//            [self prepareMoreRequestList:searchType_];//version 1.0
             [self prepareRequestList:searchType_];//version 2.0
             lastLoadingTableDataCount_ = [tableData_ count];
         }else{
-            [loadMore_ setText:@"All Loaded."];
+
+            if (tableData_.count == 0 && noProjectCheck_) {
+
+                [self.tableView addSubview:noProjectView_];
+                [loadMore_ removeFromSuperview];
+            }else{
+                [loadMore_ setText:@"All Loaded."];
+                [noProjectView_ removeFromSuperview];
+            }
         }
     }
 

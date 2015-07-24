@@ -89,13 +89,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     //test
-//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//        self.emailTextField.text = @"";// @"hua.yin@itexpresspro.com.au";
-//        self.passwordTextField.text = @"";//@"qwe";
-//    }else{
-//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-//        self.passwordTextField.text = @"12345";
-//    }
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"";// @"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"";//@"qwe";
+    }else{
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
+    }
     
     self.emailTextField.text = mDelegate_.userEmail;
     
@@ -174,13 +174,13 @@
     self.passwordTextField.text = @"";//@"qwe";
     
     //test
-//    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-//        self.emailTextField.text = @"";//@"hua.yin@itexpresspro.com.au";
-//        self.passwordTextField.text = @"";//@"qwe";
-//    }else{
-//        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
-//        self.passwordTextField.text = @"12345";
-//    }
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        self.emailTextField.text = @"";//@"hua.yin@itexpresspro.com.au";
+        self.passwordTextField.text = @"";//@"qwe";
+    }else{
+        self.emailTextField.text = @"william.wu@itexpresspro.com.au";
+        self.passwordTextField.text = @"12345";
+    }
 }
 
 - (IBAction)forgotPasswordAction:(id)sender {

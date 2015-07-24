@@ -23,6 +23,8 @@
     //data
     NSMutableArray *tableData_;
     
+    //no event
+    UIImageView *noEventView_;
 
 }
 
@@ -40,6 +42,14 @@
     
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
+    
+    //no event
+//    noEventCheck_ = NO;
+    
+    noEventView_ = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NoEvent"]];
+    noEventView_.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    noEventView_.contentMode = UIViewContentModeScaleAspectFit;
+    
     
     //tableview delegate
     self.tableView.delegate = self;
@@ -145,30 +155,18 @@
         }else if ([responseStatus isEqualToString:@"1"]) {
             
             tableData_ = [responseDictionary valueForKey:@"Result"];
-//            NSMutableArray *tempArray = [[NSMutableArray alloc]init];
-//            tempArray = [responseDictionary valueForKey:@"Result"];
-//            //0 is load earlier data
-//            if ([direction_ isEqualToString:@"0"]) {
-//                
-//                for (NSDictionary *dic in tempArray) {
-//                    [tableData_ addObject:dic];
-//                }
-//                
-//            }else if ([direction_ isEqualToString:@"1"]){
-//                //1 is load next data
-//                for (NSDictionary *dic in tempArray) {
-//                    [tableData_ insertObject:dic atIndex:0];
-//                }
-//            }
-            
+
             [self.tableView reloadData];
+            //No Event Image Display
+            if (tableData_.count == 0){
+                
+                [self.tableView addSubview:noEventView_];
+            }
             
-//            [loadMore_ setText:@"All Loaded."];
-//            NSLog(@"Retrieved Request List Data");
+
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [HUD_ hide:YES];
-//        self.menuBarButtonItem.enabled = YES;
         
         UIAlertController *alert =
         [UIAlertController alertControllerWithTitle:@"Server Error"
@@ -207,9 +205,7 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    
+
     NSString *cellidentify = @"EventBoardCell";
     
     EventBoardTableViewCell *cell = (EventBoardTableViewCell *)[tableView dequeueReusableCellWithIdentifier:cellidentify];
@@ -258,11 +254,13 @@
     cell.dueDayLabel.text = dueDayText;
     cell.descriptionTextView.text = description;
 
+    [cell.descriptionTextView scrollRangeToVisible:NSMakeRange(0, 0)];
     
     //draw line on Cell
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellHeight-1, self.view.bounds.size.width, 1)];
     lineView.backgroundColor = mDelegate_.textViewBoardColor;
     [cell addSubview:lineView];
+    
     
     return cell;
 }
