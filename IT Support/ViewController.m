@@ -72,11 +72,11 @@
 //    [self.scrollView addGestureRecognizer:singleTapGestureRecognizer];
     
     //test image data
-    for (int num=1;num<6; num++) {
-        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
-
-        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
-    }
+//    for (int num=1;num<6; num++) {
+//        [mDelegate_.mRequestImages addObject:[UIImage imageNamed:[NSString stringWithFormat:@"image%d.jpg",num]]];
+//
+//        [mDelegate_.mRequestImageDescriptions addObject:@"For additional question, please leave your message."];
+//    }
     
     NSArray *photos = [NSArray arrayWithArray: mDelegate_.mRequestImages];
     

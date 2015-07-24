@@ -560,7 +560,7 @@
                                       reuseIdentifier:@"RequestDetailTableViewCell"];
         
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        cell.userInteractionEnabled = NO;
+
         //-------------section requestSection 0
         //- Created Date
         //- Subcategory
@@ -640,7 +640,7 @@
                                       reuseIdentifier:@"RequestDetailTableViewCell"];
         
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
-        cell.userInteractionEnabled = NO;
+    
         //-------------section priceSection 1
         //- Price
         //- PriceType
@@ -676,7 +676,7 @@
     }else if(indexPath.section == contactSection){
 
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                reuseIdentifier:@"RequestDetailTableViewCell"];
+                                      reuseIdentifier:@"RequestDetailTableViewCell"];
         
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         

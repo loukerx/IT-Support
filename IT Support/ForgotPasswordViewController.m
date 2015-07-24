@@ -34,7 +34,8 @@
     appHelper_ = [[AppHelper alloc]init];
 
     
-    self.navigationController.navigationBar.tintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.barTintColor = mDelegate_.appThemeColor;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [self.submitButton setBackgroundColor:mDelegate_.appThemeColor];
 }
 

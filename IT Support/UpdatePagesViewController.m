@@ -66,16 +66,20 @@
 #pragma mark - guesture
 -(void)scrollviewSingleTapGesture:(UIGestureRecognizer *)tapGestureRecognizer{
     
-//    if (updateImages_.count == self.pageControl.currentPage + 1) {
+    [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.appVersion
+                                              forKey:@"savedAppVersion"];
+   
     if (mDelegate_.tipsOn) {
         
-        [self dismissViewControllerAnimated:YES completion:nil];
         mDelegate_.tipsOn = NO;//default value
+        [self dismissViewControllerAnimated:YES completion:nil];
+    
     }else{
-        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+         if (updateImages_.count == self.pageControl.currentPage + 1) {
+             
+             [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+         }
     }
-
-//    }
 }
 
 
@@ -102,12 +106,8 @@
                                             initWithFrame:CGRectMake(width * count, 0, width, height)];
             pageScrollView.minimumZoomScale = 1.0f;
             pageScrollView.maximumZoomScale = 2.5f;
-            //scrollView.contentSize = CGSizeMake(scrollView.contentSize.width,scrollView.frame.size.height);
-            //        pageScrollView.contentSize = CGSizeMake(imageview.frame.size.width, pageScrollView.frame.size.height);
+
             pageScrollView.contentSize = CGSizeMake(width,height);
-            //        pageScrollView.scrollEnabled = NO;
-            //        pageScrollView.decelerationRate = 1.0f;
-            //        pageScrollView.delegate = self;
             [pageScrollView addSubview:imageview];
             
             [self.scrollView addSubview:pageScrollView];

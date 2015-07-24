@@ -169,16 +169,31 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     NSLog(@"My token string is: %@", self.notificationToken);
     
     //initial view controller
-    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+//    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+      [self initialTheViewController];
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
 {
     NSLog(@"Failed to get token, error: %@", error);
     //initial view controller
-    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+//    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+    [self initialTheViewController];
 }
 
+
+#pragma mark - initial View Controller
+-(void)initialTheViewController
+{
+    NSString *savedAppVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedAppVersion"]?:@"";
+    if ([self.appVersion isEqualToString:savedAppVersion]) {
+        
+        [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+    }else{
+        
+        [appHelper_ initialViewController:@"UpdatePagesViewStoryboardID"];
+    }
+}
 
 #pragma mark - Facebook
 - (BOOL)application:(UIApplication *)application
