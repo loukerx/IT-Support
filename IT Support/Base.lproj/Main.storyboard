@@ -84,7 +84,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ofv-0h-O3Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2143" y="592"/>
+            <point key="canvasLocation" x="2955" y="592"/>
         </scene>
         <!--Select Sub Category Table View Controller-->
         <scene sceneID="wxd-dn-WzU">
@@ -130,7 +130,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V0d-LY-MRA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2832" y="592"/>
+            <point key="canvasLocation" x="3644" y="592"/>
         </scene>
         <!--Request Review Table View Controller-->
         <scene sceneID="JrL-8u-Wzv">
@@ -168,7 +168,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jOf-gS-IfG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="FjR-pJ-bM3" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4331" y="1371"/>
+            <point key="canvasLocation" x="4391" y="1376"/>
         </scene>
         <!--Request Table View Controller-->
         <scene sceneID="tIR-k7-noH">
@@ -208,7 +208,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5fH-la-HpE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3571" y="592"/>
+            <point key="canvasLocation" x="4383" y="592"/>
         </scene>
         <!--Request Photo Collection View Controller-->
         <scene sceneID="vPt-mf-3wi">
@@ -249,7 +249,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xNo-oZ-HeR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4331" y="592"/>
+            <point key="canvasLocation" x="5143" y="592"/>
         </scene>
         <!--Request Photo Description View Controller-->
         <scene sceneID="tgf-Xl-vrL">
@@ -319,7 +319,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bYA-gW-FNT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5084" y="592"/>
+            <point key="canvasLocation" x="5896" y="592"/>
         </scene>
         <!--Request List Table View Controller-->
         <scene sceneID="DYG-U0-iuE">
@@ -349,22 +349,24 @@
                                 <action selector="MenuAction:" destination="hHD-LB-tF4" id="5z9-FO-qRr"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ra3-I9-sbR">
+                        <barButtonItem key="rightBarButtonItem" title="Add" id="Ra3-I9-sbR" userLabel="Right Button">
                             <connections>
-                                <segue destination="sVC-Sv-JxW" kind="show" identifier="To SelectCategory TableView" id="N2s-IN-USm"/>
+                                <action selector="rightButtonAction:" destination="hHD-LB-tF4" id="nJM-F8-acS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="addBarButtonItem" destination="Ra3-I9-sbR" id="Wq2-M3-0qz"/>
                         <outlet property="menuBarButtonItem" destination="sO5-Jy-gTy" id="RLs-JW-l2b"/>
+                        <outlet property="rightBarButtonItem" destination="Ra3-I9-sbR" id="EUY-mU-znW"/>
                         <segue destination="F1K-7s-C9L" kind="show" identifier="To RequestDetail TableView" id="5IB-XF-7FZ"/>
                         <segue destination="31G-Dh-Fay" kind="presentation" identifier="To UserSetting TableView" id="g5l-cx-e72"/>
+                        <segue destination="sVC-Sv-JxW" kind="show" identifier="To SelectCategory TableView" id="eJX-DP-N2U"/>
+                        <segue destination="u6j-5Z-E4A" kind="show" identifier="To Search TableView" id="cFF-R1-LGg"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="re8-PY-pn6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1380" y="592"/>
+            <point key="canvasLocation" x="1392" y="592"/>
         </scene>
         <!--User Setting Table View Controller-->
         <scene sceneID="X1o-FD-oqX">
@@ -633,7 +635,7 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="hHD-LB-tF4" kind="relationship" relationship="rootViewController" id="9MI-Bx-8mg"/>
+                        <segue destination="hHD-LB-tF4" kind="relationship" relationship="rootViewController" id="nYC-NM-IJA"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1A4-lX-bMD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1010,6 +1012,44 @@
             </objects>
             <point key="canvasLocation" x="1380" y="2145"/>
         </scene>
+        <!--Filters-->
+        <scene sceneID="9VR-Oc-ftZ">
+            <objects>
+                <tableViewController id="u6j-5Z-E4A" customClass="SearchTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="WxT-LF-gki">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="searchTableViewCell" id="Vcb-8z-dhq">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vcb-8z-dhq" id="kze-NX-gN1">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="u6j-5Z-E4A" id="PgT-j1-FxN"/>
+                            <outlet property="delegate" destination="u6j-5Z-E4A" id="Zzo-ef-CxE"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Filters" id="sxb-1i-zFk">
+                        <barButtonItem key="rightBarButtonItem" title="Reset" id="H3h-kV-hzk">
+                            <connections>
+                                <action selector="resetAction:" destination="u6j-5Z-E4A" id="jtC-jW-F2Z"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="resetBarButtonItem" destination="H3h-kV-hzk" id="Inv-HE-Adv"/>
+                        <segue destination="QeC-9o-bEO" kind="unwind" identifier="Unwind From SearchTableView" unwindAction="unwindToRequestListTableView:" id="kwp-sv-aM9"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fuG-q0-JT4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="QeC-9o-bEO" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1392" y="-919"/>
+        </scene>
         <!--Request Detail Table View Controller-->
         <scene sceneID="3Ha-W3-rV8">
             <objects>
@@ -1205,7 +1245,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jGK-tu-YC8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5799" y="592"/>
+            <point key="canvasLocation" x="6611" y="592"/>
         </scene>
         <!--Sign In View Controller-->
         <scene sceneID="UdW-2F-UrH">

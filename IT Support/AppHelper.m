@@ -28,35 +28,54 @@
 }
 
 #pragma mark - convert dictionary to Json String
--(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType
+-(NSString *)converToJsonStringByCategoryID:(NSString *)categoryID
+                                  searchDueDate:(NSDate *)dueDate
+                                    searchTitle:(NSString *)title
 {
-//    NSString *requestStatusValue;
-    //@[@"Active",@"Processing",@"Processed",@"Finished"]
-//    if ([searchType isEqualToString:@"Active"]) {
-//        requestStatusValue = @"0";
-//    }else if ([searchType isEqualToString:@"Processing"]) {
-//        requestStatusValue = @"1";
-//    }else if ([searchType isEqualToString:@"Processed"]) {
-//        requestStatusValue = @"2";
-//    }else if ([searchType isEqualToString:@"Finished"]) {
-//        requestStatusValue = @"3";
-//    }else{
-//        requestStatusValue = @"0";
-//    }
-    //多字段组合array
-//    NSDictionary *searchRequestStatusCondition =@{@"Name":@"RequestStatus",
-//                                                  @"Ope":@"1",
-//                                                  @"Val":requestStatusValue
-//                                                  };
-    NSDictionary *searchRequestCategotyIDCondition = @{};
+    //category ID
+    NSDictionary *searchRequestCategoryIDCondition;
+    if (categoryID == nil) {
+        searchRequestCategoryIDCondition = @{};
+    }else{
+        searchRequestCategoryIDCondition = @{@"Name":@"RequestCategory",
+                                                           @"Ope":@"0",//等于
+                                                           @"Val":categoryID
+                                                           };
+    }
 
-    NSDictionary *searchTitleCondition = @{};
+    
+    //Due Date
+    NSDictionary *dueDateCondition;
+    if (dueDate == nil) {
+        dueDateCondition =@{};
+    }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString * sortDate = [dateFormatter stringFromDate:dueDate];
+        dueDateCondition =@{@"Name": @"DueDate",
+                            @"Ope": @"5",//小于等于
+                            @"Val":sortDate};
+    }
+
+    //Title
+    NSDictionary *searchTitleCondition;
+    if (title == nil) {
+        searchTitleCondition = @{};
+    }else{
+        searchTitleCondition =@{@"Name":@"Title",
+                                @"Ope":@"3",//包含
+                                @"Val":title
+                                };
+    }
+
+
 
     NSDictionary *searchPriorityCondition = @{};
 
-    NSArray *searchConditionArray = @[searchRequestCategotyIDCondition,
-//                                      searchRequestStatusCondition,
-                                      searchTitleCondition,searchPriorityCondition];
+    NSArray *searchConditionArray = @[searchRequestCategoryIDCondition,
+                                      dueDateCondition,
+                                      searchTitleCondition,
+                                      searchPriorityCondition];
     //json to NSString
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:searchConditionArray

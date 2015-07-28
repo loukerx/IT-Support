@@ -794,7 +794,6 @@
         //clear requestDeadline_
         requestDeadline_ = nil;
     }
-
 }
 
 #pragma mark - Navigation

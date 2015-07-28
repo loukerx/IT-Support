@@ -16,6 +16,7 @@
 #import "AppHelper.h"
 #import "RequestReviewTableViewController.h"
 #import "UserSettingTableViewController.h"
+#import "SearchTableViewController.h"
 
 @interface RequestListTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -39,11 +40,16 @@
     UIView *menu_;
     MenuListViewController *menuListView_;
     NSString *searchType_;//request status type for seaching
+    
+    //filter Values
+    NSString *searchCategoryID_;
+    NSDate *searchDueDate_;
+    NSString *searchTitle_;
 
 }
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuBarButtonItem;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
 
 
 @end
@@ -83,7 +89,10 @@
     [refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:refreshControl];
     
-
+    //setting
+    searchCategoryID_ = nil;
+    searchDueDate_ = nil;
+    searchTitle_ = nil;
     
     //tableview delegate
     self.tableView.delegate = self;
@@ -92,6 +101,13 @@
     
     [self initialSettingForView];
     
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+
     
 }
 
@@ -110,7 +126,7 @@
     tableData_ = [[NSMutableArray alloc]init];
     
     searchType_ = mDelegate_.searchType;
-    [self prepareRequestList:searchType_];//version 2.0
+    [self prepareRequestList:searchType_];//version 1.1
     
     //menu_ list
     menu_ = [[UIView alloc]init];
@@ -120,19 +136,24 @@
     //setting color
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];//mDelegate_.appThemeColor;
     [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
-    
-    
+
+
     //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         
-        self.addBarButtonItem.enabled = YES;
-        //        self.addBarButtonItem.tintColor = mDelegate_.appThemeColor;
+//        self.addBarButtonItem.enabled = YES;
+        [self.rightBarButtonItem setTitle:@"New"];
+//        self.rightBarButtonItem.tintColor = mDelegate_.appThemeColor;
         
     }else{
         
-        self.addBarButtonItem.enabled = NO;
-        self.addBarButtonItem.tintColor = [UIColor clearColor];
+//        self.addBarButtonItem.enabled = NO;
+        [self.rightBarButtonItem setTitle:@"Search"];
+//        self.addBarButtonItem.tintColor = [UIColor clearColor];
+//        self.rightBarButtonItem.tintColor = mDelegate_.appThemeColor;
     }
+    self.rightBarButtonItem.tintColor = [UIColor whiteColor];
+
 }
 
 
@@ -169,8 +190,8 @@
     NSString *direction = direction_;
     int requestStatus = [appHelper_ getRequestStatusIndex:searchType];
     NSString *status = [NSString stringWithFormat:@"%d",requestStatus];
-    NSString *searchCondition = [appHelper_ convertDictionaryArrayToJsonString:searchType];
-    
+
+    NSString *searchCondition = [appHelper_ converToJsonStringByCategoryID:searchCategoryID_ searchDueDate:searchDueDate_ searchTitle:searchTitle_];
     
     NSString *getMethod = @"";
     NSDictionary *parameters;
@@ -348,7 +369,7 @@
         HUD_ = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD_.labelText = @"Progressing...";
         self.menuBarButtonItem.enabled = NO;
-        [self prepareRequestList:searchType_];//version 2.0
+        [self prepareRequestList:searchType_];//version 1.1
         
 //        tableData_ = [[NSMutableArray alloc] init];
 //        [tableData_ addObjectsFromArray:mDelegate_.propertyShortlist];
@@ -363,6 +384,15 @@
 
     }
     
+}
+
+#pragma mark button action
+- (IBAction)rightButtonAction:(id)sender {
+    if ([self.rightBarButtonItem.title isEqualToString:@"New"]) {
+        [self performSegueWithIdentifier:@"To SelectCategory TableView" sender:self];
+    }else if ([self.rightBarButtonItem.title isEqualToString:@"Search"]) {
+        [self performSegueWithIdentifier:@"To Search TableView" sender:self];
+    }
 }
 
 #pragma mark - TableView Datasource
@@ -475,7 +505,7 @@
             
             direction_ = @"0";
 
-            [self prepareRequestList:searchType_];//version 2.0
+            [self prepareRequestList:searchType_];//version 1.1
             lastLoadingTableDataCount_ = [tableData_ count];
         }else{
 
@@ -740,6 +770,13 @@
         RequestDetailTableViewController *rdtvc = [segue destinationViewController];
         rdtvc.requestObject = [tableData_ objectAtIndex:indexPath.row];
 
+    }else if([[segue identifier] isEqualToString:@"To Search TableView"]){
+        
+        SearchTableViewController *stvc = [segue destinationViewController];
+//        stvc.searchCategoryID = searchCategoryID_;
+//        stvc.searchDueDate = searchDueDate_;
+//        stvc.searchTitle = searchTitle_;
+        
     }
 
 }
@@ -756,7 +793,17 @@
 
     }
 
-}
+    
+    if ([segue.identifier isEqualToString:@"Unwind From SearchTableView"]) {
+        SearchTableViewController *stvc = (SearchTableViewController *)segue.sourceViewController;
+        
+        searchCategoryID_ = stvc.searchCategoryID?:nil;
+        searchDueDate_ = stvc.searchDueDate?:nil;
+        searchTitle_ = stvc.searchTitle.length>0?stvc.searchTitle:nil;
+        
+        [self initialSettingForView];
+    }
 
+}
 
 @end

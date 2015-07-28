@@ -14,5 +14,7 @@
 
 - (void)hideMenuListViewController:(NSString *)displayMode;
 
+- (IBAction)rightButtonAction:(id)sender;
+
 
 @end

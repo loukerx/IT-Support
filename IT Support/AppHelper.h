@@ -23,8 +23,11 @@ typedef NS_ENUM(NSInteger, RequestStatus){
 -(void)initialViewController:(NSString *)viewControllerIdentifier;
 
 //convert Dictionary Array to JsonString
--(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType;
+//-(NSString *)convertDictionaryArrayToJsonString:(NSString *)searchType;
 
+-(NSString *)converToJsonStringByCategoryID:(NSString *)categoryID
+                                  searchDueDate:(NSDate *)dueDate
+                                    searchTitle:(NSString *)title;
 //Request Status
 -(int)getRequestStatusIndex:(NSString *)searType;
 -(NSString*)convertRequestStatusStringWithInt:(NSInteger)requestStatusInt;

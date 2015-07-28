@@ -818,9 +818,16 @@
 #pragma mark - confirm action
 - (IBAction)confirmAction:(id)sender {
 
+    NSString *transferMeg = nil;
+    //price
+    NSString *price =[NSString stringWithFormat:@"$%@",[self.requestObject valueForKey:@"Price"]];
+    if ([mDelegate_.searchType isEqualToString:@"Processed"]) {
+        transferMeg =[NSString stringWithFormat:@"Are you sure to pay %@?",price];
+    }
+    
     UIAlertController* alertController =
     [UIAlertController alertControllerWithTitle:nil
-                                        message:nil
+                                        message:transferMeg
                                  preferredStyle:UIAlertControllerStyleActionSheet];
     
     UIAlertAction* cancelAction =
