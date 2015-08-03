@@ -287,8 +287,8 @@
 {
     dealine_ = self.deadlinePickerView.date;
     
-    if ([dealine_ compare:[NSDate date]] != NSOrderedAscending) {
-        
+//    if ([dealine_ compare:[NSDate date]] != NSOrderedAscending) {
+    
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"dd/MM/yyyy"];
         [dateFormatter setTimeZone:[NSTimeZone localTimeZone]];
@@ -299,24 +299,24 @@
         self.deadlineTextField.text = [dateFormatter stringFromDate:dealine_];
         [self.deadlineTextField resignFirstResponder];
         
-    }else{
-        UIAlertController *alert =
-        [UIAlertController alertControllerWithTitle:@"Date Error!"
-                                            message:@"Please select a date after today."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction =
-        [UIAlertAction actionWithTitle:@"OK"
-                                 style:UIAlertActionStyleDefault
-                               handler:^(UIAlertAction *action) {
-                               }];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        //clear requestDeadline_
-        dealine_ = nil;
-    }
+//    }else{
+//        UIAlertController *alert =
+//        [UIAlertController alertControllerWithTitle:@"Date Error!"
+//                                            message:@"Please select a date after today."
+//                                     preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction *okAction =
+//        [UIAlertAction actionWithTitle:@"OK"
+//                                 style:UIAlertActionStyleDefault
+//                               handler:^(UIAlertAction *action) {
+//                               }];
+//        
+//        [alert addAction:okAction];
+//        [self presentViewController:alert animated:YES completion:nil];
+//        
+//        //clear requestDeadline_
+//        dealine_ = nil;
+//    }
 }
 #pragma mark - UIPickerView
 -(void)initialCategoryPicker

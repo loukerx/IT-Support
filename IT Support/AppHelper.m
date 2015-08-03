@@ -37,8 +37,8 @@
     if (categoryID == nil) {
         searchRequestCategoryIDCondition = @{};
     }else{
-        searchRequestCategoryIDCondition = @{@"Name":@"RequestCategory",
-                                                           @"Ope":@"0",//等于
+        searchRequestCategoryIDCondition = @{@"Name":@"RequestCategoryID",
+                                                           @"Ope":@"1",//等于
                                                            @"Val":categoryID
                                                            };
     }
