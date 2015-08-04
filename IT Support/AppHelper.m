@@ -16,9 +16,10 @@
 -(void)initialViewController:(NSString *)viewControllerIdentifier
 {
     AppDelegate *mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    
     mDelegate_.window = [[UIWindow alloc] initWithFrame:UIScreen.mainScreen.bounds];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
     
     UIViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:viewControllerIdentifier];
     

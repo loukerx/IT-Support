@@ -57,6 +57,8 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
 
 @property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLGeocoder *geocoder;
+
 
 @end
 
@@ -111,7 +113,27 @@
     
     //For Fun
 //    [self findMyBoss];
+//    [self convertAddressToGeocoder];
+}
 
+-(void)convertAddressToGeocoder{
+    //check to see if geocoder initialized, if not initialize it
+    if(self.geocoder == nil)
+    {
+        self.geocoder = [[CLGeocoder alloc] init];
+    }
+    
+    
+    NSString *address = @"447 kent street,sydney";
+    [self.geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        if(placemarks.count > 0)
+        {
+            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+//            [self displayAnnotation:placemark];
+            
+        }
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
