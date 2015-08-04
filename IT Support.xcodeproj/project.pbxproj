@@ -18,11 +18,6 @@
 		AE4EAD9C1B621358004FB566 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE4EAD9B1B621358004FB566 /* Images.xcassets */; };
 		AE58EF181B0585D400372A5F /* RequestPhotoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58EF171B0585D400372A5F /* RequestPhotoCollectionViewController.m */; };
 		AE58EF1B1B05A59E00372A5F /* RequestPhotoDescriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE58EF1A1B05A59E00372A5F /* RequestPhotoDescriptionViewController.m */; };
-		AE58EF211B05BBC600372A5F /* image1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF1C1B05BBC600372A5F /* image1.jpg */; };
-		AE58EF221B05BBC600372A5F /* image2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF1D1B05BBC600372A5F /* image2.jpg */; };
-		AE58EF231B05BBC600372A5F /* image3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF1E1B05BBC600372A5F /* image3.jpg */; };
-		AE58EF241B05BBC600372A5F /* image4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF1F1B05BBC600372A5F /* image4.jpg */; };
-		AE58EF251B05BBC600372A5F /* image5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AE58EF201B05BBC600372A5F /* image5.jpg */; };
 		AE5CDBB71B019ED30035C366 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDBB61B019ED30035C366 /* main.m */; };
 		AE5CDBBA1B019ED30035C366 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDBB91B019ED30035C366 /* AppDelegate.m */; };
 		AE5CDBBD1B019ED30035C366 /* IT_Support.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDBBB1B019ED30035C366 /* IT_Support.xcdatamodeld */; };
@@ -108,11 +103,6 @@
 		AE58EF171B0585D400372A5F /* RequestPhotoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPhotoCollectionViewController.m; sourceTree = "<group>"; };
 		AE58EF191B05A59E00372A5F /* RequestPhotoDescriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestPhotoDescriptionViewController.h; sourceTree = "<group>"; };
 		AE58EF1A1B05A59E00372A5F /* RequestPhotoDescriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestPhotoDescriptionViewController.m; sourceTree = "<group>"; };
-		AE58EF1C1B05BBC600372A5F /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
-		AE58EF1D1B05BBC600372A5F /* image2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image2.jpg; sourceTree = "<group>"; };
-		AE58EF1E1B05BBC600372A5F /* image3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image3.jpg; sourceTree = "<group>"; };
-		AE58EF1F1B05BBC600372A5F /* image4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image4.jpg; sourceTree = "<group>"; };
-		AE58EF201B05BBC600372A5F /* image5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image5.jpg; sourceTree = "<group>"; };
 		AE5CDBB11B019ED30035C366 /* IT Support.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "IT Support.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE5CDBB51B019ED30035C366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE5CDBB61B019ED30035C366 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -414,18 +404,6 @@
 			name = "3rd Party";
 			sourceTree = "<group>";
 		};
-		AE5CDC1A1B01DF1B0035C366 /* Image */ = {
-			isa = PBXGroup;
-			children = (
-				AE58EF1C1B05BBC600372A5F /* image1.jpg */,
-				AE58EF1D1B05BBC600372A5F /* image2.jpg */,
-				AE58EF1E1B05BBC600372A5F /* image3.jpg */,
-				AE58EF1F1B05BBC600372A5F /* image4.jpg */,
-				AE58EF201B05BBC600372A5F /* image5.jpg */,
-			);
-			name = Image;
-			sourceTree = "<group>";
-		};
 		AE85876A1B31313800949FB8 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,7 +507,6 @@
 		AED4CF2D1B0D80B400C8F9A7 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				AE5CDC1A1B01DF1B0035C366 /* Image */,
 				AED4CF2A1B0D80A700C8F9A7 /* AppHelper.h */,
 				AED41F651B4F5E5A00DB9522 /* AppHelper.m */,
 			);
@@ -660,19 +637,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE58EF251B05BBC600372A5F /* image5.jpg in Resources */,
 				AEDD3D4C1B5F0C88006847DC /* EventBoardTableViewCell.xib in Resources */,
 				AE5CDBC31B019ED30035C366 /* Main.storyboard in Resources */,
 				AE46C3B71B5CB29C001EBBAC /* Terms of Use.txt in Resources */,
 				AED1AD291B0C64990020B054 /* RequestListTableViewCell.xib in Resources */,
 				AE5CDBC81B019ED30035C366 /* LaunchScreen.xib in Resources */,
-				AE58EF241B05BBC600372A5F /* image4.jpg in Resources */,
-				AE58EF211B05BBC600372A5F /* image1.jpg in Resources */,
 				AE46C3B41B5CB0E9001EBBAC /* Privacy Policy.txt in Resources */,
 				AE4EAD9C1B621358004FB566 /* Images.xcassets in Resources */,
-				AE58EF221B05BBC600372A5F /* image2.jpg in Resources */,
 				AE306A691B099AD70058E9E2 /* PhotoCollectionViewCell.xib in Resources */,
-				AE58EF231B05BBC600372A5F /* image3.jpg in Resources */,
 				AEBA920A1B0B257C00447AA1 /* MenuListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1189,7 +1161,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1519,7 +1491,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
