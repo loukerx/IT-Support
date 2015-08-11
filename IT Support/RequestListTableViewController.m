@@ -18,9 +18,8 @@
 #import "UserSettingTableViewController.h"
 #import "SearchTableViewController.h"
 
-#import <CoreLocation/CoreLocation.h> 
 
-@interface RequestListTableViewController ()<UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate>
+@interface RequestListTableViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     AppDelegate *mDelegate_;
     AppHelper *appHelper_;
@@ -56,8 +55,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *menuBarButtonItem;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightBarButtonItem;
 
-@property (strong, nonatomic) CLLocationManager *locationManager;
-@property (strong, nonatomic) CLGeocoder *geocoder;
+
 
 
 @end
@@ -111,36 +109,12 @@
     
     [self initialSettingForView];
     
-    //For Fun
-//    [self findMyBoss];
-//    [self convertAddressToGeocoder];
-}
 
--(void)convertAddressToGeocoder{
-    //check to see if geocoder initialized, if not initialize it
-    if(self.geocoder == nil)
-    {
-        self.geocoder = [[CLGeocoder alloc] init];
-    }
-    
-    
-    NSString *address = @"447 kent street,sydney";
-    [self.geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
-        
-        if(placemarks.count > 0)
-        {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-//            [self displayAnnotation:placemark];
-            
-        }
-    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-
-    
 }
 
 
@@ -837,118 +811,6 @@
         [self initialSettingForView];
     }
 
-}
-
-#pragma mark - For Fun
--(void)findMyBoss
-{
-
-    NSString *boss = @"ms.benson@itexpresspro.com.au";
-    boss = @"william.wu@itexpresspro.com.au";
-    if ([mDelegate_.userEmail isEqualToString:boss]) {
-        
-//        [self StartThreadForCatchingBossMode];
-        
-        
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        // Check for iOS 8. Without this guard the code will crash with "unknown selector" on iOS 7.
-        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-            [self.locationManager requestWhenInUseAuthorization];
-        }
-        
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation;
-        
-        // Set a movement threshold for new events.
-//        self.locationManager.distanceFilter = 10; // meters
-        [self.locationManager startUpdatingLocation];
-    }
-
-}
-
-
-- (void)StartThreadForCatchingBossMode
-{
-    if(sendPositionTimer == nil)
-    {
-        sendPositionTimer = [NSTimer timerWithTimeInterval:5
-                                                    target:self
-                                                  selector:@selector(sendPositionToServer)
-                                                  userInfo:nil
-                                                   repeats:YES];
-        [[NSRunLoop mainRunLoop] addTimer:sendPositionTimer forMode:NSDefaultRunLoopMode];
-    }
-}
-
-
--(void)sendPositionToServer
-{
-    [self sendPositionToServer2];
-    CLLocation *location = self.locationManager.location;
-    NSLog(@"Boss's position has been sent:x=%f,y=%f", location.coordinate.latitude, location.coordinate.longitude);
-}
-
-// Location Manager Delegate Methods
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-{
-    NSLog(@"%@", [locations lastObject]);
-    
-}
-
-
--(void)sendPositionToServer2
-{
-    NSURL *baseURL = [NSURL URLWithString:AWSLinkURL];
-    
-    CLLocation *location = [self.locationManager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    NSString *latitude = [NSString stringWithFormat:@"%f", coordinate.latitude];
-    NSString *longitude =[NSString stringWithFormat:@"%f", coordinate.longitude];
-    
-    NSString *userAccountID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
-    NSDate *dateTime = [NSDate date];
-    
-    NSDictionary *parameters = @{@"userAccountID" : userAccountID,
-                                          @"xRay" : latitude,
-                                          @"yRay" : longitude,
-                                    @"recordDate" : dateTime
-                                 };
-    
-    
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
-    
-    manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    
-    [manager POST:@"/ITSupportService/API/LocationRecord" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        
-        
-        NSLog(@"%@",responseObject);
-        //convert to NSDictionary
-        NSDictionary *responseDictionary = responseObject;
-        NSString *responseStatus =[NSString stringWithFormat:@"%@",[responseDictionary valueForKey:@"Status"]];
-        
-        // 1 == success, 0 == fail
-        if ([responseStatus isEqualToString:@"0"]) {
-            
-            
-            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
-            
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
-            NSLog(@"Fail");
-            NSLog(@"Error Message: %@",errorMessage);
-        }else if ([responseStatus isEqualToString:@"1"]) {
-            
-            
-            NSLog(@"Success");
-        }
-//        NSLog(@"Boss's position has been sent:x=%@,y=%@", latitude, longitude);
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        
-        NSLog(@"Server Error");
-        
-    }];
-    
 }
 
 
