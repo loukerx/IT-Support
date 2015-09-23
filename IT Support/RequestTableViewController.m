@@ -163,7 +163,7 @@
     self.subjectTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.subjectTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.subjectTextField];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:self.subjectTextField];
     self.subjectTextField.tag = 101;
     self.subjectTextField.delegate = self;
     

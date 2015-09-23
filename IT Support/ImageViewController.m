@@ -53,6 +53,15 @@
     UIScrollView *pageScrollView =[[UIScrollView alloc]init];
     pageScrollView = [[self.scrollView subviews] objectAtIndex:page];
     
+       if ([[[self.scrollView subviews] objectAtIndex:page] isKindOfClass:[UIScrollView class]]) {
+           NSLog(@"it is scrollview");
+           if ([[[pageScrollView subviews] objectAtIndex:0] isKindOfClass:[UIImageView class]]) {
+           
+                     NSLog(@"it is imageView");
+           }
+
+       }
+    
     //    pageScrollView.center = CGPointMake(self.view.bounds.size.width*0.5, self.view.bounds.size.height*0.5);
     if(pageScrollView.zoomScale > pageScrollView.minimumZoomScale){
         [pageScrollView setZoomScale:pageScrollView.minimumZoomScale animated:YES];

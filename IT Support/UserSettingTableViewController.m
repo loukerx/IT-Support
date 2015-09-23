@@ -26,12 +26,13 @@
 
 @end
 
-#define ChangePasswordSection 1
-#define contactNumberRow 0
-#define changePasswordRow 1
-#define AboutSection 2
-#define aboutRow 1
-#define LogOutSection 3
+#define userInfoSection 0
+//#define contactNameRow 0
+#define contactNumberRow 1
+#define changePasswordRow 2
+//#define AboutSection 2
+//#define aboutRow 1
+#define LogOutSection 1
 
 
 @implementation UserSettingTableViewController
@@ -42,7 +43,7 @@
     mDelegate_ = [[UIApplication sharedApplication] delegate];
     appHelper_ = [[AppHelper alloc]init];
     
-    self.title = @"Settings";
+    self.title = @"User";
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     self.navigationController.navigationBar.barTintColor = mDelegate_.appThemeColor;
 //    self.navigationController.navigationBar.translucent = NO;
@@ -77,18 +78,20 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 4;
+//    return 4;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
     if (section == 0) {
         return 3;
-    }else if (section == 1){
-        return 2;
-    }else if (section == 2){
-        return 2;
     }
+//    else if (section == 1){
+//        return 2;
+//    }else if (section == 2){
+//        return 2;
+//    }
     return 1;
 }
 
@@ -100,8 +103,6 @@
     // Configure the cell...
     //-------------section 0
     //- contact name
-    //- available funds
-    //- Account Balance
     //-------------section 1
     //- contact number
     //- change password
@@ -119,35 +120,46 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:cellidentify];
         
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         NSString *contactName = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactName"]];
-        NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
-        NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
+//        NSString *availableFunds = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AvailableFunds"]];
+//        NSString *accountBalance = [NSString stringWithFormat:@"$%@",[mDelegate_.userDictionary valueForKey:@"AccountBalance"]];
+        
+        
+        NSString *contactNumber = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactNumber"]];
+        
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.userInteractionEnabled = YES;
+        cell.selectionStyle =UITableViewCellSelectionStyleDefault;
+        
         
         switch (indexPath.row) {
             case 0:
                 //other info
                 cell.textLabel.text = @"Contact Name:";
                 cell.detailTextLabel.text = contactName;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 break;
             case 1:
-                cell.textLabel.text = @"Available Funds:";
-                cell.detailTextLabel.text = availableFunds;
+                //change contact number
+                cell.textLabel.text = @"Contact Number:";
+                cell.detailTextLabel.text = contactNumber;
                 break;
             case 2:
-                cell.textLabel.text = @"Account Balance:";
-                cell.detailTextLabel.text = accountBalance;
+                //change password
+                cell.textLabel.text = @"Change Password";
                 break;
             default:
                 break;
         }
-    }else if(indexPath.section == ChangePasswordSection){
+    }
+  /*
+    else if(indexPath.section == ChangePasswordSection){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                       reuseIdentifier:cellidentify];
         
-        NSString *contactNumber = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"ContactNumber"]];
-        
+
         
         //Client Mode
 //        if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
@@ -200,16 +212,21 @@
         FBSDKShareLinkContent *content = [[FBSDKShareLinkContent alloc] init];
         content.contentURL = [NSURL URLWithString:@"http://www.itexpresspro.com.au/#home"];
         
-        FBSDKShareButton *shareButton = [[FBSDKShareButton alloc] init];
-        shareButton.center = self.view.center;
-        shareButton.shareContent = content;
+//        FBSDKShareButton *shareButton = [[FBSDKShareButton alloc] init];
+//        shareButton.center = self.view.center;
+        
+//        shareButton.shareContent = content;
+        
+//        FBSDKShareButton *button = [[FBSDKShareButton alloc] init];
+//        button.shareContent = content;
+        
         
         switch (indexPath.row) {
                 
             case 0:
                 //Share on Facebook
                 cell.textLabel.text = @"Share on Facebook";
-                cell.accessoryView = shareButton;
+//                cell.accessoryView = button;
                 break;
             case 1:
                 cell.textLabel.text = @"About";
@@ -221,7 +238,9 @@
             default:
                 break;
         }
-    }else{
+    }
+*/
+   else{
         
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:cellidentify];
@@ -254,7 +273,7 @@
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
 
-    if (indexPath.section == ChangePasswordSection) {
+    if (indexPath.section == userInfoSection) {
         if (indexPath.row == contactNumberRow) {
             [self performSegueWithIdentifier:@"To Update ContactNumber View" sender:self]; 
         }else if(indexPath.row == changePasswordRow) {
@@ -263,11 +282,13 @@
         }
 
         
-    }else if (indexPath.section == AboutSection){
-        if (indexPath.row == aboutRow) {
-            [self performSegueWithIdentifier:@"To About View" sender:self];
-        }
-    }else if (indexPath.section == LogOutSection) {
+    }
+//    else if (indexPath.section == AboutSection){
+//        if (indexPath.row == aboutRow) {
+//            [self performSegueWithIdentifier:@"To About View" sender:self];
+//        }
+//    }
+    else if (indexPath.section == LogOutSection) {
 
 //        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
 //                                                                 delegate:self
@@ -308,7 +329,7 @@
 
 #pragma mark - Button Action
 - (IBAction)cancelAction:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -349,11 +370,18 @@
             
             
             NSLog(@"User log out success");
+            //clear local variables
+            mDelegate_.userToken = @"";
+            mDelegate_.userEmail = @"";
+            mDelegate_.userPassword = @"";
+            mDelegate_.userDictionary = [[NSDictionary alloc]init];
+            
+            
             //CLEAR NSUserDefaults local variables
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userToken"];
-//            [[NSUserDefaults standardUserDefaults] setObject:@""
-//                                                      forKey:@"userEmail"];
+            [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                      forKey:@"userEmail"];
             [[NSUserDefaults standardUserDefaults] setObject:@""
                                                       forKey:@"userPassword"];
             [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
@@ -362,7 +390,14 @@
             NSLog(@"Unregister For Remote Notification");
             [[UIApplication sharedApplication] unregisterForRemoteNotifications];
    
-            [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+//            [self performSegueWithIdentifier:@"To Login View" sender:self];
+       
+            //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            
+            
             
         }else if ([responseStatus isEqualToString:@"0"]) {
             
@@ -380,7 +415,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
                 
                 UIAlertController *alert =

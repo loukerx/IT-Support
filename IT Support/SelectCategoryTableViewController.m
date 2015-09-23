@@ -39,9 +39,12 @@
     appHelper_ = [[AppHelper alloc]init];
     
     
+    //setting color
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];//mDelegate_.appThemeColor;
+    [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
     
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
+//    self.tableView.delegate = self;
     
     //判断是否已经下载过最新categoryList
     if (mDelegate_.categoryListArray.count>0) {
@@ -56,8 +59,15 @@
     
     //setting color
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    self.title = @"Select Category";
+    self.title = @"Main";
 
+    //test 修改
+    /*
+     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nav_bar"] forBarMetrics:UIBarMetricsDefault];
+     
+     */
+    
+    
 
     //clear image & image description
     //because this is the start point to create a new request
@@ -90,6 +100,7 @@
     [manager GET:@"/ITSupportService/API/Requestcategory" parameters:parameters  success:^(NSURLSessionDataTask *task, id responseObject) {
 
         
+        [HUD_ hide:YES];
         NSLog(@"%@",responseObject);
         
         //convert to NSDictionary
@@ -104,7 +115,7 @@
             tableData_ = [appHelper_ convertCategoryArray:categoryArray_];
             
             [self.tableView reloadData];
-            [HUD_ hide:YES];
+    
             NSLog(@"Retreved category List Data");
             
             
@@ -123,7 +134,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
             
             UIAlertController *alert =

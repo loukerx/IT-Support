@@ -47,7 +47,7 @@
         
     }else{
 
-        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+        //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
     }
 }
 
@@ -136,7 +136,7 @@
 
             NSLog(@"fail");
             //To Login View
-            [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+            //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             
         }else if ([responseStatus isEqualToString:@"1"]) {
             
@@ -167,7 +167,7 @@
                                                   otherButtonTitles:nil];
         [alertView show];
         //To Login View
-        [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+        //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
     }];
 }
 

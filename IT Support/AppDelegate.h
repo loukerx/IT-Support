@@ -20,6 +20,9 @@ static float const cellHeightRatio = 0.75f;
 #define clientLogIn @"Client Log In"
 #define supportLogIn @"Support Log In"
 
+#define switchToClient @"Switch To Client"
+#define switchToSupport @"Switch To Support"
+
 #define userTypeClient @"0"
 #define userTypeSupport @"1"
 
@@ -44,14 +47,15 @@ static float const cellHeightRatio = 0.75f;
 
 //user
 @property (strong, nonatomic) NSString *notificationToken;
-@property (strong, nonatomic) NSDictionary *userInfo;
+@property (strong, nonatomic) NSDictionary *userInfo;//Push Notification user info
 @property (strong, nonatomic) NSString *userToken;
 @property (strong, nonatomic) NSDictionary *userDictionary;
+@property (strong, nonatomic) NSString *userMode;
 @property (strong, nonatomic) NSString *userEmail;//username
 @property (strong, nonatomic) NSString *userPassword;//password
 //@property (strong, nonatomic) NSString *contactName;
 //login view is root
-//@property (nonatomic)BOOL loginIsRoot;
+@property (nonatomic)BOOL loginIsRoot;
 
 //client user
 @property (strong, nonatomic) NSString *clientID;

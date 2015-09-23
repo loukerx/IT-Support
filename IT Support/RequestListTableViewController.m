@@ -74,6 +74,8 @@
     appHelper_ = [[AppHelper alloc]init];
     
     
+    self.title = @"My Projects";
+    
     //loadmore label
     loadMore_ =[[UILabel alloc]initWithFrame: CGRectMake(0,0,self.tableView.frame.size.width,44)];
     loadMore_.textColor = [UIColor blackColor];
@@ -144,6 +146,7 @@
     [self.navigationController.navigationBar setBarTintColor:mDelegate_.appThemeColor];
 
 
+    /* 新建project已经转移到其他页面
     //User Mode
     if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
         
@@ -158,6 +161,9 @@
 //        self.addBarButtonItem.tintColor = [UIColor clearColor];
 //        self.rightBarButtonItem.tintColor = mDelegate_.appThemeColor;
     }
+     
+     */
+    
     self.rightBarButtonItem.tintColor = [UIColor whiteColor];
 
 }
@@ -185,7 +191,7 @@
 -(void)prepareRequestList:(NSString *)searchType
 {
     //navigationbar title
-    self.title = searchType;
+    self.title = @"My Projects";//searchType;
     mDelegate_.searchType = searchType;
     
     NSLog(@"retrieving requests data...");
@@ -222,6 +228,9 @@
                        };
         getMethod = @"/ITSupportService/API/Request/Support";
     }
+    
+    
+    NSLog(@"%@",parameters);
     
     //URL:   /ITSupportService/API/Request/Client
     //URL:   /ITSupportService/API/Request/Support
@@ -260,7 +269,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+//                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
                 
                 UIAlertController *alert =
@@ -361,7 +370,7 @@
 
     if ([displayMode isEqualToString:@"Setting"]){
 
-        [self performSegueWithIdentifier:@"To UserSetting TableView" sender:self];
+//        [self performSegueWithIdentifier:@"To UserSetting TableView" sender:self];
         
     }else if (displayMode != nil) {
         
@@ -394,9 +403,13 @@
 
 #pragma mark button action
 - (IBAction)rightButtonAction:(id)sender {
+    /* 新建project已经转移到其他页面
     if ([self.rightBarButtonItem.title isEqualToString:@"New"]) {
         [self performSegueWithIdentifier:@"To SelectCategory TableView" sender:self];
-    }else if ([self.rightBarButtonItem.title isEqualToString:@"Search"]) {
+    }else
+       */
+        
+    if ([self.rightBarButtonItem.title isEqualToString:@"Search"]) {
         [self performSegueWithIdentifier:@"To Search TableView" sender:self];
     }
 }
@@ -615,7 +628,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
                 
        
@@ -719,7 +732,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
             
             UIAlertController *alert =

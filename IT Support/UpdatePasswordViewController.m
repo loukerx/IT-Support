@@ -193,7 +193,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
             
             UIAlertController *alert =
@@ -285,7 +285,7 @@
                                                           cancelButtonTitle:@"Ok"
                                                           otherButtonTitles:nil];
                 [alertView show];
-                [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
             }else{
             
             UIAlertController *alert =

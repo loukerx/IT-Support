@@ -43,18 +43,21 @@
     self.notificationToken = @"";
     self.userInfo = [[NSDictionary alloc]init];
     self.userToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"]?:@"";
+    self.userMode = [[NSUserDefaults standardUserDefaults] objectForKey:@"userMode"]?:clientMode;//Client Mode or Support Mode
     self.userEmail = [[NSUserDefaults standardUserDefaults] objectForKey:@"userEmail"]?:@"";
     self.userPassword = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPassword"]?:@"";
-    
+    self.userDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"userDictionary"]?:nil;
     //login view is root
-//    self.loginIsRoot = YES;
+    self.loginIsRoot = YES;
     
     self.tipsOn = NO;
     
-    //setting client
-    //test number
+    //setting ID
     self.clientID = @"N/A";
     self.supportID = @"N/A";
+    
+
+    
     
     //setting categorylists
     self.categoryListArray = [[NSMutableArray alloc]init];
@@ -77,12 +80,19 @@
     
     
     //setting color
-    self.clientThemeColor = [appHelper_ colorWithHexString:@"FF3B30"];
-    self.supportThemeColor = [appHelper_ colorWithHexString:@"1D77EF"];
+    self.clientThemeColor = [appHelper_ colorWithHexString:@"E61B4B"];//FF3B30 旧红色
+    self.supportThemeColor = [appHelper_ colorWithHexString:@"EC6ALC"];//1D77EF 旧蓝色
     
-    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"appThemeColor"]?:nil;
-    UIColor *appThemeColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-    self.appThemeColor = appThemeColor?:self.clientThemeColor;
+//    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"appThemeColor"]?:nil;
+//    UIColor *appThemeColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    
+    if ([self.userMode isEqualToString:clientMode]) {
+        self.appThemeColor = self.clientThemeColor;
+    }else{
+        self.appThemeColor = self.supportThemeColor;
+    }
+    
+//    self.appThemeColor = appThemeColor?:self.clientThemeColor;
     self.textFieldColor = [appHelper_ colorWithHexString:@"F7F7F7"];
     self.textViewBoardColor = [UIColor colorWithRed:215.0 / 255.0 green:215.0 / 255.0 blue:215.0 / 255.0 alpha:1];
     self.menuTextColor =  [appHelper_ colorWithHexString:@"3E444B"]; //[UIColor colorWithRed:62/255.0f green:68/255.0f blue:75/255.0f alpha:1.0f]; //3E444B
@@ -179,8 +189,12 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
 {
     NSLog(@"Failed to get token, error: %@", error);
     //initial view controller
-//    [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+
     [self initialTheViewController];
+    
+    
+    //test
+//        [appHelper_ initialViewController:@"NEWLoginView"];
 }
 
 
@@ -190,7 +204,29 @@ didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSe
     NSString *savedAppVersion = [[NSUserDefaults standardUserDefaults] objectForKey:@"savedAppVersion"]?:@"";
     if ([self.appVersion isEqualToString:savedAppVersion]) {
         
-        [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
+        
+        //判断是打开登录界面还是直接进入app界面
+        //initialise a view controller
+        if (self.userEmail.length >0 && self.userToken.length >0) {
+            
+            //user mode
+            if ([self.appThemeColor isEqual:self.clientThemeColor]) {
+                self.clientID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
+            }else{
+                self.supportID = [NSString stringWithFormat:@"%@",[self.userDictionary valueForKey:@"UserAccountID"]];
+            }
+            
+            self.loginIsRoot = NO;
+            
+            [appHelper_ initialViewController:@"MainEntryTabBarStoryBoardID"];
+            
+        }else{
+            
+            [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+        }
+        
+        
+//        [appHelper_ initialViewController:@"ConnectServerStoryboardID"];
     }else{
         
         [appHelper_ initialViewController:@"UpdatePagesViewStoryboardID"];

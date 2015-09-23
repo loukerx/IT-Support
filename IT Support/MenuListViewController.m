@@ -207,15 +207,9 @@ didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
 - (IBAction)logOutAction:(id)sender {
     
     //hide menu list view controller
-    [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Setting"];
+//    [((RequestListTableViewController *)self.superController)hideMenuListViewController:@"Setting"];
     
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-//                                                             delegate:self
-//                                                    cancelButtonTitle:@"Cancel"
-//                                               destructiveButtonTitle:@"Log Out"
-//                                                    otherButtonTitles:nil];
-//    actionSheet.tag = 1;
-//    [actionSheet showInView:self.view];
+
 }
 
 

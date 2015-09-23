@@ -77,7 +77,26 @@
     }else{
          if (updateImages_.count == self.pageControl.currentPage + 1) {
              
-             [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+
+             
+             //判断是打开登录界面还是直接进入app界面
+             //initialise a view controller
+             if (mDelegate_.userEmail.length >0 && mDelegate_.userToken.length >0) {
+                 //user mode
+                 if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+                     mDelegate_.clientID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
+                 }else{
+                     mDelegate_.supportID = [NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"UserAccountID"]];
+                 }
+                 
+                 mDelegate_.loginIsRoot = NO;
+                 [appHelper_ initialViewController:@"MainEntryTabBarStoryBoardID"];
+                 
+             }else{
+                 
+                 [appHelper_ initialViewController:@"LoginViewStoryboardID"];
+             }
+             //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
          }
     }
 }

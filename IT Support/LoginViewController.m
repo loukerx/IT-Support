@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "AppDelegate.h"
+#import "AppHelper.h"
 #import "AFNetworking.h"
 #import "MBProgressHUD.h"
 
@@ -15,6 +16,7 @@
 @interface LoginViewController ()
 {
     AppDelegate *mDelegate_;
+    AppHelper *appHelper_;
     MBProgressHUD *HUD_;
     
     //keyboard animation
@@ -35,12 +37,12 @@
 //button
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *switchUserButton;
-@property (weak, nonatomic) IBOutlet UIButton *signInButton;
+@property (weak, nonatomic) IBOutlet UIButton *signUpButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPasswordButton;
 
 
 //background
-@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+//@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 //animation
 @property (weak, nonatomic) IBOutlet UIView *loginInputView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *loginInputViewCenterY;
@@ -56,37 +58,10 @@
     [super viewDidLoad];
     
     mDelegate_ = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    appHelper_ = [[AppHelper alloc]init];
     
-    
-    //setting color & loginButton info & user mode
-    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
-        [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
-        [self.signInButton setHidden:NO];
-        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
-        
-    }else{
-        [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
-        [self.signInButton setHidden:YES];
-        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
-    }
-    [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    self.loginButton.backgroundColor = mDelegate_.appThemeColor;
-    [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
-    [self.usernameImage setTintColor:mDelegate_.appThemeColor];
-    [self.passwordImage setTintColor:mDelegate_.appThemeColor];
-    
-    //setting guesture & textfield delegate
-    self.emailTextField.delegate = self;
-    self.passwordTextField.delegate = self;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
-                                   initWithTarget:self
-                                   action:@selector(dismissKeyboard)];
-    
-    [self.view addGestureRecognizer:tap];
-    
-    //add observer for keyboard
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [self viewSetting];
+
     
     //test
 //    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
@@ -100,6 +75,7 @@
     self.emailTextField.text = mDelegate_.userEmail;
     
 }
+
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -107,7 +83,49 @@
     inputViewOriginalY_ = self.loginInputView.frame.origin.y;
 }
 
+-(void)viewSetting{
+    
+    //set TextField PlaceHolder color
+    self.emailTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], }];
+    self.passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], }];
+    
+    //set Button color
+    [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    self.loginButton.backgroundColor = mDelegate_.appThemeColor;
+    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+    [self.usernameImage setTintColor:mDelegate_.appThemeColor];
+    [self.passwordImage setTintColor:mDelegate_.appThemeColor];
+    
+    //setting Button info & user mode
+    if ([mDelegate_.appThemeColor isEqual:mDelegate_.clientThemeColor]) {
+        [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
+        [self.signUpButton setHidden:NO];
+        [self.switchUserButton setTitle:switchToSupport forState:UIControlStateNormal];
+        //        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
+        
+    }else{
+        [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
+        [self.signUpButton setHidden:YES];
+        [self.switchUserButton setTitle:switchToClient forState:UIControlStateNormal];
+        //        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
+    }
+    
+    
+    //set guesture & textfield delegate
+    self.emailTextField.delegate = self;
+    self.passwordTextField.delegate = self;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+    
+    //add observer for keyboard
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardFrameDidChange:) name:UIKeyboardWillChangeFrameNotification object:nil];
 
+}
 
 #pragma mark - mandatory field check
 
@@ -153,19 +171,29 @@
         //switch to support theme color
         mDelegate_.appThemeColor = mDelegate_.supportThemeColor;
         [self.loginButton setTitle:supportLogIn forState:UIControlStateNormal];
-        [self.signInButton setHidden:YES];
-        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
+        [self.signUpButton setHidden:YES];
+        [self.switchUserButton setTitle:switchToClient forState:UIControlStateNormal];
+        
+        mDelegate_.userMode = supportMode;
+        [[NSUserDefaults standardUserDefaults] setObject:supportMode
+                                                  forKey:@"userMode"];
+//        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_blue"]];
     }else{
         //switch to client theme color
         mDelegate_.appThemeColor = mDelegate_.clientThemeColor;
         [self.loginButton setTitle:clientLogIn forState:UIControlStateNormal];
-        [self.signInButton setHidden:NO];
-        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
+        [self.signUpButton setHidden:NO];
+        [self.switchUserButton setTitle:switchToSupport forState:UIControlStateNormal];
+        
+        mDelegate_.userMode = clientMode;
+        [[NSUserDefaults standardUserDefaults] setObject:clientMode
+                                                  forKey:@"userMode"];
+//        [self.backgroundImageView setImage:[UIImage imageNamed:@"Login_bg_red"]];
     }
     //set color
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    [self.signInButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
     [self.usernameImage setTintColor:mDelegate_.appThemeColor];
     [self.passwordImage setTintColor:mDelegate_.appThemeColor];
@@ -269,6 +297,7 @@
 
             
             mDelegate_.userDictionary = [responseDictionary valueForKey:@"Result"];
+            [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.userDictionary forKey:@"userDictionary"];
             mDelegate_.userToken =[NSString stringWithFormat:@"%@",[mDelegate_.userDictionary valueForKey:@"TokenString"]];
             [[NSUserDefaults standardUserDefaults] setObject:mDelegate_.userToken
                                                       forKey:@"userToken"];
@@ -289,18 +318,22 @@
                                                       forKey:@"userPassword"];
             
             //save uicolor
-            NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
-            [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
-            
+//            NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:mDelegate_.appThemeColor];
+//            [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"appThemeColor"];
+//            
             //set default searchType
             mDelegate_.searchType =@"Active";
-//            if (mDelegate_.loginIsRoot) {
             
-                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
-//            }else{
-//                
+
+            if (mDelegate_.loginIsRoot) {
+           
+                mDelegate_.loginIsRoot = NO;
+                [appHelper_ initialViewController:@"MainEntryTabBarStoryBoardID"];
+//                [self performSegueWithIdentifier:@"To RequestList TableView" sender:self];
+            }else{
+                [self dismissViewControllerAnimated:YES completion:nil];
 //                [self performSegueWithIdentifier:@"Unwind From Login View" sender:self];
-//            }
+            }
 
         }
         
@@ -411,11 +444,13 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     [self.switchUserButton setHidden:YES];
     [self.forgotPasswordButton setHidden:YES];
+    [self.signUpButton setHidden:YES];
 }
 - (void)textFieldDidEndEditing:(UITextField *)textField{
     
     [self.switchUserButton setHidden:NO];
     [self.forgotPasswordButton setHidden:NO];
+    [self.signUpButton setHidden:NO];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -436,13 +471,6 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
     return NO;
-}
-
-#pragma mark - Others
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
