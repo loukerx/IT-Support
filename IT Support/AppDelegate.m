@@ -58,7 +58,6 @@
     
 
     
-    
     //setting categorylists
     self.categoryListArray = [[NSMutableArray alloc]init];
     self.subcategoryListDictionary = [[NSMutableDictionary alloc]init];
@@ -102,6 +101,10 @@
     
     //setting font
     self.menuTextFont = [UIFont fontWithName:@"HiraKakuProN-W3" size:20.0];//[UIFont fontWithName:@"HelveticaNeue" size:20.0];
+    
+    //set tab bar color
+    [[UITabBar appearance] setTintColor:self.appThemeColor];
+    //    UITabBar.appearance().tintColor = appThemeColor
     
     
 //    return YES;

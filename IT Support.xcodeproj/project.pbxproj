@@ -40,7 +40,6 @@
 		AE5CDC131B01DC1A0035C366 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC021B01DC1A0035C366 /* UIWebView+AFNetworking.m */; };
 		AE5CDC161B01DC210035C366 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5CDC151B01DC210035C366 /* MBProgressHUD.m */; };
 		AE6C227B1B58EA41004E801B /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AE6C227A1B58EA41004E801B /* AboutTableViewController.m */; };
-		AEB0C3391BB2223800A4EE0A /* TestLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEB0C3381BB2223800A4EE0A /* TestLoginViewController.m */; settings = {ASSET_TAGS = (); }; };
 		AEBA64D01B56483500E2B131 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEBA64CF1B56483500E2B131 /* QuartzCore.framework */; };
 		AEBA92071B0B24A400447AA1 /* RequestListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */; };
 		AEBA920A1B0B257C00447AA1 /* MenuListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AEBA92091B0B257C00447AA1 /* MenuListViewController.xib */; };
@@ -149,8 +148,6 @@
 		AE5CDC151B01DC210035C366 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		AE6C22791B58EA41004E801B /* AboutTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
 		AE6C227A1B58EA41004E801B /* AboutTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
-		AEB0C3371BB2223800A4EE0A /* TestLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestLoginViewController.h; sourceTree = "<group>"; };
-		AEB0C3381BB2223800A4EE0A /* TestLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestLoginViewController.m; sourceTree = "<group>"; };
 		AEBA64CF1B56483500E2B131 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		AEBA92051B0B24A400447AA1 /* RequestListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestListTableViewController.h; sourceTree = "<group>"; };
 		AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestListTableViewController.m; sourceTree = "<group>"; };
@@ -440,6 +437,7 @@
 		AEBA92081B0B24A900447AA1 /* Display Request */ = {
 			isa = PBXGroup;
 			children = (
+				AEE20A2C1BABF8450094D38D /* Menu */,
 				AEBA92051B0B24A400447AA1 /* RequestListTableViewController.h */,
 				AEBA92061B0B24A400447AA1 /* RequestListTableViewController.m */,
 				AEBA92131B0B2C8E00447AA1 /* RequestDetailTableViewController.h */,
@@ -452,7 +450,6 @@
 				AED576741B65E892008F59F9 /* SearchTableViewController.m */,
 				AED1AD1B1B0C027A0020B054 /* RequestListCell */,
 				AEDD3D501B5F0CCE006847DC /* EventBoardCell */,
-				AEE20A2C1BABF8450094D38D /* Menu */,
 			);
 			name = "Display Request";
 			sourceTree = "<group>";
@@ -479,8 +476,6 @@
 		AEBA92121B0B28D200447AA1 /* User  */ = {
 			isa = PBXGroup;
 			children = (
-				AEB0C3371BB2223800A4EE0A /* TestLoginViewController.h */,
-				AEB0C3381BB2223800A4EE0A /* TestLoginViewController.m */,
 				AEBA920F1B0B28CE00447AA1 /* LoginViewController.h */,
 				AEBA92101B0B28CE00447AA1 /* LoginViewController.m */,
 				AED8C65C1B12C59100CC9831 /* AddUserInfoViewController.h */,
@@ -689,7 +684,6 @@
 				AE58EF181B0585D400372A5F /* RequestPhotoCollectionViewController.m in Sources */,
 				AEBA92071B0B24A400447AA1 /* RequestListTableViewController.m in Sources */,
 				AEBA92151B0B2C8E00447AA1 /* RequestDetailTableViewController.m in Sources */,
-				AEB0C3391BB2223800A4EE0A /* TestLoginViewController.m in Sources */,
 				AEBA92111B0B28CE00447AA1 /* LoginViewController.m in Sources */,
 				AE5CDC091B01DC1A0035C366 /* AFURLRequestSerialization.m in Sources */,
 				AE5CDC051B01DC1A0035C366 /* AFHTTPSessionManager.m in Sources */,

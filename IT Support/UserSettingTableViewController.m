@@ -103,13 +103,9 @@
     // Configure the cell...
     //-------------section 0
     //- contact name
-    //-------------section 1
     //- contact number
     //- change password
-    //-------------section 2
-    //- share on Facebook
-    //- about
-    //-------------section 3
+    //-------------section 1
     //- logout
     //---------footer-------------
     //- copyright (c) 2015 IT Express Pro Pty Ltd. All rights reserved.
@@ -367,70 +363,33 @@
         
         // 1 == success, 0 == fail
         if ([responseStatus isEqualToString:@"1"]) {
-            
-            
-            NSLog(@"User log out success");
-            //clear local variables
-            mDelegate_.userToken = @"";
-            mDelegate_.userEmail = @"";
-            mDelegate_.userPassword = @"";
-            mDelegate_.userDictionary = [[NSDictionary alloc]init];
-            
-            
-            //CLEAR NSUserDefaults local variables
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userToken"];
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userEmail"];
-            [[NSUserDefaults standardUserDefaults] setObject:@""
-                                                      forKey:@"userPassword"];
-            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
-            
-            //unregister remote notification
-            NSLog(@"Unregister For Remote Notification");
-            [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-   
-//            [self performSegueWithIdentifier:@"To Login View" sender:self];
-       
-            //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
-            
-            [self.navigationController popViewControllerAnimated:YES];
-            
-            
-            
-            
-        }else if ([responseStatus isEqualToString:@"0"]) {
-            
-            NSDictionary *errorDic = [responseDictionary valueForKey:@"Error"];
-            
-            NSString *errorMessage =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Message"]];
-               NSString *errorCode =[NSString stringWithFormat:@"%@",[errorDic valueForKey:@"Code"]];
-
-            
-            if ([errorCode isEqualToString:@"1002"]) {
-                //log out
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Process Error"
-                                                                    message:invalidTokenMessage
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"Ok"
-                                                          otherButtonTitles:nil];
-                [alertView show];
-                //[appHelper_ initialViewController:@"LoginViewStoryboardID"];
-            }else{
-                
-                UIAlertController *alert =
-                [UIAlertController alertControllerWithTitle:@"Error!!"
-                                                    message:errorMessage
-                                             preferredStyle:UIAlertControllerStyleAlert];
-                
-                UIAlertAction *okAction =
-                [UIAlertAction actionWithTitle:@"OK"
-                                         style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction *action) {}];
-                [alert addAction:okAction];
-                [self presentViewController:alert animated:YES completion:nil];
-            }
+        
         }
+            
+            
+        NSLog(@"User log out success");
+        //clear local variables
+        mDelegate_.userToken = @"";
+        mDelegate_.userEmail = @"";
+        mDelegate_.userPassword = @"";
+        mDelegate_.userDictionary = [[NSDictionary alloc]init];
+        
+        //CLEAR NSUserDefaults local variables
+        [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                  forKey:@"userToken"];
+        [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                  forKey:@"userEmail"];
+        [[NSUserDefaults standardUserDefaults] setObject:@""
+                                                  forKey:@"userPassword"];
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"appThemeColor"];
+        
+        //unregister remote notification
+        NSLog(@"Unregister For Remote Notification");
+        [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+  
+        [self.navigationController popViewControllerAnimated:YES];
+
+        
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         
         [HUD_ hide:YES];

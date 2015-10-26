@@ -51,7 +51,7 @@
     
     if (mDelegate_.userEmail.length>0 && mDelegate_.userToken.length >0) {
         
-        NSString *contactName = [NSString stringWithFormat:@"Welcome: %@",[mDelegate_.userDictionary valueForKey:@"ContactName"]];
+        NSString *contactName = [NSString stringWithFormat:@"Welcome:    %@",[mDelegate_.userDictionary valueForKey:@"ContactName"]];
         self.contactNameLabel.text = contactName;
         
     }else{

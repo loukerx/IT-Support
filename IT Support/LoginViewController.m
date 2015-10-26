@@ -92,8 +92,8 @@
     //set Button color
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
-    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+//    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+//    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
     [self.usernameImage setTintColor:mDelegate_.appThemeColor];
     [self.passwordImage setTintColor:mDelegate_.appThemeColor];
     
@@ -193,8 +193,8 @@
     //set color
     self.loginButton.backgroundColor = mDelegate_.appThemeColor;
     [self.switchUserButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
+//    [self.signUpButton setTitleColor:mDelegate_.appThemeColor forState:UIControlStateNormal];
+//    [self.forgotPasswordButton setTintColor:mDelegate_.appThemeColor];
     [self.usernameImage setTintColor:mDelegate_.appThemeColor];
     [self.passwordImage setTintColor:mDelegate_.appThemeColor];
     
