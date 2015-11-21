@@ -1,6 +1,7 @@
 # IT-Support
 
-A Demo
+It isn't a fully developed demo. 
+
 
 This is a platform for sharing and resolving problems.
 
